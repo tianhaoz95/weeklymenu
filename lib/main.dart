@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/cookbook_view_model.dart';
+import 'package:weeklymenu/presentation/view_models/weekly_menu_view_model.dart';
 import 'package:weeklymenu/presentation/screens/login_screen.dart';
 import 'package:weeklymenu/presentation/screens/signup_screen.dart';
 import 'package:weeklymenu/presentation/screens/forgot_password_screen.dart';
@@ -112,6 +113,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => CookbookViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WeeklyMenuViewModel()..initialize(),
         ),
       ],
       child: const MainApp(),
