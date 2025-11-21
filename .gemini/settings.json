@@ -4,6 +4,14 @@
     "name": "gemini-2.5-flash"
   },
   "ide": {
-    "enabled": false
+    "enabled": true
+  },
+  "mcpServers": {
+    "dart": {
+      "command": "dart",
+      "args": [
+        "mcp-server"
+      ]
+    }
   }
 }
