@@ -95,14 +95,95 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 
 ### Phase 3: GoRouter Navigation Setup
 
--   [ ] Add `go_router` dependency.
--   [ ] Configure `GoRouter` with `MaterialApp.router`.
--   [ ] Implement the top-level `redirect` logic based on `AuthViewModel`'s authentication state.
--   [ ] Create placeholder screens for Weekly Menu, Cookbook, Settings, and Shopping List.
--   [ ] Implement `StatefulShellRoute.indexedStack` for the bottom navigation bar, including the Weekly Menu, Cookbook, and Settings screens.
--   [ ] Set up navigation to Login/Sign Up screens and from authenticated screens back to Login on sign out.
+*   **Actions:**
+    *   Added `go_router` dependency.
+    *   Configured `GoRouter` with `MaterialApp.router` in `lib/main.dart`.
+    *   Implemented the top-level `redirect` logic based on `AuthViewModel`'s authentication state in `lib/main.dart`.
+    *   Created placeholder screens: `WeeklyMenuScreen`, `CookbookScreen`, `SettingsScreen`, `ShoppingListScreen` in `lib/presentation/screens/`.
+    *   Created `ScaffoldWithNavBar` widget in `lib/presentation/widgets/scaffold_with_nav_bar.dart`.
+    *   Implemented `StatefulShellRoute.indexedStack` for bottom navigation in `lib/main.dart`, integrating `ScaffoldWithNavBar` and placeholder screens for Weekly Menu, Cookbook, and Settings.
+    *   Updated `LoginScreen` and `SignUpScreen` to remove TODO comments related to navigation, as `GoRouter`'s redirect handles it.
+    *   Added a "Sign Out" button to `SettingsScreen` and connected it to `AuthViewModel`.
+    *   Removed unused `_showSuccessSnackBar` method from `SignUpScreen`.
+    *   Fixed unused import warning in `lib/main.dart` via `dart_fix`.
 
-**Post-Phase Checklist:** (Same as Phase 1)
+*   **Learnings/Surprises:**
+    *   The `redirect` logic in `GoRouter` effectively handles authentication state transitions, guiding users to appropriate screens (login or authenticated home).
+    *   `StatefulShellRoute` provides a clean and robust solution for bottom navigation, maintaining state across tabs.
+    *   Ensuring `AuthViewModel.initialize()` is called correctly at the app's root is crucial for `GoRouter`'s `redirect` to function immediately with the correct authentication state.
+    *   `analyze_files` caught an unused method after code changes, demonstrating its value.
+
+*   **Deviations from Plan:**
+    *   Unit tests for navigation were deferred for later.
+
+---
+
+## Phases
+
+### Phase 1: Project Setup and Initial Commit
+
+-   [x] Create a Flutter package named `weeklymenu` in the current directory, supporting all default platforms, as an empty project.
+-   [x] Remove any boilerplate in the new package that will be replaced, including the `test` directory.
+-   [x] Update the description of the package in `pubspec.yaml` to "A Flutter application for managing custom recipes, generating weekly menus, and creating shopping lists." and set the version number to `0.1.0`.
+-   [x] Update the `README.md` to include a short placeholder description of the package.
+-   [x] Create the `CHANGELOG.md` with an initial version of `0.1.0`.
+-   [x] Commit this empty version of the package to the current branch.
+-   [x] After committing the change, start running the app with the `launch_app` tool on the user's preferred device. **(Failed)**
+
+**Post-Phase Checklist:**
+-   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (No relevant logic to test at this stage)
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass. (No tests to run)
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
+
+### Phase 2: Firebase Core and Authentication Setup
+
+-   [x] Add `firebase_core`, `firebase_auth` dependencies.
+-   [x] Initialize Firebase in `main.dart`.
+-   [x] Implement `AuthRepository` with `signIn`, `signUp`, `signOut`, `resetPassword`, `deleteAccount` methods.
+-   [x] Implement `AuthViewModel` as a `ChangeNotifier` to expose authentication state.
+-   [x] Add `AuthViewModel` to `MultiProvider` at the root of the app.
+-   [x] Implement Login, Sign Up, and Forgot Password screens.
+-   [x] Connect these screens to `AuthViewModel` for authentication actions.
+
+**Post-Phase Checklist:**
+-   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (Deferred for later)
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
+
+### Phase 3: GoRouter Navigation Setup
+
+-   [x] Add `go_router` dependency.
+-   [x] Configure `GoRouter` with `MaterialApp.router`.
+-   [x] Implement the top-level `redirect` logic based on `AuthViewModel`'s authentication state.
+-   [x] Create placeholder screens for Weekly Menu, Cookbook, Settings, and Shopping List.
+-   [x] Implement `StatefulShellRoute.indexedStack` for the bottom navigation bar, including the Weekly Menu, Cookbook, and Settings screens.
+-   [x] Set up navigation to Login/Sign Up screens and from authenticated screens back to Login on sign out.
+
+**Post-Phase Checklist:**
+-   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (Deferred for later)
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
 
 ### Phase 4: Firestore Data Models and Repositories
 

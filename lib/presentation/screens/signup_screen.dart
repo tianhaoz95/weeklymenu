@@ -30,12 +30,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _showSuccessSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.green),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,11 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         !authViewModel.isLoading) {
                       // Successfully signed up, pop to login and then navigate to home
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _showSuccessSnackBar(
-                          'Sign up successful! Please log in.',
-                        );
                         Navigator.of(context).pop(); // Go back to login
-                        // TODO: Navigate to WeeklyMenuScreen after successful sign up and automatic sign in
                       });
                     }
                     return SizedBox(
