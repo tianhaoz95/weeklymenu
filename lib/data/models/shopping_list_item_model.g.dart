@@ -10,14 +10,16 @@ ShoppingListItemModel _$ShoppingListItemModelFromJson(
   Map<String, dynamic> json,
 ) => ShoppingListItemModel(
   name: json['name'] as String,
+  unit: json['unit'] as String,
+  quantity: (json['quantity'] as num).toDouble(),
   isChecked: json['is_checked'] as bool? ?? false,
-  fromDay: json['from_day'] as String?,
 );
 
 Map<String, dynamic> _$ShoppingListItemModelToJson(
   ShoppingListItemModel instance,
 ) => <String, dynamic>{
   'name': instance.name,
+  'unit': instance.unit,
+  'quantity': instance.quantity,
   'is_checked': instance.isChecked,
-  'from_day': instance.fromDay,
 };

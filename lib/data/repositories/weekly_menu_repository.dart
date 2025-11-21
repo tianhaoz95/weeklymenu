@@ -1,47 +1,48 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weeklymenu/data/models/weekly_menu_model.dart';
 
 class WeeklyMenuRepository {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  WeeklyMenuRepository({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? firebaseAuth,
-  }) : _firestore = firestore ?? FirebaseFirestore.instance,
-       _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-
-  String? get currentUserId => _firebaseAuth.currentUser?.uid;
-
-  DocumentReference<Map<String, dynamic>> get _weeklyMenuDoc {
-    if (currentUserId == null) {
-      throw Exception('User not logged in.');
+  Future<void> createOrUpdateWeeklyMenu(WeeklyMenuModel weeklyMenu) async {
+    try {
+      await _firestore
+          .collection('weekly_menus')
+          .doc(weeklyMenu.id)
+          .set(weeklyMenu.toJson());
+    } catch (e) {
+      throw Exception('Error creating or updating weekly menu: $e');
     }
-    return _firestore
-        .collection('users')
-        .doc(currentUserId)
-        .collection('weeklyMenu')
-        .doc('currentMenu');
   }
 
-  // Save the current weekly menu
-  Future<void> saveWeeklyMenu(WeeklyMenuModel weeklyMenu) async {
-    await _weeklyMenuDoc.set(weeklyMenu.toJson());
+  Future<WeeklyMenuModel?> getWeeklyMenu(String userId) async {
+    try {
+      final doc = await _firestore.collection('weekly_menus').doc(userId).get();
+      if (doc.exists) {
+        return WeeklyMenuModel.fromDocumentSnapshot(doc);
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Error getting weekly menu: $e');
+    }
   }
 
-  // Get the current weekly menu
-  Stream<WeeklyMenuModel?> getWeeklyMenu() {
-    return _weeklyMenuDoc.snapshots().map((snapshot) {
-      if (snapshot.exists) {
-        return WeeklyMenuModel.fromJson(snapshot.data()!);
+  Stream<WeeklyMenuModel?> streamWeeklyMenu(String userId) {
+    return _firestore.collection('weekly_menus').doc(userId).snapshots().map((
+      doc,
+    ) {
+      if (doc.exists) {
+        return WeeklyMenuModel.fromDocumentSnapshot(doc);
       }
       return null;
     });
   }
 
-  // Delete the current weekly menu
-  Future<void> deleteWeeklyMenu() async {
-    await _weeklyMenuDoc.delete();
+  Future<void> deleteWeeklyMenu(String userId) async {
+    try {
+      await _firestore.collection('weekly_menus').doc(userId).delete();
+    } catch (e) {
+      throw Exception('Error deleting weekly menu: $e');
+    }
   }
 }

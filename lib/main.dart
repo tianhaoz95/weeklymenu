@@ -55,11 +55,12 @@ final GoRouter _router = GoRouter(
               builder: (context, state) => const CookbookScreen(),
               routes: [
                 GoRoute(
-                  path: 'recipe-detail', // Relative path to /cookbook
+                  path: 'recipe-detail/:id', // Relative path to /cookbook
                   name: 'recipe-detail', // Named route for recipe details
                   builder: (context, state) {
                     final recipe = state.extra as RecipeModel?;
-                    return RecipeScreen(recipeId: recipe?.id); // Pass recipeId if editing
+                    final recipeId = state.pathParameters['id'];
+                    return RecipeScreen(recipe: recipe, recipeId: recipeId);
                   },
                 ),
               ],

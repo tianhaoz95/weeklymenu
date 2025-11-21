@@ -8,10 +8,21 @@ part of 'weekly_menu_model.dart';
 
 WeeklyMenuModel _$WeeklyMenuModelFromJson(Map<String, dynamic> json) =>
     WeeklyMenuModel(
-      meals: (json['meals'] as List<dynamic>)
-          .map((e) => WeeklyMenuItemModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      id: json['id'] as String?,
+      menuItems:
+          (json['menu_items'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+              k,
+              (e as List<dynamic>)
+                  .map(
+                    (e) =>
+                        WeeklyMenuItemModel.fromJson(e as Map<String, dynamic>),
+                  )
+                  .toList(),
+            ),
+          ) ??
+          const {},
     );
 
 Map<String, dynamic> _$WeeklyMenuModelToJson(WeeklyMenuModel instance) =>
-    <String, dynamic>{'meals': instance.meals.map((e) => e.toJson()).toList()};
+    <String, dynamic>{'id': instance.id, 'menu_items': instance.menuItems};

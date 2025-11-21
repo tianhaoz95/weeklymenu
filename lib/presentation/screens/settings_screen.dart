@@ -98,12 +98,7 @@ class SettingsScreen extends StatelessWidget {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final settingsViewModel = Provider.of<SettingsViewModel>(context);
 
-    const List<String> allMealTypes = [
-      'breakfast',
-      'lunch',
-      'dinner',
-      'snack'
-    ];
+    const List<String> allMealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
     const List<String> allWeekdays = [
       'monday',
       'tuesday',
@@ -111,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
       'thursday',
       'friday',
       'saturday',
-      'sunday'
+      'sunday',
     ];
 
     return Scaffold(
@@ -133,17 +128,24 @@ class SettingsScreen extends StatelessWidget {
             Wrap(
               spacing: 8.0,
               children: allMealTypes.map((mealType) {
+                final bool isSelected =
+                    settingsViewModel.currentUserModel?.enabledMeals.contains(
+                      mealType,
+                    ) ??
+                    false;
                 return FilterChip(
                   label: Text(mealType),
-                  selected: settingsViewModel.settings.selectedMeals.contains(mealType),
+                  selected: isSelected,
                   onSelected: (bool selected) {
-                    List<String> updatedMeals = List.from(settingsViewModel.settings.selectedMeals);
+                    final List<String> currentMeals = List.from(
+                      settingsViewModel.currentUserModel?.enabledMeals ?? [],
+                    );
                     if (selected) {
-                      updatedMeals.add(mealType);
+                      currentMeals.add(mealType);
                     } else {
-                      updatedMeals.remove(mealType);
+                      currentMeals.remove(mealType);
                     }
-                    settingsViewModel.updateSelectedMeals(updatedMeals);
+                    settingsViewModel.updateIncludedMeals(currentMeals);
                   },
                 );
               }).toList(),
@@ -156,17 +158,24 @@ class SettingsScreen extends StatelessWidget {
             Wrap(
               spacing: 8.0,
               children: allWeekdays.map((weekday) {
+                final bool isSelected =
+                    settingsViewModel.currentUserModel?.enabledDays.contains(
+                      weekday,
+                    ) ??
+                    false;
                 return FilterChip(
                   label: Text(weekday),
-                  selected: settingsViewModel.settings.selectedWeekdays.contains(weekday),
+                  selected: isSelected,
                   onSelected: (bool selected) {
-                    List<String> updatedWeekdays = List.from(settingsViewModel.settings.selectedWeekdays);
+                    final List<String> currentWeekdays = List.from(
+                      settingsViewModel.currentUserModel?.enabledDays ?? [],
+                    );
                     if (selected) {
-                      updatedWeekdays.add(weekday);
+                      currentWeekdays.add(weekday);
                     } else {
-                      updatedWeekdays.remove(weekday);
+                      currentWeekdays.remove(weekday);
                     }
-                    settingsViewModel.updateSelectedWeekdays(updatedWeekdays);
+                    settingsViewModel.updateIncludedWeekdays(currentWeekdays);
                   },
                 );
               }).toList(),

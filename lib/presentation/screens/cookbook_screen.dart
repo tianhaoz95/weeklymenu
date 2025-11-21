@@ -37,8 +37,14 @@ class CookbookScreen extends StatelessWidget {
 
     if (confirm == true && nameController.text.isNotEmpty) {
       final newRecipe = RecipeModel.newRecipe(name: nameController.text);
-      context.pushNamed('recipe-detail', extra: newRecipe);
+      // Pass a dummy ID for new recipes as path parameter, actual object via extra
+      context.pushNamed(
+        'recipe-detail',
+        pathParameters: {'id': 'new'},
+        extra: newRecipe,
+      );
     } else if (confirm == true && nameController.text.isEmpty) {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Recipe name cannot be empty.'),
@@ -48,7 +54,11 @@ class CookbookScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _confirmDeleteRecipe(BuildContext context, CookbookViewModel cookbookViewModel, RecipeModel recipe) async {
+  Future<void> _confirmDeleteRecipe(
+    BuildContext context,
+    CookbookViewModel cookbookViewModel,
+    RecipeModel recipe,
+  ) async {
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -72,17 +82,23 @@ class CookbookScreen extends StatelessWidget {
     if (!context.mounted) return;
 
     if (confirm == true) {
-      await cookbookViewModel.deleteRecipe(recipe.id);
+      await cookbookViewModel.deleteRecipe(recipe.id!);
       if (cookbookViewModel.errorMessage != null) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${cookbookViewModel.errorMessage}'), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text('Error: ${cookbookViewModel.errorMessage}'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('"${recipe.name}" deleted.'), backgroundColor: Colors.green),
+            SnackBar(
+              content: Text('"${recipe.name}" deleted.'),
+              backgroundColor: Colors.green,
+            ),
           );
         }
       }
@@ -110,7 +126,10 @@ class CookbookScreen extends StatelessWidget {
           if (cookbookViewModel.errorMessage != null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${cookbookViewModel.errorMessage}'), backgroundColor: Colors.red),
+                SnackBar(
+                  content: Text('Error: ${cookbookViewModel.errorMessage}'),
+                  backgroundColor: Colors.red,
+                ),
               );
               cookbookViewModel.clearErrorMessage();
             });
@@ -119,7 +138,9 @@ class CookbookScreen extends StatelessWidget {
 
           if (cookbookViewModel.recipes.isEmpty) {
             return const Center(
-              child: Text('No recipes added yet. Tap + to add your first recipe!'),
+              child: Text(
+                'No recipes added yet. Tap + to add your first recipe!',
+              ),
             );
           }
 
@@ -128,16 +149,27 @@ class CookbookScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final recipe = cookbookViewModel.recipes[index];
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4.0,
+                ),
                 child: ListTile(
                   title: Text(recipe.name),
                   subtitle: Text('Rating: ${recipe.rating}/5'),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _confirmDeleteRecipe(context, cookbookViewModel, recipe),
+                    onPressed: () => _confirmDeleteRecipe(
+                      context,
+                      cookbookViewModel,
+                      recipe,
+                    ),
                   ),
                   onTap: () {
-                    context.pushNamed('recipe-detail', extra: recipe);
+                    context.pushNamed(
+                      'recipe-detail',
+                      pathParameters: {'id': recipe.id!},
+                      extra: recipe,
+                    );
                   },
                 ),
               );

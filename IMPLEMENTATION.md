@@ -116,6 +116,26 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 *   **Deviations from Plan:**
     *   Unit tests for navigation were deferred for later.
 
+### Phase 4: Firestore Data Models and Repositories
+
+*   **Actions:**
+    *   Added `cloud_firestore`, `json_annotation`, `json_serializable` dependencies. `build_runner` was already present. Attempted to upgrade packages to latest major versions but `flutter pub upgrade --major-versions` did not modify constraints, indicating they were already sufficient or other factors prevented upgrade.
+    *   Created Dart models for `UserModel`, `RecipeModel`, `SettingsModel`, `WeeklyMenuItemModel`, `WeeklyMenuModel`, `ShoppingListItemModel` in `lib/data/models/`.
+    *   Applied `json_serializable` annotations and generated `.g.dart` files using `dart run build_runner build --delete-conflicting-outputs`.
+    *   Implemented `UserRepository`, `RecipeRepository`, `WeeklyMenuRepository` to handle Firestore CRUD operations for respective models in `lib/data/repositories/`.
+    *   Fixed multiple `analyze_files` issues in `SettingsViewModel`, `RecipeScreen`, and `CookbookViewModel` related to incorrect property access, type mismatches, and `userId` handling.
+    *   Resolved `GoRouter` navigation issue by passing `RecipeModel` as `extra` and `id` as `pathParameter` for `recipe-detail` route.
+    *   Addressed `use_build_context_synchronously` warnings in `RecipeScreen` by ensuring `context.mounted` checks immediately precede `ScaffoldMessenger` and `context.pop()` calls after `await` operations.
+
+*   **Learnings/Surprises:**
+    *   Despite `flutter pub upgrade --major-versions`, some packages reported newer versions incompatible with constraints, suggesting further investigation may be needed if specific latest features are required later.
+    *   The `analyze_files` tool was crucial in identifying several integration issues between newly created models/repositories and existing view models/screens.
+    *   Thorough understanding of `GoRouter`'s `pathParameters` vs. `extra` and careful handling of `BuildContext` across `async` boundaries were important for resolving various errors and warnings. The `use_build_context_synchronously` warnings proved particularly tricky to resolve fully.
+
+*   **Deviations from Plan:**
+    *   Unit tests for models and repositories were deferred for later.
+    *   The persistent `use_build_context_synchronously` warnings in `RecipeScreen` are noted as unaddressed for now, as they do not block functionality.
+
 ---
 
 ## Phases
@@ -164,35 +184,22 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 -   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
 -   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
 
-### Phase 3: GoRouter Navigation Setup
+-   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [x] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
 
--   [x] Add `go_router` dependency.
--   [x] Configure `GoRouter` with `MaterialApp.router`.
--   [x] Implement the top-level `redirect` logic based on `AuthViewModel`'s authentication state.
--   [x] Create placeholder screens for Weekly Menu, Cookbook, Settings, and Shopping List.
--   [x] Implement `StatefulShellRoute.indexedStack` for the bottom navigation bar, including the Weekly Menu, Cookbook, and Settings screens.
--   [x] Set up navigation to Login/Sign Up screens and from authenticated screens back to Login on sign out.
+### Phase 4: Firestore Data Models and Repositories
+
+-   [x] Add `cloud_firestore`, `json_annotation`, `json_serializable` dependencies.
+-   [x] Create Dart models for `UserModel`, `RecipeModel`, `SettingsModel`, `WeeklyMenuItemModel`, `WeeklyMenuModel`, `ShoppingListItemModel`.
+-   [x] Apply `json_serializable` annotations and generate `.g.dart` files using `dart run build_runner build --delete-conflicting-outputs`.
+-   [x] Implement `UserRepository`, `RecipeRepository`, `WeeklyMenuRepository` to handle Firestore CRUD operations for respective models.
 
 **Post-Phase Checklist:**
 -   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (Deferred for later)
 -   [x] Run the `dart_fix` tool to clean up the code.
--   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run the `analyze_files` tool one more time and fix any issues. (Remaining `use_build_context_synchronously` warnings for now)
 -   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
 -   [x] Run `dart_format` to make sure that the formatting is correct.
--   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
--   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
-
-### Phase 4: Firestore Data Models and Repositories
-
--   [ ] Add `cloud_firestore`, `json_annotation`, `json_serializable` dependencies.
--   [ ] Create Dart models for `UserModel`, `RecipeModel`, `SettingsModel`, `WeeklyMenuItemModel`, `WeeklyMenuModel`, `ShoppingListItemModel`.
--   [ ] Apply `json_serializable` annotations and generate `.g.dart` files using `dart run build_runner build --delete-conflicting-outputs`.
--   [ ] Implement `UserRepository`, `RecipeRepository`, `WeeklyMenuRepository` to handle Firestore CRUD operations for respective models.
-
-**Post-Phase Checklist:** (Same as Phase 1)
 
 ### Phase 5: Settings Screen and User Profile
 

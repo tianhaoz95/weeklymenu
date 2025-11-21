@@ -8,13 +8,14 @@ part of 'settings_model.dart';
 
 SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
     SettingsModel(
-      selectedMeals:
-          (json['selected_meals'] as List<dynamic>?)
+      id: json['id'] as String?,
+      includedMeals:
+          (json['included_meals'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const ['breakfast', 'lunch', 'dinner', 'snack'],
-      selectedWeekdays:
-          (json['selected_weekdays'] as List<dynamic>?)
+      includedWeekdays:
+          (json['included_weekdays'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [
@@ -30,6 +31,7 @@ SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
     <String, dynamic>{
-      'selected_meals': instance.selectedMeals,
-      'selected_weekdays': instance.selectedWeekdays,
+      'id': instance.id,
+      'included_meals': instance.includedMeals,
+      'included_weekdays': instance.includedWeekdays,
     };

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:weeklymenu/data/models/settings_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:weeklymenu/data/models/user_model.dart';
 import 'package:weeklymenu/data/repositories/user_repository.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   final UserRepository _userRepository;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   SettingsViewModel({UserRepository? userRepository})
     : _userRepository = userRepository ?? UserRepository();
 
-  SettingsModel _settings = SettingsModel();
-  SettingsModel get settings => _settings;
+  UserModel? _currentUserModel; // Use UserModel to store user settings
+  UserModel? get currentUserModel => _currentUserModel;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -17,26 +19,35 @@ class SettingsViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  // Listen to settings changes from the repository
+  // Listen to user changes from the repository
   void initialize() {
-    _userRepository.getUserSettings().listen((settingsData) {
-      if (settingsData != null) {
-        _settings = settingsData;
+    _auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _userRepository.streamUser(user.uid).listen((userModel) {
+          _currentUserModel = userModel;
+          notifyListeners();
+        });
+      } else {
+        _currentUserModel = null;
         notifyListeners();
       }
     });
   }
 
-  Future<void> updateSelectedMeals(List<String> meals) async {
+  Future<void> updateIncludedMeals(List<String> meals) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      _setErrorMessage('User not logged in.');
+      return;
+    }
+
     _setLoading(true);
     clearErrorMessage();
     try {
-      final updatedSettings = SettingsModel(
-        selectedMeals: meals,
-        selectedWeekdays: _settings.selectedWeekdays,
-      );
-      await _userRepository.updateUserSettings(updatedSettings);
-      _settings = updatedSettings; // Optimistically update
+      await _userRepository.updateUserSettings(userId, enabledMeals: meals);
+      // Optimistically update
+      _currentUserModel = _currentUserModel?.copyWith(enabledMeals: meals);
+      notifyListeners();
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {
@@ -44,16 +55,20 @@ class SettingsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateSelectedWeekdays(List<String> weekdays) async {
+  Future<void> updateIncludedWeekdays(List<String> weekdays) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      _setErrorMessage('User not logged in.');
+      return;
+    }
+
     _setLoading(true);
     clearErrorMessage();
     try {
-      final updatedSettings = SettingsModel(
-        selectedMeals: _settings.selectedMeals,
-        selectedWeekdays: weekdays,
-      );
-      await _userRepository.updateUserSettings(updatedSettings);
-      _settings = updatedSettings; // Optimistically update
+      await _userRepository.updateUserSettings(userId, enabledDays: weekdays);
+      // Optimistically update
+      _currentUserModel = _currentUserModel?.copyWith(enabledDays: weekdays);
+      notifyListeners();
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {

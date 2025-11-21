@@ -1,74 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weeklymenu/data/models/settings_model.dart';
 import 'package:weeklymenu/data/models/user_model.dart';
 
 class UserRepository {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  UserRepository({FirebaseFirestore? firestore, FirebaseAuth? firebaseAuth})
-    : _firestore = firestore ?? FirebaseFirestore.instance,
-      _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-
-  // Get current user's UID
-  String? get currentUserId => _firebaseAuth.currentUser?.uid;
-
-  // Create or update user profile in Firestore
-  Future<void> createUserProfile(UserModel user) async {
-    if (currentUserId == null) return;
-    await _firestore.collection('users').doc(currentUserId).set(user.toJson());
+  Future<void> createUser(UserModel user) async {
+    try {
+      await _firestore.collection('users').doc(user.id).set(user.toJson());
+    } catch (e) {
+      throw Exception('Error creating user: $e');
+    }
   }
 
-  // Fetch user profile
-  Stream<UserModel?> getUserProfile() {
-    if (currentUserId == null) return Stream.value(null);
-    return _firestore.collection('users').doc(currentUserId).snapshots().map((
-      doc,
-    ) {
+  Future<UserModel?> getUser(String userId) async {
+    try {
+      final doc = await _firestore.collection('users').doc(userId).get();
       if (doc.exists) {
-        return UserModel.fromFirestore(doc);
+        return UserModel.fromDocumentSnapshot(doc);
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Error getting user: $e');
+    }
+  }
+
+  Future<void> updateUserSettings(
+    String userId, {
+    List<String>? enabledDays,
+    List<String>? enabledMeals,
+  }) async {
+    try {
+      final updates = <String, dynamic>{};
+      if (enabledDays != null) {
+        updates['enabledDays'] = enabledDays;
+      }
+      if (enabledMeals != null) {
+        updates['enabledMeals'] = enabledMeals;
+      }
+      await _firestore.collection('users').doc(userId).update(updates);
+    } catch (e) {
+      throw Exception('Error updating user settings: $e');
+    }
+  }
+
+  Stream<UserModel?> streamUser(String userId) {
+    return _firestore.collection('users').doc(userId).snapshots().map((doc) {
+      if (doc.exists) {
+        return UserModel.fromDocumentSnapshot(doc);
       }
       return null;
     });
-  }
-
-  // Update user profile fields (e.g., displayName)
-  Future<void> updateUserProfile({String? displayName}) async {
-    if (currentUserId == null) return;
-    await _firestore.collection('users').doc(currentUserId).update({
-      if (displayName != null) 'display_name': displayName,
-    });
-  }
-
-  // --- Settings specific operations ---
-
-  // Fetch user settings
-  Stream<SettingsModel?> getUserSettings() {
-    if (currentUserId == null) return Stream.value(null);
-    return _firestore
-        .collection('users')
-        .doc(currentUserId)
-        .collection('profile') // Use 'profile' subcollection for settings
-        .doc('settings') // Use a fixed document ID for settings
-        .snapshots()
-        .map((doc) {
-          if (doc.exists) {
-            return SettingsModel.fromJson(doc.data()!);
-          }
-          // Return default settings if document doesn't exist
-          return SettingsModel();
-        });
-  }
-
-  // Update user settings
-  Future<void> updateUserSettings(SettingsModel settings) async {
-    if (currentUserId == null) return;
-    await _firestore
-        .collection('users')
-        .doc(currentUserId)
-        .collection('profile')
-        .doc('settings')
-        .set(settings.toJson());
   }
 }

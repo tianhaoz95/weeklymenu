@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/data/repositories/recipe_repository.dart';
 
 class CookbookViewModel extends ChangeNotifier {
   final RecipeRepository _recipeRepository;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   CookbookViewModel({RecipeRepository? recipeRepository})
-      : _recipeRepository = recipeRepository ?? RecipeRepository();
+    : _recipeRepository = recipeRepository ?? RecipeRepository();
 
   List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;
@@ -18,9 +20,16 @@ class CookbookViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   void initialize() {
-    _recipeRepository.getRecipes().listen((recipeList) {
-      _recipes = recipeList;
-      notifyListeners();
+    _auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _recipeRepository.getRecipesForUser(user.uid).listen((recipeList) {
+          _recipes = recipeList;
+          notifyListeners();
+        });
+      } else {
+        _recipes = [];
+        notifyListeners();
+      }
     });
   }
 
@@ -28,7 +37,14 @@ class CookbookViewModel extends ChangeNotifier {
     _setLoading(true);
     clearErrorMessage();
     try {
-      await _recipeRepository.addRecipe(recipe);
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        _setErrorMessage('User not logged in.');
+        return;
+      }
+      // Ensure the recipe has the current user's ID
+      final recipeWithUserId = recipe.copyWith(userId: userId);
+      await _recipeRepository.createRecipe(recipeWithUserId);
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {
