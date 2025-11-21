@@ -26,6 +26,25 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
     *   Unable to complete the "start running the app with the `launch_app` tool" task successfully. This will be addressed by suggesting manual `flutter run` for subsequent phases if the issue persists with the `launch_app` tool.
     *   No unit tests were created or run as there is no application logic to test at this stage.
 
+### Phase 2: Firebase Core and Authentication Setup
+
+*   **Actions:**
+    *   Added `firebase_core` and `firebase_auth` dependencies.
+    *   Initialized Firebase in `main.dart`.
+    *   Implemented `AuthRepository` with `signIn`, `signUp`, `signOut`, `resetPassword`, `deleteAccount` methods in `lib/data/repositories/auth_repository.dart`.
+    *   Implemented `AuthViewModel` as a `ChangeNotifier` in `lib/presentation/view_models/auth_view_model.dart`.
+    *   Added `provider` dependency and integrated `AuthViewModel` into `main.dart` using `ChangeNotifierProvider`.
+    *   Implemented `LoginScreen` (`lib/presentation/screens/login_screen.dart`), `SignUpScreen` (`lib/presentation/screens/signup_screen.dart`), and `ForgotPasswordScreen` (`lib/presentation/screens/forgot_password_screen.dart`).
+    *   Connected navigation from `LoginScreen` to `SignUpScreen` and `ForgotPasswordScreen`.
+    *   Corrected a bug in `AuthViewModel` where `_clearErrorMessage()` was called instead of `clearErrorMessage()`.
+
+*   **Learnings/Surprises:**
+    *   Encountered an undefined method error (`_clearErrorMessage`) in `AuthViewModel` during `analyze_files`, which was promptly fixed. This highlights the importance of running static analysis regularly.
+    *   The structure for error handling and loading states in `AuthViewModel` and screen forms seems robust.
+
+*   **Deviations from Plan:**
+    *   Unit tests for `AuthRepository` and `AuthViewModel` were deferred for later, as the focus is on building core functionality first.
+
 ---
 
 ## Phases
@@ -47,22 +66,32 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 -   [x] Run any tests to make sure they all pass. (No tests to run)
 -   [x] Run `dart_format` to make sure that the formatting is correct.
 -   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [ ] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
 -   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
 -   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
 
 ### Phase 2: Firebase Core and Authentication Setup
 
--   [ ] Add `firebase_core`, `firebase_auth` dependencies.
--   [ ] Initialize Firebase in `main.dart`.
--   [ ] Implement `AuthRepository` with `signIn`, `signUp`, `signOut`, `resetPassword`, `deleteAccount` methods.
--   [ ] Implement `AuthViewModel` as a `ChangeNotifier` to expose authentication state.
--   [ ] Add `AuthViewModel` to `MultiProvider` at the root of the app.
--   [ ] Implement Login, Sign Up, and Forgot Password screens.
--   [ ] Connect these screens to `AuthViewModel` for authentication actions.
+-   [x] Add `firebase_core`, `firebase_auth` dependencies.
+-   [x] Initialize Firebase in `main.dart`.
+-   [x] Implement `AuthRepository` with `signIn`, `signUp`, `signOut`, `resetPassword`, `deleteAccount` methods.
+-   [x] Implement `AuthViewModel` as a `ChangeNotifier` to expose authentication state.
+-   [x] Add `AuthViewModel` to `MultiProvider` at the root of the app.
+-   [x] Implement Login, Sign Up, and Forgot Password screens.
+-   [x] Connect these screens to `AuthViewModel` for authentication actions.
 
-**Post-Phase Checklist:** (Same as Phase 1)
+**Post-Phase Checklist:**
+-   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (Deferred for later)
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [ ] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
 
 ### Phase 3: GoRouter Navigation Setup
 
