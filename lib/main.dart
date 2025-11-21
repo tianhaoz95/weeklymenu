@@ -5,13 +5,16 @@ import 'package:go_router/go_router.dart';
 
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart';
+import 'package:weeklymenu/presentation/view_models/cookbook_view_model.dart';
 import 'package:weeklymenu/presentation/screens/login_screen.dart';
 import 'package:weeklymenu/presentation/screens/signup_screen.dart';
 import 'package:weeklymenu/presentation/screens/forgot_password_screen.dart';
 import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
 import 'package:weeklymenu/presentation/screens/cookbook_screen.dart';
 import 'package:weeklymenu/presentation/screens/settings_screen.dart';
+import 'package:weeklymenu/presentation/screens/recipe_screen.dart'; // Import RecipeScreen
 import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart';
+import 'package:weeklymenu/data/models/recipe_model.dart'; // Import RecipeModel for extra
 
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -39,6 +42,7 @@ final GoRouter _router = GoRouter(
           routes: [
             GoRoute(
               path: '/weekly-menu',
+              name: 'weekly-menu', // Named route
               builder: (context, state) => const WeeklyMenuScreen(),
             ),
           ],
@@ -47,7 +51,18 @@ final GoRouter _router = GoRouter(
           routes: [
             GoRoute(
               path: '/cookbook',
+              name: 'cookbook', // Named route
               builder: (context, state) => const CookbookScreen(),
+              routes: [
+                GoRoute(
+                  path: 'recipe-detail', // Relative path to /cookbook
+                  name: 'recipe-detail', // Named route for recipe details
+                  builder: (context, state) {
+                    final recipe = state.extra as RecipeModel?;
+                    return RecipeScreen(recipeId: recipe?.id); // Pass recipeId if editing
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -55,6 +70,7 @@ final GoRouter _router = GoRouter(
           routes: [
             GoRoute(
               path: '/settings',
+              name: 'settings', // Named route
               builder: (context, state) => const SettingsScreen(),
             ),
           ],
@@ -92,6 +108,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => SettingsViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CookbookViewModel()..initialize(),
         ),
       ],
       child: const MainApp(),

@@ -4,7 +4,7 @@
     "name": "gemini-2.5-flash"
   },
   "ide": {
-    "enabled": true
+    "enabled": false
   },
   "mcpServers": {
     "dart": {
