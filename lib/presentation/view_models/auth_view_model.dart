@@ -14,8 +14,11 @@ class AuthViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+
+    String? _errorMessage;
+
+
+    String? get errorMessage => _errorMessage;
 
   // Stream to listen to authentication state changes
   Stream<User?> get authStateChanges => _authRepository.userChanges;

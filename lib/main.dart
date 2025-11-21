@@ -134,29 +134,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthViewModel()..initialize(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SettingsViewModel()..initialize(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => CookbookViewModel()..initialize(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => WeeklyMenuViewModel()..initialize(),
-        ),
-        ChangeNotifierProvider(create: (context) => ShoppingListViewModel()),
-      ],
-      child: MaterialApp.router(
-        routerConfig: _router,
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      ),
+    return MaterialApp.router(
+      routerConfig: _router,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
     );
   }
 }
