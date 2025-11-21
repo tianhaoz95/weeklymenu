@@ -1,0 +1,68 @@
+{
+  "@@locale": "en",
+  "appTitle": "WeeklyMenu",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcomeMessage": "Welcome",
+  "@welcomeMessage": {
+    "description": "A generic welcome message"
+  },
+  "emailHint": "Email",
+  "passwordHint": "Password",
+  "loginButton": "Login",
+  "signupButton": "Sign Up",
+  "forgotPasswordButton": "Forgot Password?",
+  "logoutButton": "Sign Out",
+  "deleteAccountButton": "Delete Account",
+  "cookbookScreenTitle": "Cookbook",
+  "weeklyMenuScreenTitle": "Weekly Menu",
+  "settingsScreenTitle": "Settings",
+  "shoppingListScreenTitle": "Shopping List",
+  "addRecipeTitle": "Add New Recipe",
+  "recipeNameLabel": "Recipe Name",
+  "ingredientsLabel": "Ingredients (comma-separated)",
+  "instructionsLabel": "Instructions (each on a new line)",
+  "cuisinesLabel": "Cuisines:",
+  "categoriesLabel": "Categories:",
+  "starRatingLabel": "Star Rating:",
+  "saveButton": "Save",
+  "userNotLoggedInError": "User not logged in.",
+  "recipeAddedMessage": "Recipe added!",
+  "recipeUpdatedMessage": "Recipe updated!",
+  "deleteRecipeConfirmation": "Are you sure you want to delete \"{recipeName}\"?",
+  "@deleteRecipeConfirmation": {
+    "placeholders": {
+      "recipeName": {
+        "type": "String"
+      }
+    }
+  },
+  "errorLoadingRecipes": "Error loading recipes.",
+  "noRecipesAdded": "No recipes added yet. Tap + to add your first recipe!",
+  "regenerateMenuButton": "Regenerate Weekly Menu",
+  "errorGeneratingMenu": "Error generating menu.",
+  "selectMealsForMenu": "Select Meals for Weekly Menu:",
+  "selectWeekdaysForMenu": "Select Weekdays for Weekly Menu:",
+  "sendResetEmailButton": "Send Reset Email",
+  "passwordResetEmailSent": "Password reset email sent to {email}",
+  "@passwordResetEmailSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelButton": "Cancel",
+  "addButton": "Add",
+  "recipeNameCannotBeEmpty": "Recipe name cannot be empty.",
+  "confirmAccountDeletionTitle": "Confirm Account Deletion",
+  "confirmAccountDeletionContent": "Are you sure you want to delete your account? This action cannot be undone.",
+  "deleteButton": "Delete",
+  "reauthenticateTitle": "Re-authenticate",
+  "confirmButton": "Confirm",
+  "passwordRequiredToDeleteAccount": "Password is required to delete account.",
+  "editRecipeTitle": "Edit Recipe",
+  "noItemsInShoppingList": "No items in the shopping list.",
+  "noWeeklyMenuGenerated": "No weekly menu generated. Tap the refresh button to generate one!"
+}

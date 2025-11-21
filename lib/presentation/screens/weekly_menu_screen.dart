@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/weekly_menu_view_model.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class WeeklyMenuScreen extends StatelessWidget {
   const WeeklyMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weekly Menu'),
+        title: Text(appLocalizations.weeklyMenuScreenTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -32,22 +34,24 @@ class WeeklyMenuScreen extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Error: ${weeklyMenuViewModel.errorMessage}'),
+                  content: Text(
+                      '${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}'),
                   backgroundColor: Colors.red,
                 ),
               );
               weeklyMenuViewModel.clearErrorMessage();
             });
             return Center(
-              child: Text('Error: ${weeklyMenuViewModel.errorMessage}'),
+              child:
+                  Text('${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}'),
             );
           }
 
           if (weeklyMenuViewModel.weeklyMenu == null ||
               weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                'No weekly menu generated. Tap the refresh button to generate one!',
+                appLocalizations.noWeeklyMenuGenerated,
               ),
             );
           }

@@ -7,6 +7,7 @@ import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/cookbook_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/weekly_menu_view_model.dart';
+import 'package:weeklymenu/presentation/view_models/shopping_list_view_model.dart';
 import 'package:weeklymenu/presentation/screens/login_screen.dart';
 import 'package:weeklymenu/presentation/screens/signup_screen.dart';
 import 'package:weeklymenu/presentation/screens/forgot_password_screen.dart';
@@ -16,6 +17,7 @@ import 'package:weeklymenu/presentation/screens/settings_screen.dart';
 import 'package:weeklymenu/presentation/screens/recipe_screen.dart'; // Import RecipeScreen
 import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart'; // Import RecipeModel for extra
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -117,6 +119,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => WeeklyMenuViewModel()..initialize(),
         ),
+        ChangeNotifierProvider(create: (context) => ShoppingListViewModel()),
       ],
       child: const MainApp(),
     ),
@@ -128,6 +131,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: _router);
+    return MaterialApp.router(
+      routerConfig: _router,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -32,8 +33,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      appBar: AppBar(title: Text(appLocalizations.signupButton)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -45,16 +47,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.emailHint,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return appLocalizations.emailHint; // Using emailHint for empty email
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return appLocalizations.emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -63,16 +65,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.passwordHint,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return appLocalizations.passwordHint; // Using passwordHint for empty password
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return appLocalizations.passwordHint; // Using passwordHint for short password
                     }
                     return null;
                   },
@@ -81,16 +83,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.passwordHint, // Using passwordHint for confirm password
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
+                      return appLocalizations.passwordHint; // Using passwordHint for empty confirm password
                     }
                     if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return appLocalizations.passwordHint; // Using passwordHint for passwords mismatch
                     }
                     return null;
                   },
@@ -128,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
-                            : const Text('Sign Up'),
+                            : Text(appLocalizations.signupButton),
                       ),
                     );
                   },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -33,8 +34,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Forgot Password')),
+      appBar: AppBar(title: Text(appLocalizations.forgotPasswordButton)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -46,16 +48,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.emailHint,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return appLocalizations.emailHint; // Using emailHint for empty email
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return appLocalizations.emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -82,7 +84,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   if (authViewModel.errorMessage == null &&
                                       mounted) {
                                     _showSuccessSnackBar(
-                                      'Password reset email sent to ${_emailController.text}',
+                                      appLocalizations.passwordResetEmailSent(
+                                          _emailController.text),
                                     );
                                   }
                                 }
@@ -91,7 +94,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
-                            : const Text('Send Reset Email'),
+                            : Text(appLocalizations.sendResetEmailButton),
                       ),
                     );
                   },

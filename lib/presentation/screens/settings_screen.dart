@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart'; // Import SettingsViewModel
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -10,22 +11,23 @@ class SettingsScreen extends StatelessWidget {
     BuildContext context,
     AuthViewModel authViewModel,
   ) async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Confirm Account Deletion'),
+          title: Text(appLocalizations.deleteAccountButton), // Re-using delete account button string for title
           content: const Text(
-            'Are you sure you want to delete your account? This action cannot be undone.',
+            'Are you sure you want to delete your account? This action cannot be undone.', // TODO: Localize this
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: const Text('Cancel'), // TODO: Localize
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Delete'),
+              child: const Text('Delete'), // TODO: Localize
             ),
           ],
         );
@@ -42,25 +44,25 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: const Text('Re-authenticate'),
+            title: const Text('Re-authenticate'), // TODO: Localize
             content: TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Enter your password to confirm',
+              decoration: InputDecoration(
+                labelText: appLocalizations.passwordHint,
               ),
             ),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Cancel'),
+                child: const Text('Cancel'), // TODO: Localize
               ),
               TextButton(
                 onPressed: () {
                   password = passwordController.text;
                   Navigator.of(dialogContext).pop(true);
                 },
-                child: const Text('Confirm'),
+                child: const Text('Confirm'), // TODO: Localize
               ),
             ],
           );
@@ -84,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Password is required to delete account.'),
+              content: Text('Password is required to delete account.'), // TODO: Localize
               backgroundColor: Colors.red,
             ),
           );
@@ -95,6 +97,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final authViewModel = Provider.of<AuthViewModel>(context);
     final settingsViewModel = Provider.of<SettingsViewModel>(context);
 
@@ -110,19 +113,19 @@ class SettingsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(appLocalizations.settingsScreenTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome, ${authViewModel.currentUser?.email ?? 'Guest'}!',
+              '${appLocalizations.welcomeMessage}, ${authViewModel.currentUser?.email ?? 'Guest'}!', // TODO: Localize 'Guest'
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
             Text(
-              'Select Meals for Weekly Menu:',
+              appLocalizations.selectMealsForMenu,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Wrap(
@@ -134,7 +137,7 @@ class SettingsScreen extends StatelessWidget {
                     ) ??
                     false;
                 return FilterChip(
-                  label: Text(mealType),
+                  label: Text(mealType), // TODO: Localize mealType values
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentMeals = List.from(
@@ -152,7 +155,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Select Weekdays for Weekly Menu:',
+              appLocalizations.selectWeekdaysForMenu,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Wrap(
@@ -164,7 +167,7 @@ class SettingsScreen extends StatelessWidget {
                     ) ??
                     false;
                 return FilterChip(
-                  label: Text(weekday),
+                  label: Text(weekday), // TODO: Localize weekday values
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentWeekdays = List.from(
@@ -191,7 +194,7 @@ class SettingsScreen extends StatelessWidget {
                       },
                 child: authViewModel.isLoading
                     ? const CircularProgressIndicator()
-                    : const Text('Sign Out'),
+                    : Text(appLocalizations.logoutButton),
               ),
             ),
             const SizedBox(height: 10),
@@ -205,7 +208,7 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: authViewModel.isLoading
                     ? null
                     : () => _confirmAccountDeletion(context, authViewModel),
-                child: const Text('Delete Account'),
+                child: Text(appLocalizations.deleteAccountButton),
               ),
             ),
           ],

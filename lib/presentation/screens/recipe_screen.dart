@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/presentation/view_models/cookbook_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class RecipeScreen extends StatefulWidget {
   final String? recipeId; // Null for new recipe, ID for existing
@@ -101,6 +102,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   void _saveRecipe() async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (_formKey.currentState!.validate()) {
       final cookbookViewModel = Provider.of<CookbookViewModel>(
         context,
@@ -110,8 +112,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
       if (_userId == null) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('User not logged in.'),
+          SnackBar(
+            content: Text(appLocalizations.userNotLoggedInError),
             backgroundColor: Colors.red,
           ),
         );
@@ -147,7 +149,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${cookbookViewModel.errorMessage}'),
+            content: Text('${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -156,7 +158,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              widget.recipeId == null ? 'Recipe added!' : 'Recipe updated!',
+              widget.recipeId == null ? appLocalizations.recipeAddedMessage : appLocalizations.recipeUpdatedMessage,
             ),
             backgroundColor: Colors.green,
           ),
@@ -169,9 +171,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.recipeId == null ? 'New Recipe' : 'Edit Recipe'),
+        title: Text(widget.recipeId == null ? appLocalizations.addRecipeTitle : 'Edit Recipe'), // TODO: Add 'Edit Recipe' localization
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveRecipe),
         ],
@@ -185,10 +188,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Recipe Name'),
+                decoration: InputDecoration(labelText: appLocalizations.recipeNameLabel),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a recipe name';
+                    return appLocalizations.recipeNameLabel; // Using recipeNameLabel for validation message
                   }
                   return null;
                 },
@@ -196,8 +199,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _ingredientsController,
-                decoration: const InputDecoration(
-                  labelText: 'Ingredients (comma-separated)',
+                decoration: InputDecoration(
+                  labelText: appLocalizations.ingredientsLabel,
                 ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
@@ -205,14 +208,14 @@ class _RecipeScreenState extends State<RecipeScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _instructionsController,
-                decoration: const InputDecoration(
-                  labelText: 'Instructions (each on a new line)',
+                decoration: InputDecoration(
+                  labelText: appLocalizations.instructionsLabel,
                 ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
               ),
               const SizedBox(height: 16),
-              const Text('Cuisines:'),
+              Text(appLocalizations.cuisinesLabel),
               Wrap(
                 spacing: 8.0,
                 children: _allCuisines.map((cuisine) {
@@ -232,7 +235,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 16),
-              const Text('Categories:'),
+              Text(appLocalizations.categoriesLabel),
               Wrap(
                 spacing: 8.0,
                 children: _allCategories.map((category) {
@@ -252,7 +255,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 16),
-              const Text('Star Rating:'),
+              Text(appLocalizations.starRatingLabel),
               Row(
                 children: List.generate(5, (index) {
                   return IconButton(

@@ -3,30 +3,32 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/presentation/view_models/cookbook_view_model.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class CookbookScreen extends StatelessWidget {
   const CookbookScreen({super.key});
 
   Future<void> _showAddRecipeDialog(BuildContext context) async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final TextEditingController nameController = TextEditingController();
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Add New Recipe'),
+          title: Text(appLocalizations.addRecipeTitle),
           content: TextField(
             controller: nameController,
-            decoration: const InputDecoration(labelText: 'Recipe Name'),
+            decoration: InputDecoration(labelText: appLocalizations.recipeNameLabel),
             autofocus: true,
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: const Text('Cancel'), // TODO: Localize 'Cancel'
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Add'),
+              child: const Text('Add'), // TODO: Localize 'Add'
             ),
           ],
         );
@@ -47,7 +49,7 @@ class CookbookScreen extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Recipe name cannot be empty.'),
+          content: Text('Recipe name cannot be empty.'), // TODO: Localize this string
           backgroundColor: Colors.red,
         ),
       );
@@ -59,20 +61,21 @@ class CookbookScreen extends StatelessWidget {
     CookbookViewModel cookbookViewModel,
     RecipeModel recipe,
   ) async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Delete Recipe'),
-          content: Text('Are you sure you want to delete "${recipe.name}"?'),
+          title: Text(appLocalizations.deleteRecipeConfirmation(recipe.name)),
+          content: Text(appLocalizations.deleteRecipeConfirmation(recipe.name)), // Re-using for content.
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: const Text('Cancel'), // TODO: Localize 'Cancel'
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Delete'),
+              child: const Text('Delete'), // TODO: Localize 'Delete'
             ),
           ],
         );
@@ -87,7 +90,7 @@ class CookbookScreen extends StatelessWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: ${cookbookViewModel.errorMessage}'),
+              content: Text('${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}'), // Using errorLoadingRecipes for generic error.
               backgroundColor: Colors.red,
             ),
           );
@@ -96,7 +99,7 @@ class CookbookScreen extends StatelessWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('"${recipe.name}" deleted.'),
+              content: Text('${recipe.name} deleted.'), // TODO: Localize 'deleted'
               backgroundColor: Colors.green,
             ),
           );
@@ -107,9 +110,10 @@ class CookbookScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cookbook'),
+        title: Text(appLocalizations.cookbookScreenTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -127,19 +131,19 @@ class CookbookScreen extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Error: ${cookbookViewModel.errorMessage}'),
+                  content: Text('${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}'),
                   backgroundColor: Colors.red,
                 ),
               );
               cookbookViewModel.clearErrorMessage();
             });
-            return const Center(child: Text('Error loading recipes.'));
+            return Center(child: Text('${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}'));
           }
 
           if (cookbookViewModel.recipes.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                'No recipes added yet. Tap + to add your first recipe!',
+                appLocalizations.noRecipesAdded,
               ),
             );
           }
@@ -155,7 +159,7 @@ class CookbookScreen extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(recipe.name),
-                  subtitle: Text('Rating: ${recipe.rating}/5'),
+                  subtitle: Text('Rating: ${recipe.rating}/5'), // TODO: Localize 'Rating'
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => _confirmDeleteRecipe(

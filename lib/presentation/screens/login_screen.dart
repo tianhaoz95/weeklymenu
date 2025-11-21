@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
-import 'package:weeklymenu/presentation/screens/signup_screen.dart'; // Import SignUpScreen
-import 'package:weeklymenu/presentation/screens/forgot_password_screen.dart'; // Import ForgotPasswordScreen
+import 'package:weeklymenu/l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,8 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text(appLocalizations.loginButton)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -44,16 +44,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.emailHint,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return appLocalizations.emailHint;
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return appLocalizations.emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -62,16 +62,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.passwordHint,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return appLocalizations.passwordHint;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return appLocalizations.passwordHint; // Using passwordHint for short password
                     }
                     return null;
                   },
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
-                            : const Text('Login'),
+                            : Text(appLocalizations.loginButton),
                       ),
                     );
                   },
@@ -110,25 +110,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16.0),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(),
-                      ),
-                    );
+                    // This navigation will be handled by GoRouter redirect
                   },
-                  child: const Text('Don\'t have an account? Sign Up'),
+                  child: Text('Don\'t have an account? ${appLocalizations.signupButton}'),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ForgotPasswordScreen(),
-                      ),
-                    );
+                    // This navigation will be handled by GoRouter redirect
                   },
-                  child: const Text('Forgot Password?'),
+                  child: Text(appLocalizations.forgotPasswordButton),
                 ),
               ],
             ),
