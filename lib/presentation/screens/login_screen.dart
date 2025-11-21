@@ -42,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
+                  key: const Key('email_input_field'),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -60,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
+                  key: const Key('password_input_field'),
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -88,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     return SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        key: const Key('login_button'),
                         onPressed: authViewModel.isLoading
                             ? null
                             : () async {
