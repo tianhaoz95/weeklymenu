@@ -1,3 +1,13 @@
+# l10n.yaml
+# Internationalization (i18n) configuration file.
+#
+# The `flutter_gen` package uses this file to configure how it
+# generates localization files.
+#
+# See https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+# for more details.
+
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+output-class: AppLocalizations

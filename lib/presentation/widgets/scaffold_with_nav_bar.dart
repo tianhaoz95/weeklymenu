@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:weeklymenu/l10n/app_localizations.dart'; // Import AppLocalizations
 
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({required this.navigationShell, Key? key})
@@ -21,22 +22,23 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navigationShell.currentIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Weekly Menu',
+            icon: const Icon(Icons.menu_book),
+            label: appLocalizations.weeklyMenuTitle,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Cookbook',
+            icon: const Icon(Icons.restaurant_menu),
+            label: appLocalizations.cookbookTitle,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: const Icon(Icons.settings),
+            label: appLocalizations.settingsTitle,
           ),
         ],
         onTap: _goBranch,

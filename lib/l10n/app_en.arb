@@ -1,50 +1,17 @@
 {
   "@@locale": "en",
   "appTitle": "WeeklyMenu",
-  "@appTitle": {
-    "description": "The title of the application"
-  },
-  "welcomeMessage": "Welcome",
-  "@welcomeMessage": {
-    "description": "A generic welcome message"
-  },
-  "emailHint": "Email",
-  "passwordHint": "Password",
   "loginButton": "Login",
   "signupButton": "Sign Up",
+  "emailHint": "Email",
+  "passwordHint": "Password",
+  "confirmPasswordHint": "Confirm Password",
   "forgotPasswordButton": "Forgot Password?",
-  "logoutButton": "Sign Out",
-  "deleteAccountButton": "Delete Account",
-  "cookbookScreenTitle": "Cookbook",
-  "weeklyMenuScreenTitle": "Weekly Menu",
-  "settingsScreenTitle": "Settings",
-  "shoppingListScreenTitle": "Shopping List",
-  "addRecipeTitle": "Add New Recipe",
-  "recipeNameLabel": "Recipe Name",
-  "ingredientsLabel": "Ingredients (comma-separated)",
-  "instructionsLabel": "Instructions (each on a new line)",
-  "cuisinesLabel": "Cuisines:",
-  "categoriesLabel": "Categories:",
-  "starRatingLabel": "Star Rating:",
-  "saveButton": "Save",
-  "userNotLoggedInError": "User not logged in.",
-  "recipeAddedMessage": "Recipe added!",
-  "recipeUpdatedMessage": "Recipe updated!",
-  "deleteRecipeConfirmation": "Are you sure you want to delete \"{recipeName}\"?",
-  "@deleteRecipeConfirmation": {
-    "placeholders": {
-      "recipeName": {
-        "type": "String"
-      }
-    }
-  },
-  "errorLoadingRecipes": "Error loading recipes.",
-  "noRecipesAdded": "No recipes added yet. Tap + to add your first recipe!",
-  "regenerateMenuButton": "Regenerate Weekly Menu",
-  "errorGeneratingMenu": "Error generating menu.",
-  "selectMealsForMenu": "Select Meals for Weekly Menu:",
-  "selectWeekdaysForMenu": "Select Weekdays for Weekly Menu:",
   "sendResetEmailButton": "Send Reset Email",
+  "weeklyMenuTitle": "Weekly Menu",
+  "cookbookTitle": "Cookbook",
+  "settingsTitle": "Settings",
+  "noAccountYet": "Don't have an account?",
   "passwordResetEmailSent": "Password reset email sent to {email}",
   "@passwordResetEmailSent": {
     "placeholders": {
@@ -53,6 +20,38 @@
       }
     }
   },
+  "errorGeneratingMenu": "Error generating weekly menu",
+  "noWeeklyMenuGenerated": "No weekly menu generated yet. Tap the refresh icon to generate one!",
+  "userNotLoggedInError": "User not logged in.",
+  "errorLoadingRecipes": "Error loading recipes.",
+  "recipeAddedMessage": "Recipe added!",
+  "recipeUpdatedMessage": "Recipe updated!",
+  "addRecipeTitle": "Add New Recipe",
+  "recipeNameLabel": "Recipe Name",
+  "ingredientsLabel": "Ingredients (comma-separated)",
+  "instructionsLabel": "Instructions (each on a new line)",
+  "cuisinesLabel": "Cuisines:",
+  "categoriesLabel": "Categories:",
+  "starRatingLabel": "Star Rating:",
+  "deleteAccountButton": "Delete Account",
+  "settingsScreenTitle": "Settings",
+  "welcomeMessage": "Welcome",
+  "selectMealsForMenu": "Select Meals for Weekly Menu:",
+  "selectWeekdaysForMenu": "Select Weekdays for Weekly Menu:",
+  "logoutButton": "Sign Out",
+  "cookbookScreenTitle": "Cookbook",
+  "deleteRecipeConfirmation": "Are you sure you want to delete \"{recipeName}\"?",
+  "@deleteRecipeConfirmation": {
+    "placeholders": {
+      "recipeName": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecipesAdded": "No recipes added yet. Tap + to add your first recipe!",
+  "shoppingListScreenTitle": "Shopping List",
+  "noItemsInShoppingList": "No items in the shopping list.",
+  "saveButton": "Save",
   "cancelButton": "Cancel",
   "addButton": "Add",
   "recipeNameCannotBeEmpty": "Recipe name cannot be empty.",
@@ -63,6 +62,29 @@
   "confirmButton": "Confirm",
   "passwordRequiredToDeleteAccount": "Password is required to delete account.",
   "editRecipeTitle": "Edit Recipe",
-  "noItemsInShoppingList": "No items in the shopping list.",
-  "noWeeklyMenuGenerated": "No weekly menu generated. Tap the refresh button to generate one!"
+  "error": "Error",
+  "guest": "Guest",
+  "breakfast": "Breakfast",
+  "lunch": "Lunch",
+  "dinner": "Dinner",
+  "snack": "Snack",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "ratingLabel": "Rating",
+  "deletedMessage": "deleted.",
+  "appetizer": "Appetizer",
+  "main_course": "Main Course",
+  "dessert": "Dessert",
+  "american": "American",
+  "italian": "Italian",
+  "mexican": "Mexican",
+  "indian": "Indian",
+  "chinese": "Chinese",
+  "japanese": "Japanese",
+  "mediterranean": "Mediterranean"
 }

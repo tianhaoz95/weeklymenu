@@ -1,24 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:weeklymenu/main.dart' as app;
-import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart'; // Import WeeklyMenuScreen
-import 'package:weeklymenu/l10n/app_localizations.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Login and Navigation Integration Test', () {
-    testWidgets('Login with test credentials and verify navigation to WeeklyMenuScreen', (WidgetTester tester) async {
+    testWidgets('Login with test credentials and verify navigation to WeeklyMenuScreen', (
+      WidgetTester tester,
+    ) async {
       // Ensure environment variables are set
       const testEmail = String.fromEnvironment('TEST_EMAIL');
       const testPassword = String.fromEnvironment('TEST_PASSWORD');
 
-      expect(testEmail, isNotEmpty, reason: 'TEST_EMAIL environment variable must be set');
-      expect(testPassword, isNotEmpty, reason: 'TEST_PASSWORD environment variable must be set');
+      expect(
+        testEmail,
+        isNotEmpty,
+        reason: 'TEST_EMAIL environment variable must be set',
+      );
+      expect(
+        testPassword,
+        isNotEmpty,
+        reason: 'TEST_PASSWORD environment variable must be set',
+      );
 
       // Start the app
       app.main();

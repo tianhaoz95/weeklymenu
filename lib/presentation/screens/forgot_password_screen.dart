@@ -54,10 +54,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return appLocalizations.emailHint; // Using emailHint for empty email
+                      return appLocalizations
+                          .emailHint; // Using emailHint for empty email
                     }
                     if (!value.contains('@')) {
-                      return appLocalizations.emailHint; // Using emailHint for invalid email
+                      return appLocalizations
+                          .emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -85,7 +87,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       mounted) {
                                     _showSuccessSnackBar(
                                       appLocalizations.passwordResetEmailSent(
-                                          _emailController.text),
+                                        _emailController.text,
+                                      ),
                                     );
                                   }
                                 }

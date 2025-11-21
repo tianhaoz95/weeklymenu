@@ -12,7 +12,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'WeeklyMenu';
 
   @override
-  String get welcomeMessage => 'Welcome';
+  String get loginButton => 'Login';
+
+  @override
+  String get signupButton => 'Sign Up';
 
   @override
   String get emailHint => 'Email';
@@ -21,31 +24,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordHint => 'Password';
 
   @override
-  String get loginButton => 'Login';
-
-  @override
-  String get signupButton => 'Sign Up';
+  String get confirmPasswordHint => 'Confirm Password';
 
   @override
   String get forgotPasswordButton => 'Forgot Password?';
 
   @override
-  String get logoutButton => 'Sign Out';
+  String get sendResetEmailButton => 'Send Reset Email';
 
   @override
-  String get deleteAccountButton => 'Delete Account';
+  String get weeklyMenuTitle => 'Weekly Menu';
 
   @override
-  String get cookbookScreenTitle => 'Cookbook';
+  String get cookbookTitle => 'Cookbook';
 
   @override
-  String get weeklyMenuScreenTitle => 'Weekly Menu';
+  String get settingsTitle => 'Settings';
 
   @override
-  String get settingsScreenTitle => 'Settings';
+  String get noAccountYet => 'Don\'t have an account?';
 
   @override
-  String get shoppingListScreenTitle => 'Shopping List';
+  String passwordResetEmailSent(String email) {
+    return 'Password reset email sent to $email';
+  }
+
+  @override
+  String get errorGeneratingMenu => 'Error generating weekly menu';
+
+  @override
+  String get noWeeklyMenuGenerated =>
+      'No weekly menu generated yet. Tap the refresh icon to generate one!';
+
+  @override
+  String get userNotLoggedInError => 'User not logged in.';
+
+  @override
+  String get errorLoadingRecipes => 'Error loading recipes.';
+
+  @override
+  String get recipeAddedMessage => 'Recipe added!';
+
+  @override
+  String get recipeUpdatedMessage => 'Recipe updated!';
 
   @override
   String get addRecipeTitle => 'Add New Recipe';
@@ -69,34 +90,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get starRatingLabel => 'Star Rating:';
 
   @override
-  String get saveButton => 'Save';
+  String get deleteAccountButton => 'Delete Account';
 
   @override
-  String get userNotLoggedInError => 'User not logged in.';
+  String get settingsScreenTitle => 'Settings';
 
   @override
-  String get recipeAddedMessage => 'Recipe added!';
-
-  @override
-  String get recipeUpdatedMessage => 'Recipe updated!';
-
-  @override
-  String deleteRecipeConfirmation(String recipeName) {
-    return 'Are you sure you want to delete \"$recipeName\"?';
-  }
-
-  @override
-  String get errorLoadingRecipes => 'Error loading recipes.';
-
-  @override
-  String get noRecipesAdded =>
-      'No recipes added yet. Tap + to add your first recipe!';
-
-  @override
-  String get regenerateMenuButton => 'Regenerate Weekly Menu';
-
-  @override
-  String get errorGeneratingMenu => 'Error generating menu.';
+  String get welcomeMessage => 'Welcome';
 
   @override
   String get selectMealsForMenu => 'Select Meals for Weekly Menu:';
@@ -105,12 +105,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectWeekdaysForMenu => 'Select Weekdays for Weekly Menu:';
 
   @override
-  String get sendResetEmailButton => 'Send Reset Email';
+  String get logoutButton => 'Sign Out';
 
   @override
-  String passwordResetEmailSent(String email) {
-    return 'Password reset email sent to $email';
+  String get cookbookScreenTitle => 'Cookbook';
+
+  @override
+  String deleteRecipeConfirmation(String recipeName) {
+    return 'Are you sure you want to delete \"$recipeName\"?';
   }
+
+  @override
+  String get noRecipesAdded =>
+      'No recipes added yet. Tap + to add your first recipe!';
+
+  @override
+  String get shoppingListScreenTitle => 'Shopping List';
+
+  @override
+  String get noItemsInShoppingList => 'No items in the shopping list.';
+
+  @override
+  String get saveButton => 'Save';
 
   @override
   String get cancelButton => 'Cancel';
@@ -145,9 +161,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editRecipeTitle => 'Edit Recipe';
 
   @override
-  String get noItemsInShoppingList => 'No items in the shopping list.';
+  String get error => 'Error';
 
   @override
-  String get noWeeklyMenuGenerated =>
-      'No weekly menu generated. Tap the refresh button to generate one!';
+  String get guest => 'Guest';
+
+  @override
+  String get breakfast => 'Breakfast';
+
+  @override
+  String get lunch => 'Lunch';
+
+  @override
+  String get dinner => 'Dinner';
+
+  @override
+  String get snack => 'Snack';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get ratingLabel => 'Rating';
+
+  @override
+  String get deletedMessage => 'deleted.';
+
+  @override
+  String get appetizer => 'Appetizer';
+
+  @override
+  String get main_course => 'Main Course';
+
+  @override
+  String get dessert => 'Dessert';
+
+  @override
+  String get american => 'American';
+
+  @override
+  String get italian => 'Italian';
+
+  @override
+  String get mexican => 'Mexican';
+
+  @override
+  String get indian => 'Indian';
+
+  @override
+  String get chinese => 'Chinese';
+
+  @override
+  String get japanese => 'Japanese';
+
+  @override
+  String get mediterranean => 'Mediterranean';
 }

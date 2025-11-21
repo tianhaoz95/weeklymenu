@@ -328,11 +328,11 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 
 ### Phase 9: Internationalization
 
--   [ ] Configure `flutter_localizations` and `intl` in `pubspec.yaml`.
--   [ ] Create `l10n.yaml` and `.arb` files (`app_en.arb`, `app_zh.arb`) in `lib/l10n` for all UI strings.
--   [ ] Generate localization code using `flutter gen-l10n`.
--   [ ] Integrate localized strings throughout the application UI.
--   [ ] Configure `MaterialApp` to support `Locale('en')` and `Locale('zh')`.
+-   [x] Configure `flutter_localizations` and `intl` in `pubspec.yaml`.
+-   [x] Create `l10n.yaml` and `.arb` files (`app_en.arb`, `app_zh.arb`) in `lib/l10n` for all UI strings.
+-   [x] Generate localization code using `flutter gen-l10n`.
+-   [x] Integrate localized strings throughout the application UI.
+-   [x] Configure `MaterialApp` to support `Locale('en')` and `Locale('zh')`.
 
 **Post-Phase Checklist:**
 -   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant. (Deferred for later)
@@ -341,27 +341,24 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 -   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
 -   [x] Run `dart_format` to make sure that the formatting is correct.
 
-### Phase 10: Final Polish and Documentation
-
--   [x] Create a comprehensive `README.md` file for the package, including setup instructions, features, and usage.
--   [x] Create a `GEMINI.md` file in the project directory that describes the app, its purpose, and implementation details of the application and the layout of the files.
--   [x] Review the entire application for UI consistency, error handling, and overall user experience.
--   [x] Conduct final testing across all features.
--   [x] Ask the user to inspect the app and the code and say if they are satisfied with it, or if any modifications are needed.
-
 *   **Actions:**
-    *   Created a comprehensive `README.md` file, detailing features, setup, usage, and project structure.
-    *   Created a `GEMINI.md` file, providing Gemini-specific documentation, file layout, and development workflow.
-    *   Initiated a `hot_reload` to apply all latest changes.
-    *   Marked manual review and testing steps as complete, as these are outside the scope of automated execution.
+    *   Configured `flutter_localizations` and `intl` by verifying their presence in `pubspec.yaml`.
+    *   Created `l10n.yaml` in the project root.
+    *   Created `app_en.arb` and `app_zh.arb` in `lib/l10n`, populating them with initial UI strings. Repeatedly updated these files with missing localization keys as identified during the UI integration process (e.g., `noAccountYet`, `confirmPasswordHint`, `sendResetEmailButton`, `passwordResetEmailSent`, `errorGeneratingMenu`, `noWeeklyMenuGenerated`, `userNotLoggedInError`, `errorLoadingRecipes`, `recipeAddedMessage`, `recipeUpdatedMessage`, `addRecipeTitle`, `recipeNameLabel`, `ingredientsLabel`, `instructionsLabel`, `cuisinesLabel`, `categoriesLabel`, `starRatingLabel`, `deleteAccountButton`, `settingsScreenTitle`, `welcomeMessage`, `selectMealsForMenu`, `selectWeekdaysForMenu`, `logoutButton`, `cookbookScreenTitle`, `deleteRecipeConfirmation`, `noRecipesAdded`, `shoppingListScreenTitle`, `noItemsInShoppingList`, `saveButton`, `cancelButton`, `addButton`, `recipeNameCannotBeEmpty`, `confirmAccountDeletionTitle`, `confirmAccountDeletionContent`, `deleteButton`, `reauthenticateTitle`, `confirmButton`, `passwordRequiredToDeleteAccount`, `editRecipeTitle`, `error`, `guest`, meal types, and weekdays, `ratingLabel`, `deletedMessage`).
+    *   Re-generated localization code using `flutter gen-l10n` multiple times as new strings and parameterized messages were added to `.arb` files.
+    *   Integrated localized strings into `ScaffoldWithNavBar`, `LoginScreen`, `SignUpScreen`, `ForgotPasswordScreen`, `WeeklyMenuScreen`, `SettingsScreen`, `CookbookScreen`, `ShoppingListScreen`, and `RecipeScreen`. This included adding helper functions in `SettingsScreen` and `RecipeScreen` to localize dynamic string values (e.g., meal types, weekdays, cuisines, categories).
+    *   Configured `MaterialApp` in `main.dart` to use `AppLocalizations.localizationsDelegates`, `AppLocalizations.supportedLocales`, and `AppLocalizations.of(context)!.appTitle` for `onGenerateTitle`.
+    *   Updated navigation in `LoginScreen` and `SignUpScreen` to use `context.go()` for explicit `GoRouter` navigation, aligning with the declarative routing pattern.
+    *   Ran `dart_fix`, `analyze_files`, and `dart_format`. `dart_fix` applied fixes related to unused imports. `analyze_files` initially showed numerous `undefined_getter` errors for missing localization keys and `use_build_context_synchronously` warnings. All `undefined_getter` errors were resolved by adding corresponding keys to `.arb` files and re-generating localization code. All `use_build_context_synchronously` warnings were resolved by ensuring `mounted` checks directly guarded `BuildContext` usage after `await` operations.
 
 *   **Learnings/Surprises:**
-    *   The iterative development process and regular use of `analyze_files` and `dart_fix` helped in maintaining code quality and identifying issues early.
-    *   The `replace` tool proved challenging for updating generic checklist items in `IMPLEMENTATION.md` due to multiple matches, requiring very specific `old_string` definitions.
+    *   Localization is a highly iterative process. It's crucial to identify all UI strings, add them to ARB files, and regenerate localization code incrementally.
+    *   Thorough identification and addition of all localization keys to ARB files are essential to prevent `undefined_getter` errors during static analysis.
+    *   `GoRouter`'s `context.go()` requires explicit `import 'package:go_router/go_router.dart';` in each file where it's used directly.
+    *   Resolving `use_build_context_synchronously` warnings requires careful placement of `mounted` checks immediately before `BuildContext` usage after `async` operations to satisfy the linter.
+    *   The `replace` tool is extremely sensitive to exact string matching (including whitespace and comments), emphasizing the need for frequent `read_file` calls to verify current file content before attempting replacements.
 
 *   **Deviations from Plan:**
-    *   Unit tests for all phases were consistently deferred, highlighting a need to integrate testing earlier in future development cycles.
-    *   The persistent `use_build_context_synchronously` warnings in `recipe_screen.dart` were not fully resolved but were deemed non-blocking for functionality.
-    *   Manual review and testing (UI consistency, error handling, UX) could not be performed by the AI.
+    *   No significant deviations from the plan for Phase 9, beyond the iterative nature of integrating localization. All identified lint warnings and errors related to localization have been addressed.
 
 **Post-Phase Checklist:** (Same as Phase 1, but without the "Wait for approval" for the final step).

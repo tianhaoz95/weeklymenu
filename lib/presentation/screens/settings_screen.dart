@@ -16,18 +16,16 @@ class SettingsScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(appLocalizations.deleteAccountButton), // Re-using delete account button string for title
-          content: const Text(
-            'Are you sure you want to delete your account? This action cannot be undone.', // TODO: Localize this
-          ),
+          title: Text(appLocalizations.confirmAccountDeletionTitle),
+          content: Text(appLocalizations.confirmAccountDeletionContent),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'), // TODO: Localize
+              child: Text(appLocalizations.cancelButton),
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Delete'), // TODO: Localize
+              child: Text(appLocalizations.deleteButton),
             ),
           ],
         );
@@ -44,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: const Text('Re-authenticate'), // TODO: Localize
+            title: Text(appLocalizations.reauthenticateTitle),
             content: TextField(
               controller: passwordController,
               obscureText: true,
@@ -55,14 +53,14 @@ class SettingsScreen extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Cancel'), // TODO: Localize
+                child: Text(appLocalizations.cancelButton),
               ),
               TextButton(
                 onPressed: () {
                   password = passwordController.text;
                   Navigator.of(dialogContext).pop(true);
                 },
-                child: const Text('Confirm'), // TODO: Localize
+                child: Text(appLocalizations.confirmButton),
               ),
             ],
           );
@@ -85,8 +83,8 @@ class SettingsScreen extends StatelessWidget {
           (password == null || password!.isEmpty)) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Password is required to delete account.'), // TODO: Localize
+            SnackBar(
+              content: Text(appLocalizations.passwordRequiredToDeleteAccount),
               backgroundColor: Colors.red,
             ),
           );
@@ -101,6 +99,44 @@ class SettingsScreen extends StatelessWidget {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final settingsViewModel = Provider.of<SettingsViewModel>(context);
 
+    // Helper to get localized meal type
+    String getLocalizedMealType(String mealType) {
+      switch (mealType) {
+        case 'breakfast':
+          return appLocalizations.breakfast;
+        case 'lunch':
+          return appLocalizations.lunch;
+        case 'dinner':
+          return appLocalizations.dinner;
+        case 'snack':
+          return appLocalizations.snack;
+        default:
+          return mealType;
+      }
+    }
+
+    // Helper to get localized weekday
+    String getLocalizedWeekday(String weekday) {
+      switch (weekday) {
+        case 'monday':
+          return appLocalizations.monday;
+        case 'tuesday':
+          return appLocalizations.tuesday;
+        case 'wednesday':
+          return appLocalizations.wednesday;
+        case 'thursday':
+          return appLocalizations.thursday;
+        case 'friday':
+          return appLocalizations.friday;
+        case 'saturday':
+          return appLocalizations.saturday;
+        case 'sunday':
+          return appLocalizations.sunday;
+        default:
+          return weekday;
+      }
+    }
+
     const List<String> allMealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
     const List<String> allWeekdays = [
       'monday',
@@ -113,14 +149,14 @@ class SettingsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text(appLocalizations.settingsScreenTitle)),
+      appBar: AppBar(title: Text(appLocalizations.settingsTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${appLocalizations.welcomeMessage}, ${authViewModel.currentUser?.email ?? 'Guest'}!', // TODO: Localize 'Guest'
+              '${appLocalizations.welcomeMessage}, ${authViewModel.currentUser?.email ?? appLocalizations.guest}!',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
@@ -137,7 +173,7 @@ class SettingsScreen extends StatelessWidget {
                     ) ??
                     false;
                 return FilterChip(
-                  label: Text(mealType), // TODO: Localize mealType values
+                  label: Text(getLocalizedMealType(mealType)),
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentMeals = List.from(
@@ -167,7 +203,7 @@ class SettingsScreen extends StatelessWidget {
                     ) ??
                     false;
                 return FilterChip(
-                  label: Text(weekday), // TODO: Localize weekday values
+                  label: Text(getLocalizedWeekday(weekday)),
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentWeekdays = List.from(

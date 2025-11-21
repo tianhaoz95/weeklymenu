@@ -26,7 +26,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => AuthViewModel()..initialize(),
+          create: (context) => AuthViewModel(router: _router)..initialize(),
         ),
         ChangeNotifierProvider(
           create: (context) => SettingsViewModel()..initialize(),

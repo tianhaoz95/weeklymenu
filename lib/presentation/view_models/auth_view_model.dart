@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter
 import '../../data/repositories/auth_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
+  final GoRouter? _router; // Add GoRouter instance
 
-  AuthViewModel({AuthRepository? authRepository})
-    : _authRepository = authRepository ?? AuthRepository();
+  AuthViewModel({AuthRepository? authRepository, GoRouter? router})
+    : _authRepository = authRepository ?? AuthRepository(),
+      _router = router; // Initialize GoRouter
 
   User? _currentUser;
   User? get currentUser => _currentUser;
@@ -14,11 +17,9 @@ class AuthViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  String? _errorMessage;
 
-    String? _errorMessage;
-
-
-    String? get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage;
 
   // Stream to listen to authentication state changes
   Stream<User?> get authStateChanges => _authRepository.userChanges;
@@ -36,6 +37,7 @@ class AuthViewModel extends ChangeNotifier {
     clearErrorMessage();
     try {
       await _authRepository.signIn(email: email, password: password);
+      _router?.refresh(); // Refresh GoRouter on successful sign-in
     } on AuthException catch (e) {
       _setErrorMessage(e.message);
     } finally {
@@ -48,6 +50,7 @@ class AuthViewModel extends ChangeNotifier {
     clearErrorMessage();
     try {
       await _authRepository.signUp(email: email, password: password);
+      _router?.refresh(); // Refresh GoRouter on successful sign-up
     } on AuthException catch (e) {
       _setErrorMessage(e.message);
     } finally {
@@ -60,6 +63,7 @@ class AuthViewModel extends ChangeNotifier {
     clearErrorMessage();
     try {
       await _authRepository.signOut();
+      _router?.refresh(); // Refresh GoRouter on successful sign-out
     } on AuthException catch (e) {
       _setErrorMessage(e.message);
     } finally {

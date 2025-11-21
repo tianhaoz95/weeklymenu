@@ -98,29 +98,11 @@ abstract class AppLocalizations {
     Locale('zh'),
   ];
 
-  /// The title of the application
+  /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
   /// **'WeeklyMenu'**
   String get appTitle;
-
-  /// A generic welcome message
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome'**
-  String get welcomeMessage;
-
-  /// No description provided for @emailHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get emailHint;
-
-  /// No description provided for @passwordHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get passwordHint;
 
   /// No description provided for @loginButton.
   ///
@@ -134,47 +116,101 @@ abstract class AppLocalizations {
   /// **'Sign Up'**
   String get signupButton;
 
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordHint;
+
+  /// No description provided for @confirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPasswordHint;
+
   /// No description provided for @forgotPasswordButton.
   ///
   /// In en, this message translates to:
   /// **'Forgot Password?'**
   String get forgotPasswordButton;
 
-  /// No description provided for @logoutButton.
+  /// No description provided for @sendResetEmailButton.
   ///
   /// In en, this message translates to:
-  /// **'Sign Out'**
-  String get logoutButton;
+  /// **'Send Reset Email'**
+  String get sendResetEmailButton;
 
-  /// No description provided for @deleteAccountButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Account'**
-  String get deleteAccountButton;
-
-  /// No description provided for @cookbookScreenTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Cookbook'**
-  String get cookbookScreenTitle;
-
-  /// No description provided for @weeklyMenuScreenTitle.
+  /// No description provided for @weeklyMenuTitle.
   ///
   /// In en, this message translates to:
   /// **'Weekly Menu'**
-  String get weeklyMenuScreenTitle;
+  String get weeklyMenuTitle;
 
-  /// No description provided for @settingsScreenTitle.
+  /// No description provided for @cookbookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookbook'**
+  String get cookbookTitle;
+
+  /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
-  String get settingsScreenTitle;
+  String get settingsTitle;
 
-  /// No description provided for @shoppingListScreenTitle.
+  /// No description provided for @noAccountYet.
   ///
   /// In en, this message translates to:
-  /// **'Shopping List'**
-  String get shoppingListScreenTitle;
+  /// **'Don\'t have an account?'**
+  String get noAccountYet;
+
+  /// No description provided for @passwordResetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent to {email}'**
+  String passwordResetEmailSent(String email);
+
+  /// No description provided for @errorGeneratingMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating weekly menu'**
+  String get errorGeneratingMenu;
+
+  /// No description provided for @noWeeklyMenuGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'No weekly menu generated yet. Tap the refresh icon to generate one!'**
+  String get noWeeklyMenuGenerated;
+
+  /// No description provided for @userNotLoggedInError.
+  ///
+  /// In en, this message translates to:
+  /// **'User not logged in.'**
+  String get userNotLoggedInError;
+
+  /// No description provided for @errorLoadingRecipes.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading recipes.'**
+  String get errorLoadingRecipes;
+
+  /// No description provided for @recipeAddedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe added!'**
+  String get recipeAddedMessage;
+
+  /// No description provided for @recipeUpdatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe updated!'**
+  String get recipeUpdatedMessage;
 
   /// No description provided for @addRecipeTitle.
   ///
@@ -218,59 +254,23 @@ abstract class AppLocalizations {
   /// **'Star Rating:'**
   String get starRatingLabel;
 
-  /// No description provided for @saveButton.
+  /// No description provided for @deleteAccountButton.
   ///
   /// In en, this message translates to:
-  /// **'Save'**
-  String get saveButton;
+  /// **'Delete Account'**
+  String get deleteAccountButton;
 
-  /// No description provided for @userNotLoggedInError.
+  /// No description provided for @settingsScreenTitle.
   ///
   /// In en, this message translates to:
-  /// **'User not logged in.'**
-  String get userNotLoggedInError;
+  /// **'Settings'**
+  String get settingsScreenTitle;
 
-  /// No description provided for @recipeAddedMessage.
+  /// No description provided for @welcomeMessage.
   ///
   /// In en, this message translates to:
-  /// **'Recipe added!'**
-  String get recipeAddedMessage;
-
-  /// No description provided for @recipeUpdatedMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Recipe updated!'**
-  String get recipeUpdatedMessage;
-
-  /// No description provided for @deleteRecipeConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete \"{recipeName}\"?'**
-  String deleteRecipeConfirmation(String recipeName);
-
-  /// No description provided for @errorLoadingRecipes.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading recipes.'**
-  String get errorLoadingRecipes;
-
-  /// No description provided for @noRecipesAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'No recipes added yet. Tap + to add your first recipe!'**
-  String get noRecipesAdded;
-
-  /// No description provided for @regenerateMenuButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Regenerate Weekly Menu'**
-  String get regenerateMenuButton;
-
-  /// No description provided for @errorGeneratingMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'Error generating menu.'**
-  String get errorGeneratingMenu;
+  /// **'Welcome'**
+  String get welcomeMessage;
 
   /// No description provided for @selectMealsForMenu.
   ///
@@ -284,17 +284,47 @@ abstract class AppLocalizations {
   /// **'Select Weekdays for Weekly Menu:'**
   String get selectWeekdaysForMenu;
 
-  /// No description provided for @sendResetEmailButton.
+  /// No description provided for @logoutButton.
   ///
   /// In en, this message translates to:
-  /// **'Send Reset Email'**
-  String get sendResetEmailButton;
+  /// **'Sign Out'**
+  String get logoutButton;
 
-  /// No description provided for @passwordResetEmailSent.
+  /// No description provided for @cookbookScreenTitle.
   ///
   /// In en, this message translates to:
-  /// **'Password reset email sent to {email}'**
-  String passwordResetEmailSent(String email);
+  /// **'Cookbook'**
+  String get cookbookScreenTitle;
+
+  /// No description provided for @deleteRecipeConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{recipeName}\"?'**
+  String deleteRecipeConfirmation(String recipeName);
+
+  /// No description provided for @noRecipesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No recipes added yet. Tap + to add your first recipe!'**
+  String get noRecipesAdded;
+
+  /// No description provided for @shoppingListScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping List'**
+  String get shoppingListScreenTitle;
+
+  /// No description provided for @noItemsInShoppingList.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in the shopping list.'**
+  String get noItemsInShoppingList;
+
+  /// No description provided for @saveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveButton;
 
   /// No description provided for @cancelButton.
   ///
@@ -356,17 +386,155 @@ abstract class AppLocalizations {
   /// **'Edit Recipe'**
   String get editRecipeTitle;
 
-  /// No description provided for @noItemsInShoppingList.
+  /// No description provided for @error.
   ///
   /// In en, this message translates to:
-  /// **'No items in the shopping list.'**
-  String get noItemsInShoppingList;
+  /// **'Error'**
+  String get error;
 
-  /// No description provided for @noWeeklyMenuGenerated.
+  /// No description provided for @guest.
   ///
   /// In en, this message translates to:
-  /// **'No weekly menu generated. Tap the refresh button to generate one!'**
-  String get noWeeklyMenuGenerated;
+  /// **'Guest'**
+  String get guest;
+
+  /// No description provided for @breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get breakfast;
+
+  /// No description provided for @lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get lunch;
+
+  /// No description provided for @dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get dinner;
+
+  /// No description provided for @snack.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack'**
+  String get snack;
+
+  /// No description provided for @monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// No description provided for @tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// No description provided for @wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// No description provided for @thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// No description provided for @friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// No description provided for @saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// No description provided for @sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get ratingLabel;
+
+  /// No description provided for @deletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'deleted.'**
+  String get deletedMessage;
+
+  /// No description provided for @appetizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Appetizer'**
+  String get appetizer;
+
+  /// No description provided for @main_course.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Course'**
+  String get main_course;
+
+  /// No description provided for @dessert.
+  ///
+  /// In en, this message translates to:
+  /// **'Dessert'**
+  String get dessert;
+
+  /// No description provided for @american.
+  ///
+  /// In en, this message translates to:
+  /// **'American'**
+  String get american;
+
+  /// No description provided for @italian.
+  ///
+  /// In en, this message translates to:
+  /// **'Italian'**
+  String get italian;
+
+  /// No description provided for @mexican.
+  ///
+  /// In en, this message translates to:
+  /// **'Mexican'**
+  String get mexican;
+
+  /// No description provided for @indian.
+  ///
+  /// In en, this message translates to:
+  /// **'Indian'**
+  String get indian;
+
+  /// No description provided for @chinese.
+  ///
+  /// In en, this message translates to:
+  /// **'Chinese'**
+  String get chinese;
+
+  /// No description provided for @japanese.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese'**
+  String get japanese;
+
+  /// No description provided for @mediterranean.
+  ///
+  /// In en, this message translates to:
+  /// **'Mediterranean'**
+  String get mediterranean;
 }
 
 class _AppLocalizationsDelegate

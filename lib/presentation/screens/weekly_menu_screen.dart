@@ -11,7 +11,7 @@ class WeeklyMenuScreen extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.weeklyMenuScreenTitle),
+        title: Text(appLocalizations.weeklyMenuTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -35,25 +35,23 @@ class WeeklyMenuScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                      '${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}'),
+                    '${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}',
+                  ),
                   backgroundColor: Colors.red,
                 ),
               );
               weeklyMenuViewModel.clearErrorMessage();
             });
             return Center(
-              child:
-                  Text('${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}'),
+              child: Text(
+                '${appLocalizations.errorGeneratingMenu}: ${weeklyMenuViewModel.errorMessage}',
+              ),
             );
           }
 
           if (weeklyMenuViewModel.weeklyMenu == null ||
               weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
-            return Center(
-              child: Text(
-                appLocalizations.noWeeklyMenuGenerated,
-              ),
-            );
+            return Center(child: Text(appLocalizations.noWeeklyMenuGenerated));
           }
 
           return ListView.builder(

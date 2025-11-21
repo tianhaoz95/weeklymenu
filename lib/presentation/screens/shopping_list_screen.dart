@@ -7,6 +7,29 @@ import 'package:weeklymenu/l10n/app_localizations.dart';
 class ShoppingListScreen extends StatelessWidget {
   const ShoppingListScreen({super.key});
 
+  // Helper to get localized weekday (copied from SettingsScreen)
+  String _getLocalizedWeekday(BuildContext context, String weekday) {
+    final appLocalizations = AppLocalizations.of(context)!;
+    switch (weekday) {
+      case 'monday':
+        return appLocalizations.monday;
+      case 'tuesday':
+        return appLocalizations.tuesday;
+      case 'wednesday':
+        return appLocalizations.wednesday;
+      case 'thursday':
+        return appLocalizations.thursday;
+      case 'friday':
+        return appLocalizations.friday;
+      case 'saturday':
+        return appLocalizations.saturday;
+      case 'sunday':
+        return appLocalizations.sunday;
+      default:
+        return weekday;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
@@ -33,7 +56,7 @@ class ShoppingListScreen extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Error: ${shoppingListViewModel.errorMessage}', // TODO: Localize 'Error'
+                        '${appLocalizations.error}: ${shoppingListViewModel.errorMessage}',
                       ),
                       backgroundColor: Colors.red,
                     ),
@@ -41,13 +64,15 @@ class ShoppingListScreen extends StatelessWidget {
                   shoppingListViewModel.clearErrorMessage();
                 });
                 return Center(
-                  child: Text('Error: ${shoppingListViewModel.errorMessage}'), // TODO: Localize 'Error'
+                  child: Text(
+                    '${appLocalizations.error}: ${shoppingListViewModel.errorMessage}',
+                  ),
                 );
               }
 
               if (shoppingListViewModel.shoppingList.isEmpty) {
                 return Center(
-                  child: Text(appLocalizations.noItemsInShoppingList), // TODO: Add 'noItemsInShoppingList' localization
+                  child: Text(appLocalizations.noItemsInShoppingList),
                 );
               }
 
@@ -67,7 +92,7 @@ class ShoppingListScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            day.toUpperCase(), // TODO: Localize day names
+                            _getLocalizedWeekday(context, day).toUpperCase(),
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const Divider(),

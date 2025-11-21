@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart'; // Add this import
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/l10n/app_localizations.dart';
 
@@ -53,10 +54,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return appLocalizations.emailHint; // Using emailHint for empty email
+                      return appLocalizations
+                          .emailHint; // Using emailHint for empty email
                     }
                     if (!value.contains('@')) {
-                      return appLocalizations.emailHint; // Using emailHint for invalid email
+                      return appLocalizations
+                          .emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -71,10 +74,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return appLocalizations.passwordHint; // Using passwordHint for empty password
+                      return appLocalizations
+                          .passwordHint; // Using passwordHint for empty password
                     }
                     if (value.length < 6) {
-                      return appLocalizations.passwordHint; // Using passwordHint for short password
+                      return appLocalizations
+                          .passwordHint; // Using passwordHint for short password
                     }
                     return null;
                   },
@@ -84,15 +89,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: appLocalizations.passwordHint, // Using passwordHint for confirm password
+                    labelText: appLocalizations
+                        .confirmPasswordHint, // Using confirmPasswordHint
                     border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return appLocalizations.passwordHint; // Using passwordHint for empty confirm password
+                      return appLocalizations
+                          .confirmPasswordHint; // Using confirmPasswordHint for empty confirm password
                     }
                     if (value != _passwordController.text) {
-                      return appLocalizations.passwordHint; // Using passwordHint for passwords mismatch
+                      return appLocalizations
+                          .confirmPasswordHint; // Using confirmPasswordHint for passwords mismatch
                     }
                     return null;
                   },
@@ -110,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         !authViewModel.isLoading) {
                       // Successfully signed up, pop to login and then navigate to home
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Navigator.of(context).pop(); // Go back to login
+                        context.go('/login'); // Go back to login using GoRouter
                       });
                     }
                     return SizedBox(

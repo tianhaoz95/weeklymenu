@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter for context.go()
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/l10n/app_localizations.dart';
 
@@ -54,7 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       return appLocalizations.emailHint;
                     }
                     if (!value.contains('@')) {
-                      return appLocalizations.emailHint; // Using emailHint for invalid email
+                      return appLocalizations
+                          .emailHint; // Using emailHint for invalid email
                     }
                     return null;
                   },
@@ -73,7 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       return appLocalizations.passwordHint;
                     }
                     if (value.length < 6) {
-                      return appLocalizations.passwordHint; // Using passwordHint for short password
+                      return appLocalizations
+                          .passwordHint; // Using passwordHint for short password
                     }
                     return null;
                   },
@@ -113,13 +116,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16.0),
                 TextButton(
                   onPressed: () {
-                    // This navigation will be handled by GoRouter redirect
+                    context.go('/signup'); // Use GoRouter for navigation
                   },
-                  child: Text('Don\'t have an account? ${appLocalizations.signupButton}'),
+                  child: Text(
+                    '${appLocalizations.noAccountYet} ${appLocalizations.signupButton}',
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
-                    // This navigation will be handled by GoRouter redirect
+                    context.go(
+                      '/forgot-password',
+                    ); // Use GoRouter for navigation
                   },
                   child: Text(appLocalizations.forgotPasswordButton),
                 ),

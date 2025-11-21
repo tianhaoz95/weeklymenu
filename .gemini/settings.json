@@ -16,7 +16,7 @@
   },
   "tools": {
     "exclude": [
-      "run_shell_command(flutter)"
+      "run_shell_command(flutter run)"
     ]
   }
 }

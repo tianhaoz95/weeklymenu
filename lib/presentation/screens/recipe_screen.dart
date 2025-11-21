@@ -50,6 +50,56 @@ class _RecipeScreenState extends State<RecipeScreen> {
   RecipeModel? _currentRecipe;
   String? _userId;
 
+  // Helper to get localized category name
+  String _getLocalizedCategory(
+    AppLocalizations appLocalizations,
+    String category,
+  ) {
+    switch (category) {
+      case 'breakfast':
+        return appLocalizations.breakfast;
+      case 'lunch':
+        return appLocalizations.lunch;
+      case 'dinner':
+        return appLocalizations.dinner;
+      case 'snack':
+        return appLocalizations.snack;
+      case 'appetizer':
+        return appLocalizations.appetizer;
+      case 'main_course':
+        return appLocalizations.main_course;
+      case 'dessert':
+        return appLocalizations.dessert;
+      default:
+        return category;
+    }
+  }
+
+  // Helper to get localized cuisine name
+  String _getLocalizedCuisine(
+    AppLocalizations appLocalizations,
+    String cuisine,
+  ) {
+    switch (cuisine) {
+      case 'american':
+        return appLocalizations.american;
+      case 'italian':
+        return appLocalizations.italian;
+      case 'mexican':
+        return appLocalizations.mexican;
+      case 'indian':
+        return appLocalizations.indian;
+      case 'chinese':
+        return appLocalizations.chinese;
+      case 'japanese':
+        return appLocalizations.japanese;
+      case 'mediterranean':
+        return appLocalizations.mediterranean;
+      default:
+        return cuisine;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -146,24 +196,28 @@ class _RecipeScreenState extends State<RecipeScreen> {
       }
 
       if (cookbookViewModel.errorMessage != null) {
-        if (!context.mounted) return;
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}'),
+            content: Text(
+              '${appLocalizations.errorLoadingRecipes}: ${cookbookViewModel.errorMessage}',
+            ),
             backgroundColor: Colors.red,
           ),
         );
       } else {
-        if (!context.mounted) return;
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              widget.recipeId == null ? appLocalizations.recipeAddedMessage : appLocalizations.recipeUpdatedMessage,
+              widget.recipeId == null
+                  ? appLocalizations.recipeAddedMessage
+                  : appLocalizations.recipeUpdatedMessage,
             ),
             backgroundColor: Colors.green,
           ),
         );
-        if (!context.mounted) return;
+        if (!mounted) return;
         context.pop(); // Go back to CookbookScreen
       }
     }
@@ -174,7 +228,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.recipeId == null ? appLocalizations.addRecipeTitle : 'Edit Recipe'), // TODO: Add 'Edit Recipe' localization
+        title: Text(
+          widget.recipeId == null
+              ? appLocalizations.addRecipeTitle
+              : appLocalizations.editRecipeTitle,
+        ),
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveRecipe),
         ],
@@ -188,10 +246,13 @@ class _RecipeScreenState extends State<RecipeScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: appLocalizations.recipeNameLabel),
+                decoration: InputDecoration(
+                  labelText: appLocalizations.recipeNameLabel,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return appLocalizations.recipeNameLabel; // Using recipeNameLabel for validation message
+                    return appLocalizations
+                        .recipeNameLabel; // Using recipeNameLabel for validation message
                   }
                   return null;
                 },
@@ -220,7 +281,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 spacing: 8.0,
                 children: _allCuisines.map((cuisine) {
                   return FilterChip(
-                    label: Text(cuisine),
+                    label: Text(
+                      _getLocalizedCuisine(appLocalizations, cuisine),
+                    ),
                     selected: _selectedCuisines.contains(cuisine),
                     onSelected: (bool selected) {
                       setState(() {
@@ -240,7 +303,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 spacing: 8.0,
                 children: _allCategories.map((category) {
                   return FilterChip(
-                    label: Text(category),
+                    label: Text(
+                      _getLocalizedCategory(appLocalizations, category),
+                    ),
                     selected: _selectedCategories.contains(category),
                     onSelected: (bool selected) {
                       setState(() {
