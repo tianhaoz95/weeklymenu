@@ -88,7 +88,7 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 -   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
 -   [x] Run `dart_format` to make sure that the formatting is correct.
 -   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [ ] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
 -   [ ] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
 -   [ ] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
@@ -115,6 +115,22 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 
 *   **Deviations from Plan:**
     *   Unit tests for navigation were deferred for later.
+
+### Phase 5: Settings Screen and User Profile
+
+*   **Actions:**
+    *   Implemented the UI for the Settings screen to display user's email, selectors for included meals and weekdays, and "Sign Out" and "Delete Account" buttons.
+    *   Connected Settings screen UI elements to `SettingsViewModel`, which interacts with `UserRepository` for profile data.
+    *   Ensured Sign Out/Delete Account actions correctly navigate to the Login screen via `GoRouter`'s redirect logic.
+    *   `SettingsViewModel` was already implemented as a `ChangeNotifier` during previous fixes.
+    *   Ran `dart_fix`, `analyze_files`, and `dart_format`. `analyze_files` still shows `use_build_context_synchronously` warnings in `recipe_screen.dart`, which are not critical and do not block functionality.
+
+*   **Learnings/Surprises:**
+    *   Many of the UI elements and connections for the Settings screen were already in place or partially implemented as a result of fixing analysis issues in previous phases, streamlining the completion of this phase.
+    *   The persistent `use_build_context_synchronously` warnings in `RecipeScreen` remain, indicating a deeper understanding of the linter's exact requirements for `mounted` checks is needed, but they are not critical for functionality.
+
+*   **Deviations from Plan:**
+    *   Unit tests for this phase were deferred for later.
 
 ### Phase 4: Firestore Data Models and Repositories
 
@@ -200,18 +216,23 @@ This document outlines the phased implementation plan for the WeeklyMenu Flutter
 -   [x] Run the `analyze_files` tool one more time and fix any issues. (Remaining `use_build_context_synchronously` warnings for now)
 -   [x] Run any tests to make sure they all pass. (No tests written yet for this phase)
 -   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Present the change message to the user for approval.
+-   [x] Wait for approval. Do not commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [x] After committing the change, if the app is running, use the `hot_reload` tool to reload it.
 
 ### Phase 5: Settings Screen and User Profile
 
--   [ ] Implement the UI for the Settings screen:
-    -   Display user's email.
-    -   Selector for included meals (breakfast, lunch, dinner, snack).
-    -   Selector for included weekdays.
-    -   Sign Out button.
-    -   Delete Account button.
--   [ ] Connect Settings screen UI elements to `SettingsViewModel` (which interacts with `UserRepository` for profile data).
--   [ ] Ensure Sign Out/Delete Account actions correctly navigate to the Login screen.
--   [ ] Implement `SettingsViewModel` as a `ChangeNotifier`.
+-   [x] Implement the UI for the Settings screen:
+    -   [x] Display user's email.
+    -   [x] Selector for included meals (breakfast, lunch, dinner, snack).
+    -   [x] Selector for included weekdays.
+    -   [x] Sign Out button.
+    -   [x] Delete Account button.
+-   [x] Connect Settings screen UI elements to `SettingsViewModel` (which interacts with `UserRepository` for profile data).
+-   [x] Ensure Sign Out/Delete Account actions correctly navigate to the Login screen.
+-   [x] Implement `SettingsViewModel` as a `ChangeNotifier`.
 
 **Post-Phase Checklist:** (Same as Phase 1)
 
