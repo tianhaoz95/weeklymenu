@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
+import 'package:weeklymenu/presentation/view_models/settings_view_model.dart';
 import 'package:weeklymenu/presentation/screens/login_screen.dart';
 import 'package:weeklymenu/presentation/screens/signup_screen.dart';
 import 'package:weeklymenu/presentation/screens/forgot_password_screen.dart';
-import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart'; // Import WeeklyMenuScreen
-import 'package:weeklymenu/presentation/screens/cookbook_screen.dart'; // Import CookbookScreen
-import 'package:weeklymenu/presentation/screens/settings_screen.dart'; // Import SettingsScreen
-import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart'; // Import ScaffoldWithNavBar
+import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
+import 'package:weeklymenu/presentation/screens/cookbook_screen.dart';
+import 'package:weeklymenu/presentation/screens/settings_screen.dart';
+import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart';
 
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -78,6 +80,24 @@ final GoRouter _router = GoRouter(
     return null;
   },
 );
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SettingsViewModel()..initialize(),
+        ),
+      ],
+      child: const MainApp(),
+    ),
+  );
+}
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
