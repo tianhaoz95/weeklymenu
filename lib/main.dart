@@ -19,6 +19,31 @@ import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart'; // Import RecipeModel for extra
 import 'package:weeklymenu/l10n/app_localizations.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SettingsViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CookbookViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WeeklyMenuViewModel()..initialize(),
+        ),
+        ChangeNotifierProvider(create: (context) => ShoppingListViewModel()),
+      ],
+      child: const MainApp(),
+    ),
+  );
+}
+
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -46,7 +71,10 @@ final GoRouter _router = GoRouter(
             GoRoute(
               path: '/weekly-menu',
               name: 'weekly-menu', // Named route
-              builder: (context, state) => const WeeklyMenuScreen(),
+              builder: (context, state) => ChangeNotifierProvider.value(
+                value: Provider.of<WeeklyMenuViewModel>(context),
+                child: const WeeklyMenuScreen(),
+              ),
             ),
           ],
         ),
@@ -101,11 +129,12 @@ final GoRouter _router = GoRouter(
   },
 );
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(
-    MultiProvider(
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthViewModel()..initialize(),
@@ -121,22 +150,13 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (context) => ShoppingListViewModel()),
       ],
-      child: const MainApp(),
-    ),
-  );
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      child: MaterialApp.router(
+        routerConfig: _router,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      ),
     );
   }
 }

@@ -13,5 +13,10 @@
         "mcp-server"
       ]
     }
+  },
+  "tools": {
+    "exclude": [
+      "run_shell_command(flutter)"
+    ]
   }
 }
