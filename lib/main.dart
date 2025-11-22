@@ -31,11 +31,14 @@ Future<void> main() async {
   // Make main async
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // Set the router on the authViewModel after it's been fully initialized
+  _authViewModelInstance.router = _router;
+
   runApp(
     MultiProvider(
       providers: [
         Provider<AuthRepository>(
-          create: (_) => AuthRepository(),
+          create: (_) => _authRepositoryInstance,
         ), // Provide AuthRepository
         Provider<RecipeRepository>(
           create: (_) => RecipeRepository(),
@@ -46,8 +49,8 @@ Future<void> main() async {
         Provider<ShoppingListService>(
           create: (_) => ShoppingListService(),
         ), // Provide ShoppingListService
-        ChangeNotifierProvider(
-          create: (context) => AuthViewModel(router: _router)..initialize(),
+        ChangeNotifierProvider<AuthViewModel>(
+          create: (context) => _authViewModelInstance..initialize(),
         ),
         ChangeNotifierProvider(
           create: (context) => SettingsViewModel()..initialize(),
@@ -106,6 +109,12 @@ Future<void> main() async {
   );
 }
 
+// Create an instance of AuthRepository and AuthViewModel here to be accessible by GoRouter
+final AuthRepository _authRepositoryInstance = AuthRepository();
+final AuthViewModel _authViewModelInstance = AuthViewModel(
+  authRepository: _authRepositoryInstance,
+);
+
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -114,6 +123,8 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/login', // Set initial location to login
+  refreshListenable:
+      _authViewModelInstance, // Make GoRouter react to AuthViewModel changes
   routes: [
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(path: '/signup', builder: (context, state) => const SignUpScreen()),
@@ -183,8 +194,7 @@ final GoRouter _router = GoRouter(
     ),
   ],
   redirect: (context, state) {
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final isLoggedIn = authViewModel.currentUser != null;
+    final isLoggedIn = _authViewModelInstance.currentUser != null;
 
     final isLoggingIn = state.matchedLocation == '/login';
     final isSigningUp = state.matchedLocation == '/signup';
@@ -196,7 +206,6 @@ final GoRouter _router = GoRouter(
     if (isLoggedIn && (isLoggingIn || isSigningUp || isForgotPassword)) {
       return '/weekly-menu'; // Redirect to main authenticated route
     }
-
     return null;
   },
 );

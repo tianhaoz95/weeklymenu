@@ -10,6 +10,7 @@ class WeeklyMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
+      key: const Key('weekly_menu_screen'),
       appBar: AppBar(
         title: Text(appLocalizations.weeklyMenuTitle),
         actions: [

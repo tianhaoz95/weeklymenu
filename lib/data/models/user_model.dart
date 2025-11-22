@@ -7,23 +7,8 @@ part 'user_model.g.dart';
 class UserModel {
   final String id;
   final String email;
-  final List<String> enabledDays; // e.g., ['monday', 'wednesday']
-  final List<String> enabledMeals; // e.g., ['breakfast', 'lunch', 'dinner']
 
-  UserModel({
-    required this.id,
-    required this.email,
-    this.enabledDays = const [
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday',
-      'sunday',
-    ],
-    this.enabledMeals = const ['breakfast', 'lunch', 'dinner', 'snack'],
-  });
+  UserModel({required this.id, required this.email});
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
@@ -34,17 +19,7 @@ class UserModel {
     return UserModel.fromJson({...data, 'id': doc.id});
   }
 
-  UserModel copyWith({
-    String? id,
-    String? email,
-    List<String>? enabledDays,
-    List<String>? enabledMeals,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      enabledDays: enabledDays ?? this.enabledDays,
-      enabledMeals: enabledMeals ?? this.enabledMeals,
-    );
+  UserModel copyWith({String? id, String? email}) {
+    return UserModel(id: id ?? this.id, email: email ?? this.email);
   }
 }

@@ -5,11 +5,15 @@ import '../../data/repositories/auth_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
-  final GoRouter? _router; // Add GoRouter instance
+  GoRouter? _router; // Make it non-final
 
-  AuthViewModel({AuthRepository? authRepository, GoRouter? router})
-    : _authRepository = authRepository ?? AuthRepository(),
-      _router = router; // Initialize GoRouter
+  AuthViewModel({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? AuthRepository();
+
+  // Add a setter for the router
+  set router(GoRouter router) {
+    _router = router;
+  }
 
   User? _currentUser;
   User? get currentUser => _currentUser;

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weeklymenu/data/models/user_model.dart';
-import 'package:weeklymenu/data/repositories/user_repository.dart';
+import 'package:weeklymenu/data/models/settings_model.dart'; // Import SettingsModel
+import 'package:weeklymenu/data/repositories/settings_repository.dart'; // Import SettingsRepository
+import 'dart:async';
 
 class SettingsViewModel extends ChangeNotifier {
-  final UserRepository _userRepository;
+  final SettingsRepository _settingsRepository; // Change to SettingsRepository
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  SettingsViewModel({UserRepository? userRepository})
-    : _userRepository = userRepository ?? UserRepository();
+  SettingsViewModel({SettingsRepository? settingsRepository})
+    : _settingsRepository = settingsRepository ?? SettingsRepository();
 
-  UserModel? _currentUserModel; // Use UserModel to store user settings
-  UserModel? get currentUserModel => _currentUserModel;
+  SettingsModel? _currentSettings; // Use SettingsModel to store user settings
+  SettingsModel? get currentSettings => _currentSettings;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -19,16 +20,23 @@ class SettingsViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  // Listen to user changes from the repository
+  StreamSubscription<User?>? _authStateSubscription;
+  StreamSubscription<SettingsModel?>? _settingsSubscription;
+
+  // Listen to user changes and then settings changes
   void initialize() {
-    _auth.authStateChanges().listen((User? user) {
+    _authStateSubscription = _auth.authStateChanges().listen((User? user) {
+      _settingsSubscription?.cancel(); // Cancel previous subscription
       if (user != null) {
-        _userRepository.streamUser(user.uid).listen((userModel) {
-          _currentUserModel = userModel;
-          notifyListeners();
-        });
+        // Stream settings for the logged-in user
+        _settingsSubscription = _settingsRepository
+            .getSettings(user.uid)
+            .listen((settings) {
+              _currentSettings = settings;
+              notifyListeners();
+            });
       } else {
-        _currentUserModel = null;
+        _currentSettings = null;
         notifyListeners();
       }
     });
@@ -40,14 +48,18 @@ class SettingsViewModel extends ChangeNotifier {
       _setErrorMessage('User not logged in.');
       return;
     }
+    if (_currentSettings == null) {
+      // If settings don't exist, create default ones
+      _currentSettings = SettingsModel(id: userId, includedMeals: meals);
+    } else {
+      _currentSettings = _currentSettings!.copyWith(includedMeals: meals);
+    }
 
     _setLoading(true);
     clearErrorMessage();
     try {
-      await _userRepository.updateUserSettings(userId, enabledMeals: meals);
-      // Optimistically update
-      _currentUserModel = _currentUserModel?.copyWith(enabledMeals: meals);
-      notifyListeners();
+      await _settingsRepository.saveSettings(userId, _currentSettings!);
+      // Optimistically update and notifyListeners already done above
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {
@@ -61,14 +73,18 @@ class SettingsViewModel extends ChangeNotifier {
       _setErrorMessage('User not logged in.');
       return;
     }
+    if (_currentSettings == null) {
+      // If settings don't exist, create default ones
+      _currentSettings = SettingsModel(id: userId, includedWeekdays: weekdays);
+    } else {
+      _currentSettings = _currentSettings!.copyWith(includedWeekdays: weekdays);
+    }
 
     _setLoading(true);
     clearErrorMessage();
     try {
-      await _userRepository.updateUserSettings(userId, enabledDays: weekdays);
-      // Optimistically update
-      _currentUserModel = _currentUserModel?.copyWith(enabledDays: weekdays);
-      notifyListeners();
+      await _settingsRepository.saveSettings(userId, _currentSettings!);
+      // Optimistically update and notifyListeners already done above
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {
@@ -89,5 +105,12 @@ class SettingsViewModel extends ChangeNotifier {
   void clearErrorMessage() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel();
+    _settingsSubscription?.cancel();
+    super.dispose();
   }
 }

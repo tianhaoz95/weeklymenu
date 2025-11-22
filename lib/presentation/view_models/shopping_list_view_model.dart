@@ -22,11 +22,12 @@ class ShoppingListViewModel extends ChangeNotifier {
     RecipeRepository? recipeRepository,
     required WeeklyMenuViewModel weeklyMenuViewModel,
     AuthRepository? authRepository,
-  })  : _shoppingListService = shoppingListService ?? ShoppingListService(),
-        _shoppingListRepository = shoppingListRepository ?? ShoppingListRepository(),
-        _recipeRepository = recipeRepository ?? RecipeRepository(),
-        _weeklyMenuViewModel = weeklyMenuViewModel,
-        _authRepository = authRepository ?? AuthRepository();
+  }) : _shoppingListService = shoppingListService ?? ShoppingListService(),
+       _shoppingListRepository =
+           shoppingListRepository ?? ShoppingListRepository(),
+       _recipeRepository = recipeRepository ?? RecipeRepository(),
+       _weeklyMenuViewModel = weeklyMenuViewModel,
+       _authRepository = authRepository ?? AuthRepository();
 
   Map<String, List<ShoppingListItemModel>> _shoppingList = {};
   Map<String, List<ShoppingListItemModel>> get shoppingList => _shoppingList;
@@ -68,7 +69,9 @@ class ShoppingListViewModel extends ChangeNotifier {
             });
       } else {
         _shoppingList = {};
-        _weeklyMenuViewModel.removeListener(_weeklyMenuViewModelListener!); // Removed ?
+        _weeklyMenuViewModel.removeListener(
+          _weeklyMenuViewModelListener!,
+        ); // Removed ?
         notifyListeners();
       }
     });
@@ -86,7 +89,9 @@ class ShoppingListViewModel extends ChangeNotifier {
     if (_weeklyMenuViewModel.weeklyMenu == null ||
         _weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
       _shoppingList = {};
-      await _shoppingListRepository.clearShoppingList(userId); // Clear existing list
+      await _shoppingListRepository.clearShoppingList(
+        userId,
+      ); // Clear existing list
       notifyListeners();
       return;
     }

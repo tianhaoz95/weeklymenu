@@ -10,9 +10,7 @@ class ShoppingListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appLocalizations.shoppingListScreenTitle),
-      ),
+      appBar: AppBar(title: Text(appLocalizations.shoppingListScreenTitle)),
       body: Consumer<ShoppingListViewModel>(
         builder: (context, shoppingListViewModel, child) {
           if (shoppingListViewModel.isLoading) {
@@ -39,15 +37,15 @@ class ShoppingListScreen extends StatelessWidget {
           }
 
           if (shoppingListViewModel.shoppingList.isEmpty) {
-            return Center(
-              child: Text(appLocalizations.noItemsInShoppingList),
-            );
+            return Center(child: Text(appLocalizations.noItemsInShoppingList));
           }
 
           return ListView.builder(
             itemCount: shoppingListViewModel.shoppingList.keys.length,
             itemBuilder: (context, index) {
-              final day = shoppingListViewModel.shoppingList.keys.elementAt(index);
+              final day = shoppingListViewModel.shoppingList.keys.elementAt(
+                index,
+              );
               final itemsForDay = shoppingListViewModel.shoppingList[day]!;
 
               return Card(
@@ -64,7 +62,9 @@ class ShoppingListScreen extends StatelessWidget {
                       const Divider(),
                       ...itemsForDay.map(
                         (item) => CheckboxListTile(
-                          title: Text('${item.name} (${item.quantity} ${item.unit})'),
+                          title: Text(
+                            '${item.name} (${item.quantity} ${item.unit})',
+                          ),
                           value: item.isChecked,
                           onChanged: (bool? newValue) {
                             shoppingListViewModel.toggleItemChecked(

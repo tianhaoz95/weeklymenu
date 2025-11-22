@@ -169,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
               spacing: 8.0,
               children: allMealTypes.map((mealType) {
                 final bool isSelected =
-                    settingsViewModel.currentUserModel?.enabledMeals.contains(
+                    settingsViewModel.currentSettings?.includedMeals.contains(
                       mealType,
                     ) ??
                     false;
@@ -178,7 +178,7 @@ class SettingsScreen extends StatelessWidget {
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentMeals = List.from(
-                      settingsViewModel.currentUserModel?.enabledMeals ?? [],
+                      settingsViewModel.currentSettings?.includedMeals ?? [],
                     );
                     if (selected) {
                       currentMeals.add(mealType);
@@ -199,16 +199,15 @@ class SettingsScreen extends StatelessWidget {
               spacing: 8.0,
               children: allWeekdays.map((weekday) {
                 final bool isSelected =
-                    settingsViewModel.currentUserModel?.enabledDays.contains(
-                      weekday,
-                    ) ??
+                    settingsViewModel.currentSettings?.includedWeekdays
+                        .contains(weekday) ??
                     false;
                 return FilterChip(
                   label: Text(getLocalizedWeekday(weekday)),
                   selected: isSelected,
                   onSelected: (bool selected) {
                     final List<String> currentWeekdays = List.from(
-                      settingsViewModel.currentUserModel?.enabledDays ?? [],
+                      settingsViewModel.currentSettings?.includedWeekdays ?? [],
                     );
                     if (selected) {
                       currentWeekdays.add(weekday);

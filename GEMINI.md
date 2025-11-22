@@ -13,10 +13,9 @@ The Gemini agent has been instrumental in implementing the following core featur
 -   **Phase 1: Project Setup and Initial Commit:** Initial Flutter project setup, boilerplate removal, and basic configuration.
 -   **Phase 2: Firebase Core and Authentication Setup:** Integration of Firebase Authentication for user management (sign-up, login, password reset, delete account).
 -   **Phase 3: GoRouter Navigation Setup:** Implemented declarative navigation using `go_router`, including bottom navigation with `StatefulShellRoute` and authentication-based redirects.
--   **Phase 4: Firestore Data Models and Repositories:** Defined data models (`UserModel`, `RecipeModel`, `SettingsModel`, `WeeklyMenuItemModel`, `WeeklyMenuModel`, `ShoppingListItemModel`) and their corresponding Firestore repositories (`UserRepository`, `RecipeRepository`, `WeeklyMenuRepository`). `json_serializable` was used for model serialization.
--   **Phase 5: Settings Screen and User Profile:** Implemented the UI for user settings, allowing users to select meal types and weekdays for menu generation, and provided sign-out/delete account functionality.
--   **Phase 6: Cookbook (Recipe Management):** Implemented UI and logic for managing a personal recipe collection (add, edit, delete recipes).
--   **Phase 7: Weekly Menu Generation Logic:** Developed `MenuGeneratorService` and integrated it with `WeeklyMenuViewModel` to generate dynamic weekly meal plans based on user settings and recipes.
+-   **Phase 4: Firestore Data Models and Repositories:** Defined data models (`UserModel`, `RecipeModel`, `SettingsModel`, `WeeklyMenuItemModel`, `WeeklyMenuModel`, `ShoppingListItemModel`) and their corresponding Firestore repositories (`UserRepository`, `RecipeRepository`, `SettingsRepository`, `WeeklyMenuRepository`). `SettingsModel` is specifically used for user preferences like meal types and weekdays, while `UserModel` stores core user authentication data. `json_serializable` was used for model serialization.
+-   **Phase 5: Settings Screen and User Profile:** Implemented the UI for user settings, allowing users to select meal types and weekdays for menu generation (now correctly persisting using `SettingsModel`), and provided sign-out/delete account functionality.
+-   **Phase 7: Weekly Menu Generation Logic:** Developed `MenuGeneratorService` and integrated it with `WeeklyMenuViewModel` to generate dynamic weekly meal plans based on user settings (`SettingsModel`) and recipes.
 -   **Phase 8: Shopping List Generation:** Developed `ShoppingListService` and integrated it with `ShoppingListViewModel` to generate shopping lists from the weekly menu, allowing users to mark items as checked.
 -   **Phase 9: Internationalization:** Configured `flutter_localizations` and `intl`, created ARB files for English and Chinese, and integrated localized strings throughout the application UI.
 
@@ -28,8 +27,8 @@ The project adheres to a clean architecture pattern with a clear separation of c
     -   **`main.dart`**: Application entry point, `MultiProvider` setup, and `GoRouter` configuration.
     -   **`l10n/`**: Contains generated localization files (`app_localizations.dart`, etc.) and ARB files (`app_en.arb`, `app_zh.arb`).
     -   **`data/`**:
-        -   **`models/`**: Dart classes representing data structures (`recipe_model.dart`, `user_model.dart`, etc.) and their `json_serializable` generated parts (`.g.dart`).
-        -   **`repositories/`**: Abstraction layer for data sources, primarily interacting with Firebase Firestore (`auth_repository.dart`, `recipe_repository.dart`, etc.).
+        -   **`models/`**: Dart classes representing data structures (`recipe_model.dart`, `user_model.dart`, `settings_model.dart`, etc.) and their `json_serializable` generated parts (`.g.dart`). `UserModel` primarily stores core user authentication and profile data, while `SettingsModel` is specifically dedicated to user preferences and settings.
+        -   **`repositories/`**: Abstraction layer for data sources, primarily interacting with Firebase Firestore (`auth_repository.dart`, `recipe_repository.dart`, `user_repository.dart`, `settings_repository.dart`, etc.). `UserRepository` handles core user data, and `SettingsRepository` manages user settings.
         -   **`services/`**: Contains business logic that operates on data from repositories (e.g., `menu_generator_service.dart`, `shopping_list_service.dart`).
     -   **`presentation/`**:
         -   **`screens/`**: UI implementations of individual screens (`login_screen.dart`, `weekly_menu_screen.dart`, etc.).
@@ -42,7 +41,7 @@ The project adheres to a clean architecture pattern with a clear separation of c
 -   **Flutter Interactions:** Always interact with Flutter using Dart MCP calls. Never directly use Flutter CLI tools (e.g., use `run_tests` instead of `flutter test`, `pub` instead of `flutter pub`).
 -   **Localization:** When adding new UI strings, ensure they are added to the `.arb` files in `lib/l10n` and `flutter gen-l10n` is run to update the generated code.
 -   **State Management:** `Provider` with `ChangeNotifier` is the chosen state management solution.
--   **Navigation:** `go_router` is used for all major navigation. Understand its redirection logic based on authentication state.
+-   **Navigation:** `go_router` is used for all major navigation. Its redirection logic now correctly reacts to authentication state changes by using `AuthViewModel` as a `refreshListenable`, ensuring seamless navigation between authenticated and unauthenticated routes.
 -   **Firestore:** Data is persisted in Firestore. Repositories handle CRUD operations.
 -   **`use_build_context_synchronously` Warnings:** There are persistent `use_build_context_synchronously` warnings in `recipe_screen.dart`. These are currently considered non-blocking for functionality and have been noted in the `IMPLEMENTATION.md` journal. Any future modifications to `recipe_screen.dart` should aim to resolve these if possible, but it's not a critical blocker.
 
