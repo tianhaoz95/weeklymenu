@@ -11,25 +11,22 @@ import 'dart:async'; // For StreamSubscription
 
 class ShoppingListViewModel extends ChangeNotifier {
   final ShoppingListService _shoppingListService;
-  final ShoppingListRepository _shoppingListRepository; // New dependency
+  final ShoppingListRepository _shoppingListRepository;
   final RecipeRepository _recipeRepository;
-  final AuthRepository _authRepository; // New dependency
-  // final FirebaseAuth _auth = FirebaseAuth.instance; // No longer needed directly here
-
-  final WeeklyMenuViewModel _weeklyMenuViewModel; // Made final and required
+  final AuthRepository _authRepository;
+  final WeeklyMenuViewModel _weeklyMenuViewModel;
 
   ShoppingListViewModel({
     ShoppingListService? shoppingListService,
     ShoppingListRepository? shoppingListRepository,
     RecipeRepository? recipeRepository,
-    required WeeklyMenuViewModel weeklyMenuViewModel, // Required dependency
+    required WeeklyMenuViewModel weeklyMenuViewModel,
     AuthRepository? authRepository,
-  }) : _shoppingListService = shoppingListService ?? ShoppingListService(),
-       _shoppingListRepository =
-           shoppingListRepository ?? ShoppingListRepository(),
-       _recipeRepository = recipeRepository ?? RecipeRepository(),
-       _weeklyMenuViewModel = weeklyMenuViewModel, // Initialize here
-       _authRepository = authRepository ?? AuthRepository();
+  })  : _shoppingListService = shoppingListService ?? ShoppingListService(),
+        _shoppingListRepository = shoppingListRepository ?? ShoppingListRepository(),
+        _recipeRepository = recipeRepository ?? RecipeRepository(),
+        _weeklyMenuViewModel = weeklyMenuViewModel,
+        _authRepository = authRepository ?? AuthRepository();
 
   Map<String, List<ShoppingListItemModel>> _shoppingList = {};
   Map<String, List<ShoppingListItemModel>> get shoppingList => _shoppingList;
@@ -71,9 +68,7 @@ class ShoppingListViewModel extends ChangeNotifier {
             });
       } else {
         _shoppingList = {};
-        _weeklyMenuViewModel.removeListener(
-          _weeklyMenuViewModelListener!,
-        ); // Removed ?
+        _weeklyMenuViewModel.removeListener(_weeklyMenuViewModelListener!); // Removed ?
         notifyListeners();
       }
     });
@@ -88,13 +83,10 @@ class ShoppingListViewModel extends ChangeNotifier {
       return;
     }
 
-    if (_weeklyMenuViewModel.weeklyMenu == null || // Removed ?
+    if (_weeklyMenuViewModel.weeklyMenu == null ||
         _weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
-      // Removed ?
       _shoppingList = {};
-      await _shoppingListRepository.clearShoppingList(
-        userId,
-      ); // Clear existing list
+      await _shoppingListRepository.clearShoppingList(userId); // Clear existing list
       notifyListeners();
       return;
     }

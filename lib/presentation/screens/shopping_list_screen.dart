@@ -9,31 +9,10 @@ class ShoppingListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-
-    // Helper to get localized weekday
-    String getLocalizedWeekday(String weekday) {
-      switch (weekday) {
-        case 'monday':
-          return appLocalizations.monday;
-        case 'tuesday':
-          return appLocalizations.tuesday;
-        case 'wednesday':
-          return appLocalizations.wednesday;
-        case 'thursday':
-          return appLocalizations.thursday;
-        case 'friday':
-          return appLocalizations.friday;
-        case 'saturday':
-          return appLocalizations.saturday;
-        case 'sunday':
-          return appLocalizations.sunday;
-        default:
-          return weekday;
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(title: Text(appLocalizations.shoppingListScreenTitle)),
+      appBar: AppBar(
+        title: Text(appLocalizations.shoppingListScreenTitle),
+      ),
       body: Consumer<ShoppingListViewModel>(
         builder: (context, shoppingListViewModel, child) {
           if (shoppingListViewModel.isLoading) {
@@ -41,6 +20,17 @@ class ShoppingListScreen extends StatelessWidget {
           }
 
           if (shoppingListViewModel.errorMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    '${appLocalizations.error}: ${shoppingListViewModel.errorMessage}',
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              shoppingListViewModel.clearErrorMessage();
+            });
             return Center(
               child: Text(
                 '${appLocalizations.error}: ${shoppingListViewModel.errorMessage}',
@@ -49,15 +39,15 @@ class ShoppingListScreen extends StatelessWidget {
           }
 
           if (shoppingListViewModel.shoppingList.isEmpty) {
-            return Center(child: Text(appLocalizations.noItemsInShoppingList));
+            return Center(
+              child: Text(appLocalizations.noItemsInShoppingList),
+            );
           }
 
           return ListView.builder(
             itemCount: shoppingListViewModel.shoppingList.keys.length,
             itemBuilder: (context, index) {
-              final day = shoppingListViewModel.shoppingList.keys.elementAt(
-                index,
-              );
+              final day = shoppingListViewModel.shoppingList.keys.elementAt(index);
               final itemsForDay = shoppingListViewModel.shoppingList[day]!;
 
               return Card(
@@ -68,15 +58,13 @@ class ShoppingListScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        getLocalizedWeekday(day).toUpperCase(),
+                        day,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const Divider(),
                       ...itemsForDay.map(
                         (item) => CheckboxListTile(
-                          title: Text(
-                            '${item.quantity} ${item.unit} ${item.name}',
-                          ),
+                          title: Text('${item.name} (${item.quantity} ${item.unit})'),
                           value: item.isChecked,
                           onChanged: (bool? newValue) {
                             shoppingListViewModel.toggleItemChecked(
@@ -92,6 +80,35 @@ class ShoppingListScreen extends StatelessWidget {
                 ),
               );
             },
+          );
+        },
+      ),
+      bottomNavigationBar: Consumer<ShoppingListViewModel>(
+        builder: (context, shoppingListViewModel, child) {
+          if (shoppingListViewModel.shoppingList.isEmpty) {
+            return const SizedBox.shrink(); // Hide if list is empty
+          }
+
+          int totalCheckedItems = 0;
+          int totalItems = 0;
+          shoppingListViewModel.shoppingList.forEach((day, items) {
+            totalCheckedItems += items.where((item) => item.isChecked).length;
+            totalItems += items.length;
+          });
+
+          return BottomAppBar(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${appLocalizations.totalItems} $totalCheckedItems/$totalItems',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),

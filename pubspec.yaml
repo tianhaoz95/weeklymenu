@@ -31,6 +31,7 @@ dev_dependencies:
     sdk: flutter
 
   mockito: any
+  rxdart: any
 flutter:
   uses-material-design: true
   generate: true
