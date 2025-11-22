@@ -13,22 +13,36 @@
 *   **Deviations from Plan:**
     *   None.
 
+### Journal
+
+### Phase 1: Fix Bottom Navigator Color
+
+*   **Actions:**
+    *   Ran all tests, confirmed project in good state.
+    *   Modified `lib/main.dart` to define `lightTheme` and `darkTheme` with `BottomNavigationBarThemeData` for contrasting background and item colors.
+
+*   **Learnings/Surprises:**
+    *   The default `ThemeData` does not provide sufficient contrast for the bottom navigation bar, requiring explicit theme configuration.
+
+*   **Deviations from Plan:**
+    *   None.
+
 ---
 
 ## Phases
 
 ### Phase 1: Fix Bottom Navigator Color
 
--   [ ] Run all tests to ensure the project is in a good state before starting modifications.
--   [ ] Modify `lib/main.dart` to add `BottomNavigationBarThemeData` to the existing `ThemeData`s (`lightTheme` and `darkTheme`).
-    -   Set `backgroundColor` to a contrasting color (e.g., `Colors.blue` for light theme, `Colors.grey[800]` for dark theme).
-    -   Set `selectedItemColor` and `unselectedItemColor` for visibility.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass. (This refers to existing tests, no new tests created)
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Run all tests to ensure the project is in a good state before starting modifications.
+-   [x] Modify `lib/main.dart` to add `BottomNavigationBarThemeData` to the existing `ThemeData`s (`lightTheme` and `darkTheme`).
+    -   [x] Set `backgroundColor` to a contrasting color (e.g., `Colors.blue` for light theme, `Colors.grey[800]` for dark theme).
+    -   [x] Set `selectedItemColor` and `unselectedItemColor` for visibility.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass. (This refers to existing tests, no new tests created)
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
 

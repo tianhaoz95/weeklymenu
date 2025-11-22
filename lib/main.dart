@@ -218,6 +218,33 @@ class MainApp extends StatelessWidget {
     final localeProvider = Provider.of<LocaleProvider>(
       context,
     ); // Access LocaleProvider
+
+    final ThemeData lightTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.deepPurple,
+        brightness: Brightness.light,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.grey[200], // Light grey background
+        selectedItemColor: Colors.deepPurple, // Primary color for selected
+        unselectedItemColor: Colors.grey[600], // Darker grey for unselected
+      ),
+      useMaterial3: true,
+    );
+
+    final ThemeData darkTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.deepPurple,
+        brightness: Brightness.dark,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.grey[900], // Dark grey background
+        selectedItemColor: Colors.deepPurpleAccent, // Lighter primary for selected
+        unselectedItemColor: Colors.grey[400], // Lighter grey for unselected
+      ),
+      useMaterial3: true,
+    );
+
     return MaterialApp.router(
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
@@ -225,6 +252,8 @@ class MainApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localeProvider.locale, // Set app locale from LocaleProvider
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      theme: lightTheme, // Apply light theme
+      darkTheme: darkTheme, // Apply dark theme
     );
   }
 }
