@@ -51,6 +51,7 @@
   "noRecipesAdded": "尚未添加食谱。点击 + 添加您的第一个食谱！",
   "shoppingListScreenTitle": "购物清单",
   "noItemsInShoppingList": "购物清单中没有商品。",
+  "totalItems": "总数量：",
   "saveButton": "保存",
   "cancelButton": "取消",
   "addButton": "添加",
@@ -86,5 +87,9 @@
   "indian": "印度式",
   "chinese": "中式",
   "japanese": "日式",
-  "mediterranean": "地中海式"
+  "mediterranean": "地中海式",
+  "languagePreference": "语言偏好",
+  "english": "英语",
+  "chinese": "中文",
+  "systemDefault": "系统默认"
 }

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+// Import SharedPreferences
+import 'package:weeklymenu/presentation/view_models/locale_provider.dart'; // Import LocaleProvider
+
+import 'package:weeklymenu/data/repositories/auth_repository.dart'; // Import AuthRepository
+import 'package:weeklymenu/data/repositories/recipe_repository.dart'; // Import RecipeRepository
+import 'package:weeklymenu/data/repositories/shopping_list_repository.dart'; // Import ShoppingListRepository
+import 'package:weeklymenu/data/services/shopping_list_service.dart'; // Import ShoppingListService
 
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart';
@@ -15,16 +22,30 @@ import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
 import 'package:weeklymenu/presentation/screens/cookbook_screen.dart';
 import 'package:weeklymenu/presentation/screens/settings_screen.dart';
 import 'package:weeklymenu/presentation/screens/recipe_screen.dart'; // Import RecipeScreen
+import 'package:weeklymenu/presentation/screens/shopping_list_screen.dart'; // Import ShoppingListScreen
 import 'package:weeklymenu/presentation/widgets/scaffold_with_nav_bar.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart'; // Import RecipeModel for extra
 import 'package:weeklymenu/l10n/app_localizations.dart';
 
-void main() async {
+Future<void> main() async {
+  // Make main async
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
+        Provider<AuthRepository>(
+          create: (_) => AuthRepository(),
+        ), // Provide AuthRepository
+        Provider<RecipeRepository>(
+          create: (_) => RecipeRepository(),
+        ), // Provide RecipeRepository
+        Provider<ShoppingListRepository>(
+          create: (_) => ShoppingListRepository(),
+        ), // Provide ShoppingListRepository
+        Provider<ShoppingListService>(
+          create: (_) => ShoppingListService(),
+        ), // Provide ShoppingListService
         ChangeNotifierProvider(
           create: (context) => AuthViewModel(router: _router)..initialize(),
         ),
@@ -37,7 +58,48 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => WeeklyMenuViewModel()..initialize(),
         ),
-        ChangeNotifierProvider(create: (context) => ShoppingListViewModel()),
+        ChangeNotifierProxyProvider<WeeklyMenuViewModel, ShoppingListViewModel>(
+          create: (context) {
+            final weeklyMenuViewModel = Provider.of<WeeklyMenuViewModel>(
+              context,
+              listen: false,
+            );
+            final authRepository = Provider.of<AuthRepository>(
+              context,
+              listen: false,
+            ); // Retrieve AuthRepository
+            final shoppingListRepository = Provider.of<ShoppingListRepository>(
+              context,
+              listen: false,
+            ); // Retrieve ShoppingListRepository
+            final shoppingListService = Provider.of<ShoppingListService>(
+              context,
+              listen: false,
+            ); // Retrieve ShoppingListService
+            final recipeRepository = Provider.of<RecipeRepository>(
+              context,
+              listen: false,
+            ); // Retrieve RecipeRepository
+
+            return ShoppingListViewModel(
+              shoppingListRepository: shoppingListRepository,
+              shoppingListService: shoppingListService,
+              recipeRepository: recipeRepository,
+              weeklyMenuViewModel:
+                  weeklyMenuViewModel, // Pass required dependency
+              authRepository: authRepository,
+            )..initialize();
+          },
+          update: (context, weeklyMenuViewModel, previousShoppingListViewModel) {
+            // No direct update needed here as ShoppingListViewModel manages its own listener.
+            // It will update itself based on weeklyMenuViewModel changes.
+            return previousShoppingListViewModel!;
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              LocaleProvider(), // Create LocaleProvider without prefs
+        ),
       ],
       child: const MainApp(),
     ),
@@ -107,6 +169,16 @@ final GoRouter _router = GoRouter(
             ),
           ],
         ),
+        // New branch for ShoppingListScreen
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/shopping-list',
+              name: 'shopping-list', // Named route
+              builder: (context, state) => const ShoppingListScreen(),
+            ),
+          ],
+        ),
       ],
     ),
   ],
@@ -134,11 +206,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(
+      context,
+    ); // Access LocaleProvider
     return MaterialApp.router(
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: localeProvider.locale, // Set app locale from LocaleProvider
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
     );
   }

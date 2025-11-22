@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart'; // Import SettingsViewModel
 import 'package:weeklymenu/l10n/app_localizations.dart';
+import 'package:weeklymenu/presentation/widgets/language_dropdown_widget.dart'; // Import LanguageDropdownWidget
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -219,6 +220,12 @@ class SettingsScreen extends StatelessWidget {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 20),
+            Text(
+              appLocalizations.languagePreference,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const LanguageDropdownWidget(),
             const Spacer(),
             SizedBox(
               width: double.infinity,

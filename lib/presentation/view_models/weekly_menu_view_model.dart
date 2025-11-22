@@ -7,6 +7,7 @@ import 'package:weeklymenu/data/repositories/recipe_repository.dart';
 import 'package:weeklymenu/data/repositories/user_repository.dart';
 import 'package:weeklymenu/data/repositories/weekly_menu_repository.dart';
 import 'package:weeklymenu/data/services/menu_generator_service.dart';
+import 'dart:async'; // Import for StreamSubscription
 
 class WeeklyMenuViewModel extends ChangeNotifier {
   final WeeklyMenuRepository _weeklyMenuRepository;
@@ -37,26 +38,41 @@ class WeeklyMenuViewModel extends ChangeNotifier {
   UserModel? _currentUserSettings;
   List<RecipeModel> _allUserRecipes = [];
 
+  StreamSubscription<User?>? _authStateSubscription;
+  StreamSubscription<UserModel?>? _userSettingsSubscription;
+  StreamSubscription<List<RecipeModel>>? _recipesSubscription;
+  StreamSubscription<WeeklyMenuModel?>? _weeklyMenuSubscription;
+
   void initialize() {
-    _auth.authStateChanges().listen((User? user) {
+    _authStateSubscription = _auth.authStateChanges().listen((User? user) {
+      _userSettingsSubscription?.cancel();
+      _recipesSubscription?.cancel();
+      _weeklyMenuSubscription?.cancel();
+
       if (user != null) {
         // Stream user settings
-        _userRepository.streamUser(user.uid).listen((userModel) {
-          _currentUserSettings = userModel;
-          _generateAndSaveMenuIfNeeded();
-        });
+        _userSettingsSubscription = _userRepository.streamUser(user.uid).listen(
+          (userModel) {
+            _currentUserSettings = userModel;
+            _generateAndSaveMenuIfNeeded();
+          },
+        );
 
         // Stream all recipes for the user
-        _recipeRepository.getRecipesForUser(user.uid).listen((recipes) {
-          _allUserRecipes = recipes;
-          _generateAndSaveMenuIfNeeded();
-        });
+        _recipesSubscription = _recipeRepository
+            .getRecipesForUser(user.uid)
+            .listen((recipes) {
+              _allUserRecipes = recipes;
+              _generateAndSaveMenuIfNeeded();
+            });
 
         // Stream weekly menu from repository
-        _weeklyMenuRepository.streamWeeklyMenu(user.uid).listen((menu) {
-          _weeklyMenu = menu;
-          notifyListeners();
-        });
+        _weeklyMenuSubscription = _weeklyMenuRepository
+            .streamWeeklyMenu(user.uid)
+            .listen((menu) {
+              _weeklyMenu = menu;
+              notifyListeners();
+            });
       } else {
         _weeklyMenu = null;
         _currentUserSettings = null;
@@ -116,5 +132,14 @@ class WeeklyMenuViewModel extends ChangeNotifier {
   void clearErrorMessage() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel();
+    _userSettingsSubscription?.cancel();
+    _recipesSubscription?.cancel();
+    _weeklyMenuSubscription?.cancel();
+    super.dispose();
   }
 }

@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'No items in the shopping list.'**
   String get noItemsInShoppingList;
 
+  /// No description provided for @totalItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Items:'**
+  String get totalItems;
+
   /// No description provided for @saveButton.
   ///
   /// In en, this message translates to:
@@ -535,6 +541,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mediterranean'**
   String get mediterranean;
+
+  /// No description provided for @languagePreference.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Preference'**
+  String get languagePreference;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get systemDefault;
 }
 
 class _AppLocalizationsDelegate

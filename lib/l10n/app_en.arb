@@ -51,6 +51,7 @@
   "noRecipesAdded": "No recipes added yet. Tap + to add your first recipe!",
   "shoppingListScreenTitle": "Shopping List",
   "noItemsInShoppingList": "No items in the shopping list.",
+  "totalItems": "Total Items:",
   "saveButton": "Save",
   "cancelButton": "Cancel",
   "addButton": "Add",
@@ -86,5 +87,9 @@
   "indian": "Indian",
   "chinese": "Chinese",
   "japanese": "Japanese",
-  "mediterranean": "Mediterranean"
+  "mediterranean": "Mediterranean",
+  "languagePreference": "Language Preference",
+  "english": "English",
+  "chinese": "Chinese",
+  "systemDefault": "System Default"
 }

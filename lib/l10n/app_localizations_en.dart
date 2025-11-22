@@ -126,6 +126,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noItemsInShoppingList => 'No items in the shopping list.';
 
   @override
+  String get totalItems => 'Total Items:';
+
+  @override
   String get saveButton => 'Save';
 
   @override
@@ -234,4 +237,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mediterranean => 'Mediterranean';
+
+  @override
+  String get languagePreference => 'Language Preference';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get systemDefault => 'System Default';
 }

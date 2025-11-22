@@ -28,7 +28,7 @@ void main() {
 
       // Start the app
       app.main();
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // Find the email and password input fields
       final emailField = find.byKey(const Key('email_input_field'));

@@ -57,3 +57,6 @@ The project adheres to a clean architecture pattern with a clear separation of c
 7.  **Update `IMPLEMENTATION.md`:** Document actions, learnings, and deviations in the Journal section. Update relevant checklists.
 8.  **Git Commit:** Generate `git diff`, propose a commit message, and await user approval.
 9.  **Hot Reload/Restart:** If the app is running, perform a hot reload/restart after code changes.
+
+## Gemini Added Memories
+- Email: test@weeklymenu.com, Password: 12341234 for integration tests.

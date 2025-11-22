@@ -1,52 +1,53 @@
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/data/models/shopping_list_item_model.dart';
 import 'package:weeklymenu/data/models/weekly_menu_model.dart';
+import 'package:uuid/uuid.dart';
 
 class ShoppingListService {
+  final Uuid _uuid = const Uuid();
+
   Map<String, List<ShoppingListItemModel>> generateShoppingList({
     required WeeklyMenuModel weeklyMenu,
     required List<RecipeModel> allRecipes,
   }) {
-    final Map<String, List<ShoppingListItemModel>> shoppingList = {};
+    final Map<String, Map<String, int>> aggregatedIngredientsByDay = {};
 
+    // First, aggregate all ingredients by day and count occurrences
     for (final dayEntry in weeklyMenu.menuItems.entries) {
       final day = dayEntry.key;
+      aggregatedIngredientsByDay[day] = {};
+
       for (final menuItem in dayEntry.value) {
         final recipe = allRecipes.firstWhere((r) => r.id == menuItem.recipeId);
 
-        for (final ingredient in recipe.ingredients) {
-          // Simple parsing: assuming ingredient is like "2 cups flour" or "1 onion"
-          // This is a basic implementation and can be improved with a more robust parser
-          final parts = ingredient.split(' ');
-          double quantity = 1.0;
-          String unit = 'unit';
-          String name = ingredient;
-
-          if (parts.isNotEmpty) {
-            try {
-              quantity = double.parse(parts[0]);
-              if (parts.length > 1) {
-                unit = parts[1];
-                name = parts.sublist(2).join(' ');
-              } else {
-                name = parts[0];
-              }
-            } catch (e) {
-              quantity = 1.0;
-              unit = 'unit';
-              name = ingredient;
-            }
-          }
-
-          if (!shoppingList.containsKey(day)) {
-            shoppingList[day] = [];
-          }
-          shoppingList[day]!.add(
-            ShoppingListItemModel(name: name, unit: unit, quantity: quantity),
+        for (final ingredientName in recipe.ingredients) {
+          aggregatedIngredientsByDay[day]!.update(
+            ingredientName.trim().toLowerCase(),
+            (value) => value + 1,
+            ifAbsent: () => 1,
           );
         }
       }
     }
+
+    // Then, convert aggregated data into ShoppingListItemModel instances
+    final Map<String, List<ShoppingListItemModel>> shoppingList = {};
+    aggregatedIngredientsByDay.forEach((day, ingredientsMap) {
+      shoppingList[day] = [];
+      ingredientsMap.forEach((name, count) {
+        shoppingList[day]!.add(
+          ShoppingListItemModel(
+            id: _uuid.v4(),
+            name: name,
+            quantity: count,
+            unit: 'item', // Default unit as per design
+            isChecked: false,
+            dailyMenuId: day, // Associate with the day it came from
+          ),
+        );
+      });
+    });
+
     return shoppingList;
   }
 }

@@ -124,6 +124,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noItemsInShoppingList => '购物清单中没有商品。';
 
   @override
+  String get totalItems => '总数量：';
+
+  @override
   String get saveButton => '保存';
 
   @override
@@ -223,11 +226,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get indian => '印度式';
 
   @override
-  String get chinese => '中式';
+  String get chinese => '中文';
 
   @override
   String get japanese => '日式';
 
   @override
   String get mediterranean => '地中海式';
+
+  @override
+  String get languagePreference => '语言偏好';
+
+  @override
+  String get english => '英语';
+
+  @override
+  String get systemDefault => '系统默认';
 }

@@ -7,6 +7,7 @@ class AuthRepository {
     : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   Stream<User?> get userChanges => _firebaseAuth.authStateChanges();
+  User? get currentUser => _firebaseAuth.currentUser; // Add this getter
 
   Future<User?> signIn({
     required String email,
