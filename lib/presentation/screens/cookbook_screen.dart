@@ -17,6 +17,7 @@ class CookbookScreen extends StatelessWidget {
         return AlertDialog(
           title: Text(appLocalizations.addRecipeTitle),
           content: TextField(
+            key: const Key('recipe_name_input_field'),
             controller: nameController,
             decoration: InputDecoration(
               labelText: appLocalizations.recipeNameLabel,
@@ -30,6 +31,7 @@ class CookbookScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              key: const Key('add_recipe_dialog_add_button'),
               child: Text(appLocalizations.addButton),
             ),
           ],
@@ -122,6 +124,7 @@ class CookbookScreen extends StatelessWidget {
         title: Text(appLocalizations.cookbookTitle),
         actions: [
           IconButton(
+            key: const Key('add_recipe_button'),
             icon: const Icon(Icons.add),
             onPressed: () => _showAddRecipeDialog(context),
           ),

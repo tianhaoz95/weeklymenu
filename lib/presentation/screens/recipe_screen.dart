@@ -187,7 +187,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         userId: _userId!,
       );
 
-      if (widget.recipeId == null) {
+      if (widget.recipeId == null || widget.recipeId == 'new') {
         // Add new recipe
         await cookbookViewModel.addRecipe(newRecipe);
       } else {
@@ -210,7 +210,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              widget.recipeId == null
+              widget.recipeId == null || widget.recipeId == 'new'
                   ? appLocalizations.recipeAddedMessage
                   : appLocalizations.recipeUpdatedMessage,
             ),
@@ -234,7 +234,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
               : appLocalizations.editRecipeTitle,
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.save), onPressed: _saveRecipe),
+          IconButton(
+            key: const Key('save_recipe_button'),
+            icon: const Icon(Icons.save),
+            onPressed: _saveRecipe,
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -245,6 +249,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
+                key: const Key('recipe_name_input_field'),
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: appLocalizations.recipeNameLabel,
@@ -259,6 +264,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: const Key('ingredients_input_field'),
                 controller: _ingredientsController,
                 decoration: InputDecoration(
                   labelText: appLocalizations.ingredientsLabel,
@@ -268,6 +274,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: const Key('instructions_input_field'),
                 controller: _instructionsController,
                 decoration: InputDecoration(
                   labelText: appLocalizations.instructionsLabel,
