@@ -19,8 +19,24 @@ class MenuGeneratorService {
       for (final mealType in userSettings.includedMeals) {
         // Changed from enabledMeals
         // Filter recipes by meal type (category) if applicable
+        List<String> targetCategories = [];
+        switch (mealType) {
+          case 'breakfast':
+            targetCategories.add('breakfast');
+            break;
+          case 'lunch':
+          case 'dinner':
+            targetCategories.add('main_course');
+            break;
+          case 'snack':
+            targetCategories.add('snack');
+            targetCategories.add('appetizer');
+            break;
+        }
+
         final suitableRecipes = allRecipes.where((recipe) {
-          return recipe.categories.contains(mealType);
+          // Check if any of the recipe's categories match the targetCategories for the mealType
+          return recipe.categories.any((category) => targetCategories.contains(category));
         }).toList();
 
         if (suitableRecipes.isNotEmpty) {
@@ -37,7 +53,6 @@ class MenuGeneratorService {
         }
       }
     }
-
     return WeeklyMenuModel(
       id: userSettings.id!,
       menuItems: generatedMenu,

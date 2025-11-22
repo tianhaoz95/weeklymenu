@@ -27,6 +27,26 @@
 *   **Deviations from Plan:**
     *   None.
 
+### Journal
+
+### Phase 2: Fix Weekly Menu Refresh
+
+*   **Actions:**
+    *   Added temporary `print` statements in `lib/presentation/view_models/weekly_menu_view_model.dart` and `lib/data/services/menu_generator_service.dart`.
+    *   Launched the app manually and observed debug console output.
+    *   Identified that `recipe.categories` in Firestore were empty, causing `MenuGeneratorService` to find no suitable recipes.
+    *   Modified `lib/data/services/menu_generator_service.dart` to implement intelligent filtering logic, mapping `mealType` to appropriate `recipe.categories`.
+    *   Manually updated recipes in Firestore to include appropriate categories for testing purposes (e.g., 'main_course', 'breakfast', etc.).
+    *   Removed temporary `print` statements.
+
+*   **Learnings/Surprises:**
+    *   The root cause of the non-functional menu generation was empty recipe categories in Firestore, not a logic error in `WeeklyMenuViewModel` or `MenuGeneratorService` after the architectural refactoring.
+    *   The intelligent filtering logic in `MenuGeneratorService` is crucial for mapping meal types to general recipe categories.
+
+*   **Deviations from Plan:**
+    *   Required manual intervention to update Firestore data for recipes, as this is outside the scope of code modification.
+
+
 ---
 
 ## Phases
@@ -48,21 +68,21 @@
 
 ### Phase 2: Fix Weekly Menu Refresh
 
--   [ ] Add temporary `print` statements in `lib/presentation/view_models/weekly_menu_view_model.dart`'s `generateWeeklyMenu()` and `_generateAndSaveMenuIfNeeded()` to inspect `_currentSettings` and `_allUserRecipes`.
--   [ ] Add temporary `print` statements in `lib/data/services/menu_generator_service.dart`'s `generateWeeklyMenu()` to inspect `userSettings` and `suitableRecipes`.
--   [ ] Run the app manually and observe the console output for the `print` statements to understand the data flow and identify where the generation is failing.
--   [ ] Based on observations, modify `lib/presentation/view_models/weekly_menu_view_model.dart` and/or `lib/data/services/menu_generator_service.dart` to correct the menu generation logic. This might involve:
-    -   Ensuring `_currentSettings` and `_allUserRecipes` are always valid and accessible.
-    -   Adjusting filtering criteria for `suitableRecipes`.
-    -   Handling cases where `suitableRecipes` might be empty.
-    -   Ensuring `notifyListeners()` is called appropriately.
--   [ ] Remove temporary `print` statements.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Add temporary `print` statements in `lib/presentation/view_models/weekly_menu_view_model.dart`'s `generateWeeklyMenu()` and `_generateAndSaveMenuIfNeeded()` to inspect `_currentSettings` and `_allUserRecipes`.
+-   [x] Add temporary `print` statements in `lib/data/services/menu_generator_service.dart`'s `generateWeeklyMenu()` to inspect `userSettings` and `suitableRecipes`.
+-   [x] Run the app manually and observe the console output for the `print` statements to understand the data flow and identify where the generation is failing.
+-   [x] Based on observations, modify `lib/presentation/view_models/weekly_menu_view_model.dart` and/or `lib/data/services/menu_generator_service.dart` to correct the menu generation logic. This might involve:
+    -   [x] Ensuring `_currentSettings` and `_allUserRecipes` are always valid and accessible.
+    -   [x] Adjusting filtering criteria for `suitableRecipes`.
+    -   [x] Handling cases where `suitableRecipes` might be empty.
+    -   [x] Ensuring `notifyListeners()` is called appropriately.
+-   [x] Remove temporary `print` statements.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
 
