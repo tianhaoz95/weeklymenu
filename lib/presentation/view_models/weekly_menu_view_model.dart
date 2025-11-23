@@ -87,6 +87,9 @@ class WeeklyMenuViewModel extends ChangeNotifier {
 
   // Generates and saves a new menu if settings or recipes have changed
   void _generateAndSaveMenuIfNeeded() {
+    print('WeeklyMenuViewModel: _generateAndSaveMenuIfNeeded called.');
+    print('  _currentSettings: $_currentSettings');
+    print('  _allUserRecipes.isNotEmpty: ${_allUserRecipes.isNotEmpty}');
     if (_currentSettings != null && _allUserRecipes.isNotEmpty) {
       // Logic to decide if a new menu needs to be generated.
       // For now, we'll generate every time settings or recipes update.
@@ -99,24 +102,31 @@ class WeeklyMenuViewModel extends ChangeNotifier {
     final userId = _auth.currentUser?.uid;
     if (userId == null) {
       _setErrorMessage('User not logged in.');
+      print('WeeklyMenuViewModel: generateWeeklyMenu failed - User not logged in.');
       return;
     }
 
     if (_currentSettings == null || _allUserRecipes.isEmpty) {
       _setErrorMessage('User settings or recipes not loaded.');
+      print('WeeklyMenuViewModel: generateWeeklyMenu failed - Settings or recipes not loaded.');
+      print('  _currentSettings: $_currentSettings');
+      print('  _allUserRecipes.isEmpty: ${_allUserRecipes.isEmpty}');
       return;
     }
 
     _setLoading(true);
     clearErrorMessage();
     try {
+      print('WeeklyMenuViewModel: Generating menu with settings: $_currentSettings and ${_allUserRecipes.length} recipes.');
       final newMenu = _menuGeneratorService.generateWeeklyMenu(
         userSettings: _currentSettings!,
         allRecipes: _allUserRecipes,
       );
       await _weeklyMenuRepository.createOrUpdateWeeklyMenu(newMenu);
+      print('WeeklyMenuViewModel: Menu generated and saved successfully.');
     } catch (e) {
       _setErrorMessage(e.toString());
+      print('WeeklyMenuViewModel: Error generating or saving menu: $e');
     } finally {
       _setLoading(false);
     }

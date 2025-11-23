@@ -14,7 +14,14 @@ class WeeklyMenuModel {
 
   factory WeeklyMenuModel.fromJson(Map<String, dynamic> json) =>
       _$WeeklyMenuModelFromJson(json);
-  Map<String, dynamic> toJson() => _$WeeklyMenuModelToJson(this);
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['menu_items'] = menuItems.map((key, value) =>
+        MapEntry(key, value.map((item) => item.toJson()).toList()));
+    return data;
+  }
 
   factory WeeklyMenuModel.fromDocumentSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;

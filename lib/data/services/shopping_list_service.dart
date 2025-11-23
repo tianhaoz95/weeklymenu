@@ -10,25 +10,34 @@ class ShoppingListService {
     required WeeklyMenuModel weeklyMenu,
     required List<RecipeModel> allRecipes,
   }) {
+    print('ShoppingListService: generateShoppingList called.');
+    print('  WeeklyMenuModel: ${weeklyMenu.menuItems}');
+    print('  All Recipes Count: ${allRecipes.length}');
+
     final Map<String, Map<String, int>> aggregatedIngredientsByDay = {};
 
     // First, aggregate all ingredients by day and count occurrences
     for (final dayEntry in weeklyMenu.menuItems.entries) {
       final day = dayEntry.key;
       aggregatedIngredientsByDay[day] = {};
+      print('    Processing day: $day');
 
       for (final menuItem in dayEntry.value) {
         final recipe = allRecipes.firstWhere((r) => r.id == menuItem.recipeId);
+        print('      Processing recipe: ${recipe.name}');
 
         for (final ingredientName in recipe.ingredients) {
+          final normalizedIngredient = ingredientName.trim().toLowerCase();
           aggregatedIngredientsByDay[day]!.update(
-            ingredientName.trim().toLowerCase(),
+            normalizedIngredient,
             (value) => value + 1,
             ifAbsent: () => 1,
           );
+          print('        Aggregated ingredient: $normalizedIngredient, count: ${aggregatedIngredientsByDay[day]![normalizedIngredient]}');
         }
       }
     }
+    print('ShoppingListService: Aggregated ingredients by day: $aggregatedIngredientsByDay');
 
     // Then, convert aggregated data into ShoppingListItemModel instances
     final Map<String, List<ShoppingListItemModel>> shoppingList = {};
@@ -47,6 +56,7 @@ class ShoppingListService {
         );
       });
     });
+    print('ShoppingListService: Final generated shopping list: $shoppingList');
 
     return shoppingList;
   }

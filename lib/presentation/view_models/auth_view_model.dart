@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart'; // Import GoRouter
 import '../../data/repositories/auth_repository.dart';
+import 'dart:async'; // Import for StreamSubscription
 
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
@@ -28,9 +29,11 @@ class AuthViewModel extends ChangeNotifier {
   // Stream to listen to authentication state changes
   Stream<User?> get authStateChanges => _authRepository.userChanges;
 
+  StreamSubscription<User?>? _authStateSubscription; // Declare subscription
+
   // Initialize and listen to auth state
   void initialize() {
-    authStateChanges.listen((User? user) {
+    _authStateSubscription = authStateChanges.listen((User? user) { // Assign to subscription
       _currentUser = user;
       notifyListeners();
     });
@@ -112,5 +115,11 @@ class AuthViewModel extends ChangeNotifier {
   void clearErrorMessage() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel(); // Cancel subscription
+    super.dispose();
   }
 }
