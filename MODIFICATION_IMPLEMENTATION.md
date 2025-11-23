@@ -57,6 +57,7 @@
 - All project tests pass after Phase 5 modifications.
 - `dart format` ran successfully and formatted 2 files.
 - Re-read `MODIFICATION_IMPLEMENTATION.md`, no changes in the plan.
+- Committed changes for Phase 5.
 
 ## Phases
 
@@ -143,10 +144,10 @@
 - [x] Run any tests to make sure they all pass.
 - [x] Run dart_format to make sure that the formatting is correct.
 - [x] Re-read the MODIFICATION_IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
-- [ ] Update the MODIFICATION_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have to be completed.
-- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
-- [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
-- [ ] After committing the change, if an app is running, use the hot_reload tool to reload it.
+- [x] Update the MODIFICATION_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have to be completed.
+- [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
+- [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
+- [x] After committing the change, if an app is running, use the hot_reload tool to reload it.
 
 ### Phase 6: Final Review and Project Updates
 

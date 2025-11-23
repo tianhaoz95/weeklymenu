@@ -26,7 +26,7 @@ A Flutter application for managing custom recipes, generating weekly menus, and 
 -   **Cookbook:** Manage your personal recipe collection, including details like ingredients, instructions, categories, cuisines, and star ratings.
 -   **Weekly Menu Generation:** Generate a personalized weekly meal plan based on your dietary preferences (meals per day) and available recipes.
 -   **Shopping List:** Automatically generate a shopping list from your weekly menu, with the ability to mark items as purchased.
--   **User Settings:** Customize meal types and weekdays to be included in your weekly menu generation.
+-   **User Settings:** Manage custom meal types (add, edit, delete) and select which days of the week to generate a menu for.
 -   **Internationalization:** Supports multiple languages (English and Chinese).
 
 ## Getting Started
@@ -96,7 +96,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 Access the Settings screen to:
 -   View your logged-in email.
--   Select which meal types (e.g., breakfast, lunch, dinner, snack) to include in your weekly menu.
+-   Add, edit, and delete custom meal types.
 -   Select which days of the week to generate a menu for.
 
 ### Cookbook
@@ -127,8 +127,8 @@ The application supports English (`en`) and Chinese (`zh`). The language is auto
 
 The project follows a standard Flutter architecture with a clear separation of concerns:
 
--   `lib/data/models/`: Contains data models (e.g., `RecipeModel`, `UserModel`) and their `json_serializable` generated files.
--   `lib/data/repositories/`: Handles data operations and interactions with Firebase Firestore (e.g., `RecipeRepository`, `UserRepository`).
+-   `lib/data/models/`: Contains data models (e.g., `RecipeModel`, `UserModel`, `MealTypeModel`) and their `json_serializable` generated files.
+-   `lib/data/repositories/`: Handles data operations and interactions with Firebase Firestore (e.g., `RecipeRepository`, `UserRepository`, `MealTypeRepository`).
 -   `lib/data/services/`: Contains business logic and services (e.g., `MenuGeneratorService`, `ShoppingListService`).
 -   `lib/l10n/`: Localization files generated from ARB.
 -   `lib/presentation/screens/`: Defines the main UI screens of the application.
