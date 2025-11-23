@@ -33,7 +33,8 @@ class AuthViewModel extends ChangeNotifier {
 
   // Initialize and listen to auth state
   void initialize() {
-    _authStateSubscription = authStateChanges.listen((User? user) { // Assign to subscription
+    _authStateSubscription = authStateChanges.listen((User? user) {
+      // Assign to subscription
       _currentUser = user;
       notifyListeners();
     });

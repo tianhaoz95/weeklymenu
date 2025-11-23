@@ -7,6 +7,8 @@ class RecipeRepository {
   Future<void> createRecipe(RecipeModel recipe) async {
     try {
       await _firestore
+          .collection('users')
+          .doc(recipe.userId)
           .collection('recipes')
           .doc(recipe.id)
           .set(recipe.toJson());
@@ -15,9 +17,14 @@ class RecipeRepository {
     }
   }
 
-  Future<RecipeModel?> getRecipe(String recipeId) async {
+  Future<RecipeModel?> getRecipe(String userId, String recipeId) async {
     try {
-      final doc = await _firestore.collection('recipes').doc(recipeId).get();
+      final doc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('recipes')
+          .doc(recipeId)
+          .get();
       if (doc.exists) {
         return RecipeModel.fromDocumentSnapshot(doc);
       }
@@ -29,8 +36,9 @@ class RecipeRepository {
 
   Stream<List<RecipeModel>> getRecipesForUser(String userId) {
     return _firestore
+        .collection('users')
+        .doc(userId)
         .collection('recipes')
-        .where('user_id', isEqualTo: userId)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
@@ -42,6 +50,8 @@ class RecipeRepository {
   Future<void> updateRecipe(RecipeModel recipe) async {
     try {
       await _firestore
+          .collection('users')
+          .doc(recipe.userId)
           .collection('recipes')
           .doc(recipe.id)
           .update(recipe.toJson());
@@ -50,9 +60,14 @@ class RecipeRepository {
     }
   }
 
-  Future<void> deleteRecipe(String recipeId) async {
+  Future<void> deleteRecipe(String userId, String recipeId) async {
     try {
-      await _firestore.collection('recipes').doc(recipeId).delete();
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('recipes')
+          .doc(recipeId)
+          .delete();
     } catch (e) {
       throw Exception('Error deleting recipe: $e');
     }

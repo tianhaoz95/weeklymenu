@@ -36,7 +36,9 @@ class MenuGeneratorService {
 
         final suitableRecipes = allRecipes.where((recipe) {
           // Check if any of the recipe's categories match the targetCategories for the mealType
-          return recipe.categories.any((category) => targetCategories.contains(category));
+          return recipe.categories.any(
+            (category) => targetCategories.contains(category),
+          );
         }).toList();
 
         if (suitableRecipes.isNotEmpty) {

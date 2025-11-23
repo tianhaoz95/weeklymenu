@@ -18,8 +18,10 @@ class WeeklyMenuModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['menu_items'] = menuItems.map((key, value) =>
-        MapEntry(key, value.map((item) => item.toJson()).toList()));
+    data['menu_items'] = menuItems.map(
+      (key, value) =>
+          MapEntry(key, value.map((item) => item.toJson()).toList()),
+    );
     return data;
   }
 

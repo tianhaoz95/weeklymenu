@@ -51,7 +51,7 @@ void main() {
       await settingsRepository.saveSettings(userId, SettingsModel(id: userId));
       final existingRecipes = await recipeRepository.getRecipesForUser(userId).first;
       for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(recipe.id!); // Corrected call
+        await recipeRepository.deleteRecipe(userId, recipe.id!); // Corrected call
       }
 
       // Add test recipes
@@ -101,7 +101,7 @@ void main() {
       // Clean up test recipes
       final existingRecipes = await recipeRepository.getRecipesForUser(userId).first;
       for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(recipe.id!); // Corrected call
+        await recipeRepository.deleteRecipe(userId, recipe.id!); // Corrected call
       }
       // Delete test user
       await firebaseAuth.currentUser?.delete();

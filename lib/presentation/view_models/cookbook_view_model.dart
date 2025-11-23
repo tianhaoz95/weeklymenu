@@ -68,7 +68,12 @@ class CookbookViewModel extends ChangeNotifier {
     _setLoading(true);
     clearErrorMessage();
     try {
-      await _recipeRepository.deleteRecipe(recipeId);
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        _setErrorMessage('User not logged in.');
+        return;
+      }
+      await _recipeRepository.deleteRecipe(userId, recipeId);
     } catch (e) {
       _setErrorMessage(e.toString());
     } finally {
