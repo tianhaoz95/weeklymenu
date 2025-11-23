@@ -51,13 +51,13 @@ def reset_firestore(db, batch_size=100):
         # Firestore SDK list_collections() only shows direct subcollections
         # For simplicity in this script, we'll assume these fixed subcollection names
         
-        # Delete /users/{user_id}/recipes
-        print(f"    Deleting /users/{user_id}/recipes...")
-        delete_collection(users_ref.document(user_id).collection('recipes'), batch_size)
+        # Delete /users/{user_id}/cookbook
+        print(f"    Deleting /users/{user_id}/cookbook...")
+        delete_collection(users_ref.document(user_id).collection('cookbook'), batch_size)
 
-        # Delete /users/{user_id}/weekly_menus
-        print(f"    Deleting /users/{user_id}/weekly_menus...")
-        delete_collection(users_ref.document(user_id).collection('weekly_menus'), batch_size)
+        # Delete /users/{user_id}/weekly
+        print(f"    Deleting /users/{user_id}/weekly...")
+        delete_collection(users_ref.document(user_id).collection('weekly'), batch_size)
         
         # Delete /users/{user_id}/preferences (and its subcollection 'settings')
         print(f"    Deleting /users/{user_id}/preferences...")

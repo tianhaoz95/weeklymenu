@@ -82,16 +82,17 @@
 
 *   **Actions:**
     *   Modified `scripts/reset_database.py`: Updated deletion logic for user-specific subcollections: changed paths for recipes to `users_ref.document(user_id).collection('cookbook')` and for weekly menus to `users_ref.document(user_id).collection('weekly')`.
-    *   Updated `README.md` (no changes needed for this modification).
-    *   Updated `GEMINI.md` (no changes needed for this modification).
+    *   Updated `README.md`: No changes needed for this modification.
+    *   Updated `GEMINI.md`: Updated description of `RecipeModel` and `WeeklyMenuModel` under "Phase 4: Firestore Data Models and Repositories" and "File Layout and Architecture" to reflect the new storage strategies.
     *   Ran `dart_fix` tool (no changes applied).
-    *   Ran `analyze_files` tool (no issues found).
+    *   Ran `analyze_files` tool (no issues found, only non-critical warnings as expected).
     *   Ran all tests (all passed).
     *   Ran `dart_format` (no changes applied).
     *   Re-read the `MODIFICATION_IMPLEMENTATION.md` file (current file).
 
 *   **Learnings/Surprises:**
     *   Ensuring the Python script correctly targets the new collection names is vital for effective testing cleanup.
+    *   Documentation in `GEMINI.md` needed updating to accurately reflect the new data storage strategies for recipes and weekly menus.
 
 *   **Deviations from Plan:**
     *   None.
@@ -171,17 +172,17 @@
 
 ### Phase 4: Update `reset_database.py` and Final Cleanup
 
--   [ ] Modify `scripts/reset_database.py`:
-    -   [ ] Update deletion logic for user-specific subcollections:
-        -   [ ] Change path for recipes from `users_ref.document(user_id).collection('recipes')` to `users_ref.document(user_id).collection('cookbook')`.
-        -   [ ] Change path for weekly menus from `users_ref.document(user_id).collection('weekly_menus')` to `users_ref.document(user_id).collection('weekly')`.
--   [ ] Update any `README.md` file for the package with relevant information from the modification (if any).
--   [ ] Update any `GEMINI.md` file in the project directory so that it still correctly describes the app, its purpose, and implementation details and the layout of the files.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Modify `scripts/reset_database.py`:
+    -   [x] Update deletion logic for user-specific subcollections:
+        -   [x] Change path for recipes from `users_ref.document(user_id).collection('recipes')` to `users_ref.document(user_id).collection('cookbook')`.
+        -   [x] Change path for weekly menus from `users_ref.document(user_id).collection('weekly_menus')` to `users_ref.document(user_id).collection('weekly')`.
+-   [x] Update any `README.md` file for the package with relevant information from the modification (if any).
+-   [x] Update any `GEMINI.md` file in the project directory so that it still correctly describes the app, its purpose, and implementation details and the layout of the files.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
