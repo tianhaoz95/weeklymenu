@@ -9,7 +9,11 @@ class MealTypeModel extends Equatable {
   final String name;
   final String userId;
 
-  MealTypeModel({required this.id, required this.name, required this.userId});
+  const MealTypeModel({
+    required this.id,
+    required this.name,
+    required this.userId,
+  });
 
   factory MealTypeModel.fromJson(Map<String, dynamic> json) =>
       _$MealTypeModelFromJson(json);
