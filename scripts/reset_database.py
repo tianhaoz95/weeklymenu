@@ -14,9 +14,9 @@ def delete_collection(coll_ref, batch_size):
 
     for doc in docs:
         print(f'Deleting doc {doc.id} from collection {coll_ref.id}')
-        # Recursively delete subcollections
-        for subcollection in doc.reference.list_collections():
-            delete_collection(subcollection, batch_size)
+        # Recursively delete subcollections of the document
+        for subcollection_ref in doc.reference.collections():
+            delete_collection(subcollection_ref, batch_size)
         doc.reference.delete()
         deleted = deleted + 1
 
