@@ -58,6 +58,8 @@
 - `dart format` ran successfully and formatted 2 files.
 - Re-read `MODIFICATION_IMPLEMENTATION.md`, no changes in the plan.
 - Committed changes for Phase 5.
+- Fixed `flutter build apk` error by correctly passing `userId` and `await`ing `_menuGeneratorService.generateWeeklyMenu` in `lib/presentation/view_models/weekly_menu_view_model.dart`.
+- `flutter build apk` now completes successfully.
 
 ## Phases
 
@@ -151,6 +153,6 @@
 
 ### Phase 6: Final Review and Project Updates
 
-- [ ] Update any README.md file for the package with relevant information from the modification (if any).
-- [ ] Update any GEMINI.md file in the project directory so that it still correctly describes the app, its purpose, and implementation details and the layout of the files.
+- [x] Update any README.md file for the package with relevant information from the modification (if any).
+- [x] Update any GEMINI.md file in the project directory so that it still correctly describes the app, its purpose, and implementation details and the layout of the files.
 - [ ] Ask the user to inspect the package (and running app, if any) and say if they are satisfied with it, or if any modifications are needed.

@@ -110,7 +110,8 @@ class WeeklyMenuViewModel extends ChangeNotifier {
     _setLoading(true);
     clearErrorMessage();
     try {
-      final newMenuMap = _menuGeneratorService.generateWeeklyMenu(
+      final newMenuMap = await _menuGeneratorService.generateWeeklyMenu(
+        userId: userId,
         userSettings: _currentSettings!,
         allRecipes: _allUserRecipes,
       );
