@@ -2,24 +2,40 @@
 
 ## Journal
 
-This section will log actions taken, learnings, surprises, and deviations from the plan in chronological order.
+- All existing tests passed before starting modifications.
+- Confirmed that `json_annotation` and `json_serializable` are already present in `pubspec.yaml`.
+- `pub get` executed successfully.
+- Created `lib/data/models/meal_type_model.dart`.
+- Generated `lib/data/models/meal_type_model.g.dart`.
+- Created `lib/data/repositories/meal_type_repository.dart`.
+- Created unit tests for `MealTypeRepository` in `test/data/repositories/meal_type_repository_test.dart`.
+- `dart fix --apply` found no issues.
+- `analyze_files` revealed issues with mocking `cloud_firestore`'s sealed classes with `mockito`.
+- Decided to use `fake_cloud_firestore` for testing `MealTypeRepository` due to `mockito`'s limitations with sealed classes.
+- Added `fake_cloud_firestore` as a dev dependency.
+- Modified `MealTypeModel` to extend `Equatable` to ensure proper value equality for testing streams.
+- Regenerated `meal_type_model.g.dart` after adding `Equatable`.
+- All `MealTypeRepository` unit tests now pass.
+- All project tests pass.
+- `dart format` ran successfully and formatted 3 files.
+- Re-read `MODIFICATION_IMPLEMENTATION.md`, no changes in the plan.
 
 ## Phases
 
 ### Phase 1: Initial Setup and Baseline Check
 
-- [ ] Run all tests to ensure the project is in a good state before starting modifications.
-- [ ] Update `pubspec.yaml` to include `json_annotation` and `json_serializable` if not already present, or ensure compatible versions.
-- [ ] Run `pub get`.
-- [ ] Create `lib/data/models/meal_type_model.dart` with the `MealTypeModel` and its `json_serializable` parts.
-- [ ] Generate the `.g.dart` file for `MealTypeModel`.
-- [ ] Create `lib/data/repositories/meal_type_repository.dart` with the `MealTypeRepository` class.
-- [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
-- [ ] Run the dart_fix tool to clean up the code.
-- [ ] Run the analyze_files tool one more time and fix any issues.
-- [ ] Run any tests to make sure they all pass.
-- [ ] Run dart_format to make sure that the formatting is correct.
-- [ ] Re-read the MODIFICATION_IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+- [x] Run all tests to ensure the project is in a good state before starting modifications.
+- [x] Update `pubspec.yaml` to include `json_annotation` and `json_serializable` if not already present, or ensure compatible versions.
+- [x] Run `pub get`.
+- [x] Create `lib/data/models/meal_type_model.dart` with the `MealTypeModel` and its `json_serializable` parts.
+- [x] Generate the `.g.dart` file for `MealTypeModel`.
+- [x] Create `lib/data/repositories/meal_type_repository.dart` with the `MealTypeRepository` class.
+- [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
+- [x] Run the dart_fix tool to clean up the code.
+- [x] Run the analyze_files tool one more time and fix any issues.
+- [x] Run any tests to make sure they all pass.
+- [x] Run dart_format to make sure that the formatting is correct.
+- [x] Re-read the MODIFICATION_IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 - [ ] Update the MODIFICATION_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 - [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
@@ -89,7 +105,7 @@ This section will log actions taken, learnings, surprises, and deviations from t
 - [ ] Run any tests to make sure they all pass.
 - [ ] Run dart_format to make sure that the formatting is correct.
 - [ ] Re-read the MODIFICATION_IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
-- [ ] Update the MODIFICATION_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+- [ ] Update the MODIFICATION_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have to be completed.
 - [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 - [ ] After committing the change, if an app is running, use the hot_reload tool to reload it.
