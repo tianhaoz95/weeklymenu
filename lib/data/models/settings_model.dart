@@ -1,17 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
 part 'settings_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class SettingsModel {
+class SettingsModel extends Equatable {
   final String? id; // Corresponds to the user ID
-  final List<String> includedMeals; // e.g., ['breakfast', 'lunch']
   final List<String> includedWeekdays; // e.g., ['monday', 'tuesday']
 
-  SettingsModel({
+  const SettingsModel({
     this.id,
-    this.includedMeals = const ['breakfast', 'lunch', 'dinner', 'snack'],
     this.includedWeekdays = const [
       'monday',
       'tuesday',
@@ -32,15 +31,13 @@ class SettingsModel {
     return SettingsModel.fromJson({...data, 'id': doc.id});
   }
 
-  SettingsModel copyWith({
-    String? id,
-    List<String>? includedMeals,
-    List<String>? includedWeekdays,
-  }) {
+  SettingsModel copyWith({String? id, List<String>? includedWeekdays}) {
     return SettingsModel(
       id: id ?? this.id,
-      includedMeals: includedMeals ?? this.includedMeals,
       includedWeekdays: includedWeekdays ?? this.includedWeekdays,
     );
   }
+
+  @override
+  List<Object?> get props => [id, includedWeekdays];
 }
