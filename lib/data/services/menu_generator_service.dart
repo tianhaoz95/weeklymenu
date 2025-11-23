@@ -3,10 +3,9 @@ import 'dart:math';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/data/models/settings_model.dart'; // Changed from user_model.dart
 import 'package:weeklymenu/data/models/weekly_menu_item_model.dart';
-import 'package:weeklymenu/data/models/weekly_menu_model.dart';
 
 class MenuGeneratorService {
-  WeeklyMenuModel generateWeeklyMenu({
+  Map<String, List<WeeklyMenuItemModel>> generateWeeklyMenu({
     required SettingsModel userSettings, // Changed from UserModel
     required List<RecipeModel> allRecipes,
   }) {
@@ -55,9 +54,6 @@ class MenuGeneratorService {
         }
       }
     }
-    return WeeklyMenuModel(
-      id: userSettings.id!,
-      menuItems: generatedMenu,
-    ); // id is nullable
+    return generatedMenu;
   }
 }

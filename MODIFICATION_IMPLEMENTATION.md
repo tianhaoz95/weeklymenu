@@ -58,18 +58,23 @@
 ### Phase 3: Refactor `WeeklyMenuRepository` and related ViewModels for per-day storage
 
 *   **Actions:**
-    *   Modified `lib/data/repositories/weekly_menu_repository.dart`: Adjusted Firestore paths in `createOrUpdateWeeklyMenu`, `getWeeklyMenu`, `streamWeeklyMenu`, `deleteWeeklyMenu` to interact with `users/{userId}/weekly/{day_of_week}` documents. Implemented helper functions to delete existing day documents and serialize/deserialize `List<WeeklyMenuItemModel>` to/from a day document.
-    *   Modified `lib/presentation/view_models/weekly_menu_view_model.dart`: Adjusted calls to `WeeklyMenuRepository` methods (`createOrUpdateWeeklyMenu`, `streamWeeklyMenu`) to pass the current `userId` and handle the new `Map<String, List<WeeklyMenuItemModel>>` input/output structure. Adapted logic to reassemble the weekly menu from per-day data.
-    *   Modified `lib/data/services/menu_generator_service.dart`: Verified `generateWeeklyMenu` outputs a `Map<String, List<WeeklyMenuItemModel>>` consistent with the new repository structure. (No changes needed).
-    *   Modified `lib/presentation/view_models/shopping_list_view_model.dart`: Adjusted calls to `WeeklyMenuViewModel` to correctly access the reassembled weekly menu.
-    *   Modified `integration_test/weekly_menu_generation_test.dart`: Adjusted assertions for weekly menu content to reflect how it's now constructed from per-day documents.
+    *   Modified `lib/data/models/weekly_menu_model.dart`: adapted to be an in-memory representation, removed custom `toJson()` and simplified `fromDocumentSnapshot`.
+    *   Ran `build_runner` to regenerate `weekly_menu_model.g.dart`.
+    *   Modified `lib/data/repositories/weekly_menu_repository.dart`: Adjusted Firestore paths in `createOrUpdateWeeklyMenu`, `getWeeklyMenu`, `streamWeeklyMenu`, `deleteWeeklyMenu` to interact with `users/{userId}/weekly/{day_of_week}` documents. Implemented helper functions (`_deleteAllDayMenus`, `_serializeDayMenu`, `_deserializeDayMenu`).
+    *   Modified `lib/presentation/view_models/weekly_menu_view_model.dart`: Adjusted `generateWeeklyMenu` to pass the `userId` and the generated `Map<String, List<WeeklyMenuItemModel>>` directly to `_weeklyMenuRepository.createOrUpdateWeeklyMenu`. No changes needed for `streamWeeklyMenu` in `initialize`.
+    *   Modified `lib/data/services/menu_generator_service.dart`: Modified `generateWeeklyMenu` to return `Map<String, List<WeeklyMenuItemModel>>` directly instead of wrapping it in a `WeeklyMenuModel`.
+    *   Modified `lib/presentation/view_models/shopping_list_view_model.dart`: No changes needed as the ViewModel already correctly accesses the reassembled weekly menu.
+    *   Modified `integration_test/weekly_menu_generation_test.dart`: No changes needed as existing assertions still hold for the reassembled menu.
+    *   Addressed `unused_local_variable` in `lib/data/models/weekly_menu_model.dart` and `argument_type_not_assignable` warnings in `lib/data/repositories/weekly_menu_repository.dart` by safely casting `doc.data()`.
     *   Ran `dart_fix`, `analyze_files`, `dart_format`, and all tests. All passed.
 
 *   **Learnings/Surprises:**
     *   Refactoring a single large document into per-day documents requires significant changes in the repository's read/write logic and the ViewModel's assembly logic.
+    *   Careful handling of `doc.data()` nullability and casting is essential when refactoring Firestore interactions.
+    *   The existing structure of `WeeklyMenuViewModel` and `ShoppingListViewModel` was robust enough to handle the change in `WeeklyMenuModel`'s representation and `MenuGeneratorService`'s return type with minimal adjustments.
 
 *   **Deviations from Plan:**
-    *   None.
+    *   The `generateWeeklyMenu` method in `MenuGeneratorService` was explicitly modified to return `Map<String, List<WeeklyMenuItemModel>>` instead of just verifying its output, to align with the new repository structure.
 
 ### Journal
 
@@ -138,28 +143,28 @@
 
 ### Phase 3: Refactor `WeeklyMenuRepository` and related ViewModels for per-day storage
 
--   [ ] Modify `lib/data/models/weekly_menu_model.dart`:
-    -   [ ] Adapt `WeeklyMenuModel` to be an in-memory representation.
-    -   [ ] Modify its `toJson()` and `fromJson()` if it still needs to be serialized for other purposes, otherwise simplify.
--   [ ] Modify `lib/data/repositories/weekly_menu_repository.dart`:
-    -   [ ] Adjust Firestore paths in `createOrUpdateWeeklyMenu`, `getWeeklyMenu`, `streamWeeklyMenu`, `deleteWeeklyMenu` to interact with `users/{userId}/weekly/{day_of_week}` documents.
-    -   [ ] Implement a helper function to delete all day documents under `users/{userId}/weekly` for `createOrUpdateWeeklyMenu` to replace the previous menu.
-    -   [ ] Implement helper functions to serialize/deserialize `List<WeeklyMenuItemModel>` to/from a day document.
--   [ ] Modify `lib/presentation/view_models/weekly_menu_view_model.dart`:
-    -   [ ] Adjust calls to `WeeklyMenuRepository` methods (`createOrUpdateWeeklyMenu`, `streamWeeklyMenu`) to pass the current `userId` and handle the new `Map<String, List<WeeklyMenuItemModel>>` input/output structure.
-    -   [ ] Adapt logic to reassemble the weekly menu from per-day data.
--   [ ] Modify `lib/data/services/menu_generator_service.dart`:
-    -   [ ] Ensure `generateWeeklyMenu` outputs a `Map<String, List<WeeklyMenuItemModel>>` consistent with the new repository structure. (Should already be doing this).
--   [ ] Modify `lib/presentation/view_models/shopping_list_view_model.dart`:
-    -   [ ] Adjust calls to `WeeklyMenuViewModel` to correctly access the reassembled weekly menu.
--   [ ] Modify `integration_test/weekly_menu_generation_test.dart`:
-    -   [ ] Adjust assertions for weekly menu content to reflect how it's now constructed from per-day documents.
+-   [x] Modify `lib/data/models/weekly_menu_model.dart`:
+    -   [x] Adapt `WeeklyMenuModel` to be an in-memory representation.
+    -   [x] Modify its `toJson()` and `fromJson()` if it still needs to be serialized for other purposes, otherwise simplify.
+-   [x] Modify `lib/data/repositories/weekly_menu_repository.dart`:
+    -   [x] Adjust Firestore paths in `createOrUpdateWeeklyMenu`, `getWeeklyMenu`, `streamWeeklyMenu`, `deleteWeeklyMenu` to interact with `users/{userId}/weekly/{day_of_week}` documents.
+    -   [x] Implement a helper function to delete all day documents under `users/{userId}/weekly` for `createOrUpdateWeeklyMenu` to replace the previous menu.
+    -   [x] Implement helper functions to serialize/deserialize `List<WeeklyMenuItemModel>` to/from a day document.
+-   [x] Modify `lib/presentation/view_models/weekly_menu_view_model.dart`:
+    -   [x] Adjust calls to `WeeklyMenuRepository` methods (`createOrUpdateWeeklyMenu`, `streamWeeklyMenu`) to pass the current `userId` and handle the new `Map<String, List<WeeklyMenuItemModel>>` input/output structure.
+    -   [x] Adapt logic to reassemble the weekly menu from per-day data.
+-   [x] Modify `lib/data/services/menu_generator_service.dart`:
+    -   [x] Ensure `generateWeeklyMenu` outputs a `Map<String, List<WeeklyMenuItemModel>>` consistent with the new repository structure. (Should already be doing this).
+-   [x] Modify `lib/presentation/view_models/shopping_list_view_model.dart`:
+    -   [x] Adjust calls to `WeeklyMenuViewModel` to correctly access the reassembled weekly menu.
+-   [x] Modify `integration_test/weekly_menu_generation_test.dart`:
+    -   [x] Adjust assertions for weekly menu content to reflect how it's now constructed from per-day documents.
 -   [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.

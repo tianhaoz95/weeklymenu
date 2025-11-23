@@ -15,19 +15,12 @@ class WeeklyMenuModel {
   factory WeeklyMenuModel.fromJson(Map<String, dynamic> json) =>
       _$WeeklyMenuModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['menu_items'] = menuItems.map(
-      (key, value) =>
-          MapEntry(key, value.map((item) => item.toJson()).toList()),
-    );
-    return data;
-  }
-
   factory WeeklyMenuModel.fromDocumentSnapshot(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return WeeklyMenuModel.fromJson({...data, 'id': doc.id});
+    // This model will now be constructed from multiple daily documents
+    // This factory will primarily be used for cases where we might still
+    // read a "summary" or the ID, but the menuItems will be assembled
+    // from individual day documents by the repository.
+    return WeeklyMenuModel(id: doc.id, menuItems: {});
   }
 
   WeeklyMenuModel copyWith({
