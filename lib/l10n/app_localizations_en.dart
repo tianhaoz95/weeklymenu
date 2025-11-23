@@ -75,7 +75,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipeNameLabel => 'Recipe Name';
 
   @override
-  String get ingredientsLabel => 'Ingredients (comma-separated)';
+  String get ingredientLabel => 'Ingredient';
+
+  @override
+  String get addIngredientHint => 'Add an ingredient';
 
   @override
   String get instructionsLabel => 'Instructions (each on a new line)';

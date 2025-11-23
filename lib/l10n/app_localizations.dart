@@ -224,11 +224,17 @@ abstract class AppLocalizations {
   /// **'Recipe Name'**
   String get recipeNameLabel;
 
-  /// No description provided for @ingredientsLabel.
+  /// No description provided for @ingredientLabel.
   ///
   /// In en, this message translates to:
-  /// **'Ingredients (comma-separated)'**
-  String get ingredientsLabel;
+  /// **'Ingredient'**
+  String get ingredientLabel;
+
+  /// No description provided for @addIngredientHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an ingredient'**
+  String get addIngredientHint;
 
   /// No description provided for @instructionsLabel.
   ///

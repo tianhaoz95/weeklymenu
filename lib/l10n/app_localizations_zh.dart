@@ -74,7 +74,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recipeNameLabel => '食谱名称';
 
   @override
-  String get ingredientsLabel => '配料（逗号分隔）';
+  String get ingredientLabel => '配料';
+
+  @override
+  String get addIngredientHint => '添加配料';
 
   @override
   String get instructionsLabel => '说明（每行一个）';

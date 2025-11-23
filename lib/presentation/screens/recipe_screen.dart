@@ -19,7 +19,8 @@ class RecipeScreen extends StatefulWidget {
 class _RecipeScreenState extends State<RecipeScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ingredientsController = TextEditingController();
+  final TextEditingController _singleIngredientController =
+      TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
 
   // State for recipe properties
@@ -136,17 +137,38 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   void _populateFields() {
     _nameController.text = _currentRecipe!.name;
-    _ingredientsController.text = _currentRecipe!.ingredients.join(', ');
     _instructionsController.text = _currentRecipe!.instructions.join('\n');
     _selectedCategories = List.from(_currentRecipe!.categories);
     _selectedCuisines = List.from(_currentRecipe!.cuisines);
     _selectedRating = _currentRecipe!.rating;
   }
 
+  void _addIngredient() {
+    final newIngredient = _singleIngredientController.text.trim();
+    if (newIngredient.isNotEmpty &&
+        !_currentRecipe!.ingredients.contains(newIngredient)) {
+      setState(() {
+        _currentRecipe = _currentRecipe!.copyWith(
+          ingredients: List.from(_currentRecipe!.ingredients)
+            ..add(newIngredient),
+        );
+        _singleIngredientController.clear();
+      });
+    }
+  }
+
+  void _removeIngredient(String ingredient) {
+    setState(() {
+      _currentRecipe = _currentRecipe!.copyWith(
+        ingredients: List.from(_currentRecipe!.ingredients)..remove(ingredient),
+      );
+    });
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
-    _ingredientsController.dispose();
+    _singleIngredientController.dispose();
     _instructionsController.dispose();
     super.dispose();
   }
@@ -173,10 +195,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
       final newRecipe = RecipeModel(
         id: _currentRecipe!.id,
         name: _nameController.text,
-        ingredients: _ingredientsController.text
-            .split(',')
-            .map((e) => e.trim())
-            .toList(),
+        ingredients: _currentRecipe!.ingredients,
         instructions: _instructionsController.text
             .split('\n')
             .map((e) => e.trim())
@@ -263,15 +282,45 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                key: const Key('ingredients_input_field'),
-                controller: _ingredientsController,
-                decoration: InputDecoration(
-                  labelText: appLocalizations.ingredientsLabel,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
+              // New UI for ingredients
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      key: const Key('single_ingredient_input_field'),
+                      controller: _singleIngredientController,
+                      decoration: InputDecoration(
+                        labelText: appLocalizations.ingredientLabel,
+                        hintText: appLocalizations.addIngredientHint,
+                      ),
+                      onFieldSubmitted: (value) {
+                        _addIngredient();
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    key: const Key('add_ingredient_button'),
+                    icon: const Icon(Icons.add),
+                    onPressed: _addIngredient,
+                  ),
+                ],
               ),
+              if (_currentRecipe != null &&
+                  _currentRecipe!.ingredients.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 4.0,
+                  children: _currentRecipe!.ingredients.map((ingredient) {
+                    return Chip(
+                      key: ValueKey(ingredient),
+                      label: Text(ingredient),
+                      onDeleted: () => _removeIngredient(ingredient),
+                      deleteIcon: const Icon(Icons.close),
+                    );
+                  }).toList(),
+                ),
+              ],
               const SizedBox(height: 16),
               TextFormField(
                 key: const Key('instructions_input_field'),

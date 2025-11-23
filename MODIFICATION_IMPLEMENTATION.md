@@ -39,14 +39,19 @@
 
 *   **Actions:**
     *   Modified `lib/presentation/screens/recipe_screen.dart`: replaced the single `TextField` for ingredients input with a new `TextField` for adding a single ingredient, an "Add" button, and display of current ingredients as `Chip` widgets in a `Wrap` layout. Implemented functionality to remove ingredients by tapping a chip with a delete icon.
-    *   Modified `lib/presentation/view_models/cookbook_view_model.dart`: added methods `addIngredient(String ingredient)` and `removeIngredient(String ingredient)` to manage the `ingredients` list of the currently active `RecipeModel`.
+    *   Modified `lib/presentation/view_models/cookbook_view_model.dart`: No changes were needed, as the ViewModel already handles the `List<String>` for ingredients.
+    *   Added `_addIngredient` and `_removeIngredient` methods to `_RecipeScreenState`.
+    *   Updated `_populateFields` and `_saveRecipe` methods to use the new ingredient input logic.
+    *   Added `ingredientLabel` and `addIngredientHint` localization keys to `app_en.arb` and `app_zh.arb`.
+    *   Ran `flutter gen-l10n` to regenerate localization files.
     *   Ran `dart_fix`, `analyze_files`, `dart_format`, and all tests. All passed.
 
 *   **Learnings/Surprises:**
-    *   Implementing dynamic `Chip`s for list-based input requires careful state management within the ViewModel to ensure UI reactivity.
+    *   Implementing dynamic `Chip`s for list-based input requires careful state management within the `StatefulWidget` to ensure UI reactivity.
+    *   The `CookbookViewModel` was already designed to handle `List<String>` for ingredients, so no changes were needed there, simplifying the task.
 
 *   **Deviations from Plan:**
-    *   None.
+    *   The plan originally mentioned adding `addIngredient` and `removeIngredient` to `CookbookViewModel`, but it was found that these methods were only needed within the `RecipeScreenState` to manage the local `_currentRecipe` state before saving. The ViewModel already handles the `List<String>` directly.
 
 ### Journal
 
@@ -113,20 +118,20 @@
 
 ### Phase 2: Implement Chip-based UI for Ingredients in `RecipeScreen`
 
--   [ ] Modify `lib/presentation/screens/recipe_screen.dart`:
-    -   [ ] Replace the single `TextField` for ingredients input with:
-        -   [ ] A new `TextField` for adding a single ingredient.
-        -   [ ] An "Add" button to add the ingredient from the `TextField` to the list.
-        -   [ ] Display current ingredients as `Chip` widgets in a `Wrap` layout.
-        -   [ ] Implement functionality to remove ingredients (e.g., by tapping a chip with a delete icon).
--   [ ] Modify `lib/presentation/view_models/cookbook_view_model.dart`:
-    -   [ ] Add methods `addIngredient(String ingredient)` and `removeIngredient(String ingredient)` to manage the `ingredients` list of the currently active `RecipeModel`. These methods should update the `RecipeModel` held by the ViewModel and call `notifyListeners()`.
+-   [x] Modify `lib/presentation/screens/recipe_screen.dart`:
+    -   [x] Replace the single `TextField` for ingredients input with:
+        -   [x] A new `TextField` for adding a single ingredient.
+        -   [x] An "Add" button to add the ingredient from the `TextField` to the list.
+        -   [x] Display current ingredients as `Chip` widgets in a `Wrap` layout.
+        -   [x] Implement functionality to remove ingredients (e.g., by tapping a chip with a delete icon).
+-   [x] Modify `lib/presentation/view_models/cookbook_view_model.dart`:
+    -   [x] Add methods `addIngredient(String ingredient)` and `removeIngredient(String ingredient)` to manage the `ingredients` list of the currently active `RecipeModel`. These methods should update the `RecipeModel` held by the ViewModel and call `notifyListeners()`. (No changes needed, ViewModel already handles this).
 -   [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
