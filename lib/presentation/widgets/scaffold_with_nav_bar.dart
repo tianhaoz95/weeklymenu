@@ -33,17 +33,16 @@ class ScaffoldWithNavBar extends StatelessWidget {
             label: appLocalizations.weeklyMenuTitle,
           ),
           BottomNavigationBarItem(
+            icon: const Icon(Icons.shopping_cart),
+            label: appLocalizations.shoppingListScreenTitle,
+          ),
+          BottomNavigationBarItem(
             icon: const Icon(Icons.restaurant_menu),
             label: appLocalizations.cookbookTitle,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
             label: appLocalizations.settingsTitle,
-          ),
-          // New BottomNavigationBarItem for Shopping List
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_cart),
-            label: appLocalizations.shoppingListScreenTitle,
           ),
         ],
         onTap: _goBranch,

@@ -154,6 +154,15 @@ final GoRouter _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
+              path: '/shopping-list',
+              name: 'shopping-list', // Named route
+              builder: (context, state) => const ShoppingListScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
               path: '/cookbook',
               name: 'cookbook', // Named route
               builder: (context, state) => const CookbookScreen(),
@@ -177,16 +186,6 @@ final GoRouter _router = GoRouter(
               path: '/settings',
               name: 'settings', // Named route
               builder: (context, state) => const SettingsScreen(),
-            ),
-          ],
-        ),
-        // New branch for ShoppingListScreen
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/shopping-list',
-              name: 'shopping-list', // Named route
-              builder: (context, state) => const ShoppingListScreen(),
             ),
           ],
         ),
