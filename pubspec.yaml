@@ -34,6 +34,7 @@ dev_dependencies:
   mockito: any
   rxdart: any
   fake_cloud_firestore: ^4.0.0
+  firebase_auth_mocks: ^0.15.1
 flutter:
   uses-material-design: true
   generate: true

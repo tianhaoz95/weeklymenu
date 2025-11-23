@@ -107,6 +107,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectWeekdaysForMenu => '选择每周菜单的日期：';
 
   @override
+  String get customMealTypes => '自定义餐点类型：';
+
+  @override
+  String get newMealTypeHint => '输入新的餐点类型名称';
+
+  @override
   String get logoutButton => '退出';
 
   @override

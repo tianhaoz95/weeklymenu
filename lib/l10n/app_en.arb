@@ -39,6 +39,8 @@
   "welcomeMessage": "Welcome",
   "selectMealsForMenu": "Select Meals for Weekly Menu:",
   "selectWeekdaysForMenu": "Select Weekdays for Weekly Menu:",
+  "customMealTypes": "Custom Meal Types:",
+  "newMealTypeHint": "Enter new meal type name",
   "logoutButton": "Sign Out",
   "cookbookScreenTitle": "Cookbook",
   "deleteRecipeConfirmation": "Are you sure you want to delete \"{recipeName}\"?",

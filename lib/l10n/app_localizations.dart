@@ -290,6 +290,18 @@ abstract class AppLocalizations {
   /// **'Select Weekdays for Weekly Menu:'**
   String get selectWeekdaysForMenu;
 
+  /// No description provided for @customMealTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Meal Types:'**
+  String get customMealTypes;
+
+  /// No description provided for @newMealTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new meal type name'**
+  String get newMealTypeHint;
+
   /// No description provided for @logoutButton.
   ///
   /// In en, this message translates to:

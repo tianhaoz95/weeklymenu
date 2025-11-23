@@ -4,6 +4,7 @@ import 'package:weeklymenu/presentation/view_models/auth_view_model.dart';
 import 'package:weeklymenu/presentation/view_models/settings_view_model.dart'; // Import SettingsViewModel
 import 'package:weeklymenu/l10n/app_localizations.dart';
 import 'package:weeklymenu/presentation/widgets/language_dropdown_widget.dart'; // Import LanguageDropdownWidget
+import 'package:weeklymenu/data/models/meal_type_model.dart'; // Import MealTypeModel
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -100,22 +101,6 @@ class SettingsScreen extends StatelessWidget {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final settingsViewModel = Provider.of<SettingsViewModel>(context);
 
-    // Helper to get localized meal type
-    String getLocalizedMealType(String mealType) {
-      switch (mealType) {
-        case 'breakfast':
-          return appLocalizations.breakfast;
-        case 'lunch':
-          return appLocalizations.lunch;
-        case 'dinner':
-          return appLocalizations.dinner;
-        case 'snack':
-          return appLocalizations.snack;
-        default:
-          return mealType;
-      }
-    }
-
     // Helper to get localized weekday
     String getLocalizedWeekday(String weekday) {
       switch (weekday) {
@@ -138,7 +123,6 @@ class SettingsScreen extends StatelessWidget {
       }
     }
 
-    const List<String> allMealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
     const List<String> allWeekdays = [
       'monday',
       'tuesday',
@@ -162,34 +146,13 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              appLocalizations.selectMealsForMenu,
+              appLocalizations
+                  .customMealTypes, // Assuming this string will be added to ARB files
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            Wrap(
-              spacing: 8.0,
-              children: allMealTypes.map((mealType) {
-                final bool isSelected =
-                    settingsViewModel.currentSettings?.includedMeals.contains(
-                      mealType,
-                    ) ??
-                    false;
-                return FilterChip(
-                  label: Text(getLocalizedMealType(mealType)),
-                  selected: isSelected,
-                  onSelected: (bool selected) {
-                    final List<String> currentMeals = List.from(
-                      settingsViewModel.currentSettings?.includedMeals ?? [],
-                    );
-                    if (selected) {
-                      currentMeals.add(mealType);
-                    } else {
-                      currentMeals.remove(mealType);
-                    }
-                    settingsViewModel.updateIncludedMeals(currentMeals);
-                  },
-                );
-              }).toList(),
-            ),
+            _MealTypeManager(
+              settingsViewModel: settingsViewModel,
+            ), // New widget for meal type management
             const SizedBox(height: 20),
             Text(
               appLocalizations.selectWeekdaysForMenu,
@@ -256,6 +219,90 @@ class SettingsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _MealTypeManager extends StatefulWidget {
+  final SettingsViewModel settingsViewModel;
+
+  const _MealTypeManager({required this.settingsViewModel});
+
+  @override
+  _MealTypeManagerState createState() => _MealTypeManagerState();
+}
+
+class _MealTypeManagerState extends State<_MealTypeManager> {
+  final TextEditingController _mealTypeNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _mealTypeNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        StreamBuilder<List<MealTypeModel>>(
+          stream: widget.settingsViewModel.mealTypes,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            final mealTypes = snapshot.data ?? [];
+            return Wrap(
+              spacing: 8.0,
+              children: mealTypes.map((mealType) {
+                return Chip(
+                  label: Text(mealType.name),
+                  onDeleted: () =>
+                      widget.settingsViewModel.deleteMealType(mealType.id),
+                );
+              }).toList(),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _mealTypeNameController,
+                decoration: InputDecoration(
+                  labelText:
+                      appLocalizations.newMealTypeHint, // New string for ARB
+                  border: const OutlineInputBorder(),
+                ),
+                onSubmitted: (value) {
+                  if (value.isNotEmpty) {
+                    widget.settingsViewModel.addMealType(value);
+                    _mealTypeNameController.clear();
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                if (_mealTypeNameController.text.isNotEmpty) {
+                  widget.settingsViewModel.addMealType(
+                    _mealTypeNameController.text,
+                  );
+                  _mealTypeNameController.clear();
+                }
+              },
+              child: Text(appLocalizations.addButton), // Existing string
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

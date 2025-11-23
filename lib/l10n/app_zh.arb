@@ -39,6 +39,8 @@
   "welcomeMessage": "欢迎",
   "selectMealsForMenu": "选择每周菜单的餐点：",
   "selectWeekdaysForMenu": "选择每周菜单的日期：",
+  "customMealTypes": "自定义餐点类型：",
+  "newMealTypeHint": "输入新的餐点类型名称",
   "logoutButton": "退出",
   "cookbookScreenTitle": "食谱",
   "deleteRecipeConfirmation": "您确定要删除“{recipeName}”吗？",

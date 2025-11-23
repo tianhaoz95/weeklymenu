@@ -108,6 +108,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectWeekdaysForMenu => 'Select Weekdays for Weekly Menu:';
 
   @override
+  String get customMealTypes => 'Custom Meal Types:';
+
+  @override
+  String get newMealTypeHint => 'Enter new meal type name';
+
+  @override
   String get logoutButton => 'Sign Out';
 
   @override
