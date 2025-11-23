@@ -49,37 +49,39 @@ void main() {
 
       // Clean up any previous test data
       await settingsRepository.saveSettings(userId, SettingsModel(id: userId));
-      final existingRecipes = await recipeRepository.getRecipesForUser(userId).first;
+      final existingRecipes = await recipeRepository
+          .getRecipesForUser(userId)
+          .first;
       for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(userId, recipe.id!); // Corrected call
+        await recipeRepository.deleteRecipe(
+          userId,
+          recipe.id!,
+        ); // Corrected call
       }
 
       // Add test recipes
-      await recipeRepository.createRecipe( // Corrected call
-        RecipeModel.newRecipe(
-          name: 'Scrambled Eggs',
-          userId: userId,
-        ).copyWith(
+      await recipeRepository.createRecipe(
+        // Corrected call
+        RecipeModel.newRecipe(name: 'Scrambled Eggs', userId: userId).copyWith(
           categories: ['breakfast', 'main_course'],
-          ingredients: ['eggs', 'milk', 'butter']
+          ingredients: ['eggs', 'milk', 'butter'],
         ),
       );
-      await recipeRepository.createRecipe( // Corrected call
+      await recipeRepository.createRecipe(
+        // Corrected call
         RecipeModel.newRecipe(
           name: 'Chicken Stir-fry',
           userId: userId,
         ).copyWith(
           categories: ['main_course'],
-          ingredients: ['chicken breast', 'broccoli', 'soy sauce']
+          ingredients: ['chicken breast', 'broccoli', 'soy sauce'],
         ),
       );
-      await recipeRepository.createRecipe( // Corrected call
-        RecipeModel.newRecipe(
-          name: 'Fruit Smoothie',
-          userId: userId,
-        ).copyWith(
+      await recipeRepository.createRecipe(
+        // Corrected call
+        RecipeModel.newRecipe(name: 'Fruit Smoothie', userId: userId).copyWith(
           categories: ['snack'],
-          ingredients: ['banana', 'spinach', 'almond milk']
+          ingredients: ['banana', 'spinach', 'almond milk'],
         ),
       );
 
@@ -89,7 +91,13 @@ void main() {
         SettingsModel(
           id: userId,
           includedMeals: ['breakfast', 'lunch', 'dinner', 'snack'],
-          includedWeekdays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+          includedWeekdays: [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+          ],
         ),
       );
     });
@@ -99,16 +107,22 @@ void main() {
       final firebaseAuth = FirebaseAuth.instance;
       final recipeRepository = RecipeRepository();
       // Clean up test recipes
-      final existingRecipes = await recipeRepository.getRecipesForUser(userId).first;
+      final existingRecipes = await recipeRepository
+          .getRecipesForUser(userId)
+          .first;
       for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(userId, recipe.id!); // Corrected call
+        await recipeRepository.deleteRecipe(
+          userId,
+          recipe.id!,
+        ); // Corrected call
       }
       // Delete test user
       await firebaseAuth.currentUser?.delete();
     });
 
-    testWidgets('Weekly menu and shopping list should generate correctly',
-        (WidgetTester tester) async {
+    testWidgets('Weekly menu and shopping list should generate correctly', (
+      WidgetTester tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -118,17 +132,34 @@ void main() {
 
       // Tap the refresh icon to generate the menu
       await tester.tap(find.byIcon(Icons.refresh));
-      await tester.pumpAndSettle(const Duration(seconds: 5)); // Increased duration for generation
+      await tester.pumpAndSettle(
+        const Duration(seconds: 5),
+      ); // Increased duration for generation
 
       // Assert that no error message is displayed
       expect(find.text('User settings or recipes not loaded.'), findsNothing);
-      expect(find.text('Error generating weekly menu'), findsNothing); // Specific error from previous task
+      expect(
+        find.text('Error generating weekly menu'),
+        findsNothing,
+      ); // Specific error from previous task
 
       // Assert that a weekly menu is displayed
       expect(find.byType(WeeklyMenuScreen), findsOneWidget);
-      expect(find.textContaining('Scrambled Eggs'), findsWidgets, reason: 'Should find generated breakfast recipe');
-      expect(find.textContaining('Chicken Stir-fry'), findsWidgets, reason: 'Should find generated main course recipe');
-      expect(find.textContaining('Fruit Smoothie'), findsWidgets, reason: 'Should find generated snack recipe');
+      expect(
+        find.textContaining('Scrambled Eggs'),
+        findsWidgets,
+        reason: 'Should find generated breakfast recipe',
+      );
+      expect(
+        find.textContaining('Chicken Stir-fry'),
+        findsWidgets,
+        reason: 'Should find generated main course recipe',
+      );
+      expect(
+        find.textContaining('Fruit Smoothie'),
+        findsWidgets,
+        reason: 'Should find generated snack recipe',
+      );
 
       // Navigate to ShoppingListScreen
       await tester.tap(find.byIcon(Icons.shopping_cart));
@@ -136,15 +167,78 @@ void main() {
 
       // Assert that the shopping list is displayed and contains expected items
       expect(find.byType(ShoppingListScreen), findsOneWidget);
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('eggs')), findsWidgets, reason: 'Shopping list should contain eggs');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('milk')), findsWidgets, reason: 'Shopping list should contain milk');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('butter')), findsWidgets, reason: 'Shopping list should contain butter');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('chicken breast')), findsWidgets, reason: 'Shopping list should contain chicken breast');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('broccoli')), findsWidgets, reason: 'Shopping list should contain broccoli');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('soy sauce')), findsWidgets, reason: 'Shopping list should contain soy sauce');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('banana')), findsWidgets, reason: 'Shopping list should contain banana');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('spinach')), findsWidgets, reason: 'Shopping list should contain spinach');
-      expect(find.descendant(of: find.byType(ShoppingListScreen), matching: find.textContaining('almond milk')), findsWidgets, reason: 'Shopping list should contain almond milk');
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('eggs'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain eggs',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('milk'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain milk',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('butter'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain butter',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('chicken breast'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain chicken breast',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('broccoli'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain broccoli',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('soy sauce'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain soy sauce',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('banana'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain banana',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('spinach'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain spinach',
+      );
+      expect(
+        find.descendant(
+          of: find.byType(ShoppingListScreen),
+          matching: find.textContaining('almond milk'),
+        ),
+        findsWidgets,
+        reason: 'Shopping list should contain almond milk',
+      );
     });
   });
 }

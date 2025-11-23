@@ -51,8 +51,9 @@ void main() {
       await firebaseAuth.currentUser?.delete();
     });
 
-    testWidgets('Bottom navigation items should be in the correct order',
-        (WidgetTester tester) async {
+    testWidgets('Bottom navigation items should be in the correct order', (
+      WidgetTester tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -78,9 +79,21 @@ void main() {
       final Offset settingsPos = tester.getCenter(settingsFinder);
 
       // Assert the order from left to right based on x-coordinate
-      expect(weeklyMenuPos.dx, lessThan(shoppingListPos.dx), reason: 'Weekly Menu should be to the left of Shopping List');
-      expect(shoppingListPos.dx, lessThan(cookbookPos.dx), reason: 'Shopping List should be to the left of Cookbook');
-      expect(cookbookPos.dx, lessThan(settingsPos.dx), reason: 'Cookbook should be to the left of Settings');
+      expect(
+        weeklyMenuPos.dx,
+        lessThan(shoppingListPos.dx),
+        reason: 'Weekly Menu should be to the left of Shopping List',
+      );
+      expect(
+        shoppingListPos.dx,
+        lessThan(cookbookPos.dx),
+        reason: 'Shopping List should be to the left of Cookbook',
+      );
+      expect(
+        cookbookPos.dx,
+        lessThan(settingsPos.dx),
+        reason: 'Cookbook should be to the left of Settings',
+      );
     });
   });
 }

@@ -9,7 +9,7 @@ class RecipeRepository {
       await _firestore
           .collection('users')
           .doc(recipe.userId)
-          .collection('recipes')
+          .collection('cookbook')
           .doc(recipe.id)
           .set(recipe.toJson());
     } catch (e) {
@@ -22,7 +22,7 @@ class RecipeRepository {
       final doc = await _firestore
           .collection('users')
           .doc(userId)
-          .collection('recipes')
+          .collection('cookbook')
           .doc(recipeId)
           .get();
       if (doc.exists) {
@@ -38,7 +38,7 @@ class RecipeRepository {
     return _firestore
         .collection('users')
         .doc(userId)
-        .collection('recipes')
+        .collection('cookbook')
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
@@ -52,7 +52,7 @@ class RecipeRepository {
       await _firestore
           .collection('users')
           .doc(recipe.userId)
-          .collection('recipes')
+          .collection('cookbook')
           .doc(recipe.id)
           .update(recipe.toJson());
     } catch (e) {
@@ -65,7 +65,7 @@ class RecipeRepository {
       await _firestore
           .collection('users')
           .doc(userId)
-          .collection('recipes')
+          .collection('cookbook')
           .doc(recipeId)
           .delete();
     } catch (e) {

@@ -21,13 +21,14 @@
     *   Ran all tests, confirmed project in good state.
     *   Modified `lib/data/models/recipe_model.dart`: verified `ingredients` field is `List<String>`.
     *   Modified `lib/data/repositories/recipe_repository.dart`: adjusted Firestore paths in `createRecipe`, `getRecipe`, `getRecipesForUser`, `updateRecipe`, `deleteRecipe` to be `/users/{userId}/cookbook/{recipeId}`.
-    *   Modified `lib/presentation/view_models/cookbook_view_model.dart`: adjusted calls to `RecipeRepository` methods (`deleteRecipe`) to pass the current `userId`.
-    *   Modified existing integration tests (`integration_test/weekly_menu_generation_test.dart`, `integration_test/settings_persistence_test.dart`): adjusted `setUpAll` and `tearDownAll` calls to `RecipeRepository.deleteRecipe` and `RecipeRepository.createRecipe` to use the new `cookbook` collection name implicitly through the updated `RecipeRepository` and pass `userId`.
+    *   Modified `lib/presentation/view_models/cookbook_view_model.dart`: adjusted calls to `RecipeRepository` methods (`deleteRecipe`) to pass the current `userId`. (No changes needed).
+    *   Modified existing integration tests (`integration_test/weekly_menu_generation_test.dart`, `integration_test/settings_persistence_test.dart`): adjusted `setUpAll` and `tearDownAll` calls to `RecipeRepository.deleteRecipe` and `RecipeRepository.createRecipe` to use the new `cookbook` collection name implicitly through the updated `RecipeRepository` and pass `userId`. (No changes needed).
     *   Ran `dart_fix`, `analyze_files`, `dart_format`, and all tests. All passed.
 
 *   **Learnings/Surprises:**
     *   The previous refactoring task correctly ensured `RecipeModel.ingredients` was already `List<String>`.
     *   It's crucial to update all call sites when repository method signatures change or collection names are altered.
+    *   No changes were needed in `cookbook_view_model.dart` or integration tests as `userId` was already being correctly passed.
 
 *   **Deviations from Plan:**
     *   None.
@@ -91,21 +92,21 @@
 
 ### Phase 1: Update `RecipeModel` and `RecipeRepository` for `cookbook` collection
 
--   [ ] Run all tests to ensure the project is in a good state before starting modifications.
--   [ ] Modify `lib/data/models/recipe_model.dart`:
-    -   [ ] Verify `ingredients` field is `List<String>`. (Already is, but verify).
--   [ ] Modify `lib/data/repositories/recipe_repository.dart`:
-    -   [ ] Adjust Firestore paths in `createRecipe`, `getRecipe`, `getRecipesForUser`, `updateRecipe`, `deleteRecipe` to be `/users/{userId}/cookbook/{recipeId}`.
--   [ ] Modify `lib/presentation/view_models/cookbook_view_model.dart`:
-    -   [ ] Adjust calls to `RecipeRepository` methods to pass the current `userId` (obtained from `AuthRepository`). (Already largely done in previous refactoring, but confirm paths).
--   [ ] Modify existing integration tests (`integration_test/weekly_menu_generation_test.dart`, `integration_test/settings_persistence_test.dart`):
-    -   [ ] Adjust `setUpAll` and `tearDownAll` calls to `RecipeRepository.deleteRecipe` and `RecipeRepository.createRecipe` to use the new `cookbook` collection name implicitly through the updated `RecipeRepository` and pass `userId`.
+-   [x] Run all tests to ensure the project is in a good state before starting modifications.
+-   [x] Modify `lib/data/models/recipe_model.dart`:
+    -   [x] Verify `ingredients` field is `List<String>`. (Already is, but verify).
+-   [x] Modify `lib/data/repositories/recipe_repository.dart`:
+    -   [x] Adjust Firestore paths in `createRecipe`, `getRecipe`, `getRecipesForUser`, `updateRecipe`, `deleteRecipe` to be `/users/{userId}/cookbook/{recipeId}`.
+-   [x] Modify `lib/presentation/view_models/cookbook_view_model.dart`:
+    -   [x] Adjust calls to `RecipeRepository` methods to pass the current `userId` (obtained from `AuthRepository`). (Already largely done in previous refactoring, but confirm paths).
+-   [x] Modify existing integration tests (`integration_test/weekly_menu_generation_test.dart`, `integration_test/settings_persistence_test.dart`):
+    -   [x] Adjust `setUpAll` and `tearDownAll` calls to `RecipeRepository.deleteRecipe` and `RecipeRepository.createRecipe` to use the new `cookbook` collection name implicitly through the updated `RecipeRepository` and pass `userId`.
 -   [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
--   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
+-   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
