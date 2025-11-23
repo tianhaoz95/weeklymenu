@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/data/repositories/recipe_repository.dart';
+import 'package:weeklymenu/data/repositories/meal_type_repository.dart'; // Import MealTypeRepository
+import 'package:weeklymenu/data/models/meal_type_model.dart'; // Import MealTypeModel
+import 'dart:async'; // Import for StreamSubscription
 
 class CookbookViewModel extends ChangeNotifier {
   final RecipeRepository _recipeRepository;
+  final MealTypeRepository _mealTypeRepository; // Add MealTypeRepository
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  CookbookViewModel({RecipeRepository? recipeRepository})
-    : _recipeRepository = recipeRepository ?? RecipeRepository();
+  CookbookViewModel({
+    RecipeRepository? recipeRepository,
+    MealTypeRepository? mealTypeRepository, // Accept MealTypeRepository
+  })  : _recipeRepository = recipeRepository ?? RecipeRepository(),
+        _mealTypeRepository = mealTypeRepository ?? MealTypeRepository(); // Initialize MealTypeRepository
 
   List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;
@@ -19,15 +26,31 @@ class CookbookViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  List<MealTypeModel> _mealTypes = [];
+  List<MealTypeModel> get mealTypes => _mealTypes;
+
+  StreamSubscription<User?>? _authStateSubscription;
+  StreamSubscription<List<MealTypeModel>>? _mealTypesSubscription;
+
   void initialize() {
-    _auth.authStateChanges().listen((User? user) {
+    _authStateSubscription = _auth.authStateChanges().listen((User? user) {
+      _mealTypesSubscription?.cancel(); // Cancel previous subscription
       if (user != null) {
         _recipeRepository.getRecipesForUser(user.uid).listen((recipeList) {
           _recipes = recipeList;
           notifyListeners();
         });
+
+        // Stream meal types for the user
+        _mealTypesSubscription = _mealTypeRepository
+            .getMealTypes(user.uid)
+            .listen((mealTypeList) {
+              _mealTypes = mealTypeList;
+              notifyListeners();
+            });
       } else {
         _recipes = [];
+        _mealTypes = []; // Clear meal types on logout
         notifyListeners();
       }
     });

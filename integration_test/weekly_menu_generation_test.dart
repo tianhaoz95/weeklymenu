@@ -11,6 +11,8 @@ import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
 import 'package:weeklymenu/presentation/screens/shopping_list_screen.dart';
 
+const String testUserId = 'testUserId';
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -88,17 +90,10 @@ void main() {
       // Set user preferences
       await settingsRepository.saveSettings(
         userId,
-        SettingsModel(
-          id: userId,
-          includedMeals: ['breakfast', 'lunch', 'dinner', 'snack'],
-          includedWeekdays: [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-          ],
-        ),
+            SettingsModel(
+              id: testUserId,
+              includedWeekdays: ['monday', 'tuesday'],
+            ),
       );
     });
 

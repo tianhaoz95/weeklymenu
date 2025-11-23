@@ -29,15 +29,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
   double _selectedRating = 0.0;
 
   // Available options
-  final List<String> _allCategories = [
-    'breakfast',
-    'lunch',
-    'dinner',
-    'snack',
-    'appetizer',
-    'main_course',
-    'dessert',
-  ];
   final List<String> _allCuisines = [
     'american',
     'italian',
@@ -50,31 +41,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   RecipeModel? _currentRecipe;
   String? _userId;
-
-  // Helper to get localized category name
-  String _getLocalizedCategory(
-    AppLocalizations appLocalizations,
-    String category,
-  ) {
-    switch (category) {
-      case 'breakfast':
-        return appLocalizations.breakfast;
-      case 'lunch':
-        return appLocalizations.lunch;
-      case 'dinner':
-        return appLocalizations.dinner;
-      case 'snack':
-        return appLocalizations.snack;
-      case 'appetizer':
-        return appLocalizations.appetizer;
-      case 'main_course':
-        return appLocalizations.main_course;
-      case 'dessert':
-        return appLocalizations.dessert;
-      default:
-        return category;
-    }
-  }
 
   // Helper to get localized cuisine name
   String _getLocalizedCuisine(
@@ -354,26 +320,35 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 16),
-              Text(appLocalizations.categoriesLabel),
-              Wrap(
-                spacing: 8.0,
-                children: _allCategories.map((category) {
-                  return FilterChip(
-                    label: Text(
-                      _getLocalizedCategory(appLocalizations, category),
-                    ),
-                    selected: _selectedCategories.contains(category),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        if (selected) {
-                          _selectedCategories.add(category);
-                        } else {
-                          _selectedCategories.remove(category);
-                        }
-                      });
-                    },
+              Consumer<CookbookViewModel>(
+                builder: (context, cookbookViewModel, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(appLocalizations.categoriesLabel),
+                      Wrap(
+                        spacing: 8.0,
+                        children: cookbookViewModel.mealTypes.map((mealType) {
+                          final bool isSelected =
+                              _selectedCategories.contains(mealType.name);
+                          return FilterChip(
+                            label: Text(mealType.name),
+                            selected: isSelected,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  _selectedCategories.add(mealType.name);
+                                } else {
+                                  _selectedCategories.remove(mealType.name);
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   );
-                }).toList(),
+                },
               ),
               const SizedBox(height: 16),
               Text(appLocalizations.starRatingLabel),
