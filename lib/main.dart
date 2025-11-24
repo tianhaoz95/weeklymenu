@@ -61,7 +61,7 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (context) => WeeklyMenuViewModel()..initialize(),
         ),
-        ChangeNotifierProxyProvider<WeeklyMenuViewModel, ShoppingListViewModel>(
+        ChangeNotifierProvider(
           create: (context) {
             final weeklyMenuViewModel = Provider.of<WeeklyMenuViewModel>(
               context,
@@ -70,33 +70,27 @@ Future<void> main() async {
             final authRepository = Provider.of<AuthRepository>(
               context,
               listen: false,
-            ); // Retrieve AuthRepository
+            );
             final shoppingListRepository = Provider.of<ShoppingListRepository>(
               context,
               listen: false,
-            ); // Retrieve ShoppingListRepository
+            );
             final shoppingListService = Provider.of<ShoppingListService>(
               context,
               listen: false,
-            ); // Retrieve ShoppingListService
+            );
             final recipeRepository = Provider.of<RecipeRepository>(
               context,
               listen: false,
-            ); // Retrieve RecipeRepository
+            );
 
             return ShoppingListViewModel(
               shoppingListRepository: shoppingListRepository,
               shoppingListService: shoppingListService,
               recipeRepository: recipeRepository,
-              weeklyMenuViewModel:
-                  weeklyMenuViewModel, // Pass required dependency
+              weeklyMenuViewModel: weeklyMenuViewModel,
               authRepository: authRepository,
             )..initialize();
-          },
-          update: (context, weeklyMenuViewModel, previousShoppingListViewModel) {
-            // No direct update needed here as ShoppingListViewModel manages its own listener.
-            // It will update itself based on weeklyMenuViewModel changes.
-            return previousShoppingListViewModel!;
           },
         ),
         ChangeNotifierProvider(
