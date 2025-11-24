@@ -3,14 +3,12 @@ import 'dart:math';
 import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/data/models/settings_model.dart';
 import 'package:weeklymenu/data/models/weekly_menu_item_model.dart';
-import 'package:weeklymenu/data/models/meal_type_model.dart'; // Import MealTypeModel
-import 'package:weeklymenu/data/repositories/meal_type_repository.dart'; // Import MealTypeRepository
+// Remove unused imports
+// import 'package:weeklymenu/data/models/meal_type_model.dart';
+// import 'package:weeklymenu/data/repositories/meal_type_repository.dart';
 
 class MenuGeneratorService {
-  final MealTypeRepository _mealTypeRepository;
-
-  MenuGeneratorService({MealTypeRepository? mealTypeRepository})
-    : _mealTypeRepository = mealTypeRepository ?? MealTypeRepository();
+  MenuGeneratorService();
 
   Future<Map<String, List<WeeklyMenuItemModel>>> generateWeeklyMenu({
     required String userId,
@@ -20,18 +18,12 @@ class MenuGeneratorService {
     final Map<String, List<WeeklyMenuItemModel>> generatedMenu = {};
     final Random random = Random();
 
-    // Fetch meal types from the repository
-    final List<MealTypeModel> mealTypes = await _mealTypeRepository
-        .getMealTypes(userId)
-        .first;
-
     for (final day in userSettings.includedWeekdays) {
       generatedMenu[day] = [];
-      for (final mealType in mealTypes) {
-        // Changed from enabledMeals
+      for (final mealType in userSettings.includedMealTypes) {
         // Filter recipes by meal type (category) if applicable
         List<String> targetCategories = [];
-        switch (mealType.name.toLowerCase()) {
+        switch (mealType.toLowerCase()) {
           case 'breakfast':
             targetCategories.add('breakfast');
             break;
@@ -60,7 +52,16 @@ class MenuGeneratorService {
             WeeklyMenuItemModel(
               recipeId: selectedRecipe.id!,
               recipeName: selectedRecipe.name,
-              mealType: mealType.name,
+              mealType: mealType,
+            ),
+          );
+        } else {
+          // Add a placeholder if no suitable recipe is found
+          generatedMenu[day]!.add(
+            WeeklyMenuItemModel(
+              recipeId: null, // No recipe ID for placeholder
+              recipeName: 'No Recipe Found', // Placeholder text
+              mealType: mealType,
             ),
           );
         }

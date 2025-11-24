@@ -22,10 +22,16 @@ SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
             'saturday',
             'sunday',
           ],
+      includedMealTypes:
+          (json['included_meal_types'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const ['breakfast', 'lunch', 'dinner', 'snack'],
     );
 
 Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'included_weekdays': instance.includedWeekdays,
+      'included_meal_types': instance.includedMealTypes,
     };

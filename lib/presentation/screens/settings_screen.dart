@@ -133,90 +133,142 @@ class SettingsScreen extends StatelessWidget {
       'sunday',
     ];
 
+    // Helper to get localized meal type
+    String getLocalizedMealType(String mealType) {
+      switch (mealType) {
+        case 'breakfast':
+          return appLocalizations.breakfast;
+        case 'lunch':
+          return appLocalizations.lunch;
+        case 'dinner':
+          return appLocalizations.dinner;
+        case 'snack':
+          return appLocalizations.snack;
+        default:
+          return mealType;
+      }
+    }
+
+    const List<String> allMealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+
     return Scaffold(
       appBar: AppBar(title: Text(appLocalizations.settingsTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${appLocalizations.welcomeMessage}, ${authViewModel.currentUser?.email ?? appLocalizations.guest}!',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              appLocalizations
-                  .customMealTypes, // Assuming this string will be added to ARB files
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            _MealTypeManager(
-              settingsViewModel: settingsViewModel,
-            ), // New widget for meal type management
-            const SizedBox(height: 20),
-            Text(
-              appLocalizations.selectWeekdaysForMenu,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Wrap(
-              spacing: 8.0,
-              children: allWeekdays.map((weekday) {
-                final bool isSelected =
-                    settingsViewModel.currentSettings?.includedWeekdays
-                        .contains(weekday) ??
-                    false;
-                return FilterChip(
-                  label: Text(getLocalizedWeekday(weekday)),
-                  selected: isSelected,
-                  onSelected: (bool selected) {
-                    final List<String> currentWeekdays = List.from(
-                      settingsViewModel.currentSettings?.includedWeekdays ?? [],
-                    );
-                    if (selected) {
-                      currentWeekdays.add(weekday);
-                    } else {
-                      currentWeekdays.remove(weekday);
-                    }
-                    settingsViewModel.updateIncludedWeekdays(currentWeekdays);
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              appLocalizations.languagePreference,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const LanguageDropdownWidget(),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: authViewModel.isLoading
-                    ? null
-                    : () async {
-                        await authViewModel.signOut();
-                      },
-                child: authViewModel.isLoading
-                    ? const CircularProgressIndicator()
-                    : Text(appLocalizations.logoutButton),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${appLocalizations.welcomeMessage}, ${authViewModel.currentUser?.email ?? appLocalizations.guest}!',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
+              const SizedBox(height: 20),
+              Text(
+                appLocalizations.selectMealsForMenu,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Wrap(
+                spacing: 8.0,
+                children: allMealTypes.map((mealType) {
+                  final bool isSelected =
+                      settingsViewModel.currentSettings?.includedMealTypes
+                          .contains(mealType) ??
+                      false;
+                  return FilterChip(
+                    label: Text(getLocalizedMealType(mealType)),
+                    selected: isSelected,
+                    onSelected: (bool selected) {
+                      final List<String> currentMealTypes = List.from(
+                        settingsViewModel.currentSettings?.includedMealTypes ??
+                            [],
+                      );
+                      if (selected) {
+                        currentMealTypes.add(mealType);
+                      } else {
+                        currentMealTypes.remove(mealType);
+                      }
+                      settingsViewModel.updateIncludedMealTypes(
+                        currentMealTypes,
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                appLocalizations.customMealTypes,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              _MealTypeManager(
+                settingsViewModel: settingsViewModel,
+              ), // New widget for meal type management
+              const SizedBox(height: 20),
+              Text(
+                appLocalizations.selectWeekdaysForMenu,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Wrap(
+                spacing: 8.0,
+                children: allWeekdays.map((weekday) {
+                  final bool isSelected =
+                      settingsViewModel.currentSettings?.includedWeekdays
+                          .contains(weekday) ??
+                      false;
+                  return FilterChip(
+                    label: Text(getLocalizedWeekday(weekday)),
+                    selected: isSelected,
+                    onSelected: (bool selected) {
+                      final List<String> currentWeekdays = List.from(
+                        settingsViewModel.currentSettings?.includedWeekdays ??
+                            [],
+                      );
+                      if (selected) {
+                        currentWeekdays.add(weekday);
+                      } else {
+                        currentWeekdays.remove(weekday);
+                      }
+                      settingsViewModel.updateIncludedWeekdays(currentWeekdays);
+                    },
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                appLocalizations.languagePreference,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const LanguageDropdownWidget(),
+              const Spacer(),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: authViewModel.isLoading
+                      ? null
+                      : () async {
+                          await authViewModel.signOut();
+                        },
+                  child: authViewModel.isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(appLocalizations.logoutButton),
                 ),
-                onPressed: authViewModel.isLoading
-                    ? null
-                    : () => _confirmAccountDeletion(context, authViewModel),
-                child: Text(appLocalizations.deleteAccountButton),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: authViewModel.isLoading
+                      ? null
+                      : () => _confirmAccountDeletion(context, authViewModel),
+                  child: Text(appLocalizations.deleteAccountButton),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

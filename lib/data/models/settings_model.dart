@@ -8,6 +8,7 @@ part 'settings_model.g.dart';
 class SettingsModel extends Equatable {
   final String? id; // Corresponds to the user ID
   final List<String> includedWeekdays; // e.g., ['monday', 'tuesday']
+  final List<String> includedMealTypes; // e.g., ['breakfast', 'lunch']
 
   const SettingsModel({
     this.id,
@@ -20,6 +21,7 @@ class SettingsModel extends Equatable {
       'saturday',
       'sunday',
     ],
+    this.includedMealTypes = const ['breakfast', 'lunch', 'dinner', 'snack'],
   });
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) =>
@@ -31,13 +33,18 @@ class SettingsModel extends Equatable {
     return SettingsModel.fromJson({...data, 'id': doc.id});
   }
 
-  SettingsModel copyWith({String? id, List<String>? includedWeekdays}) {
+  SettingsModel copyWith({
+    String? id,
+    List<String>? includedWeekdays,
+    List<String>? includedMealTypes,
+  }) {
     return SettingsModel(
       id: id ?? this.id,
       includedWeekdays: includedWeekdays ?? this.includedWeekdays,
+      includedMealTypes: includedMealTypes ?? this.includedMealTypes,
     );
   }
 
   @override
-  List<Object?> get props => [id, includedWeekdays];
+  List<Object?> get props => [id, includedWeekdays, includedMealTypes];
 }

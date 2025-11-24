@@ -139,6 +139,39 @@ class SettingsViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> updateIncludedMealTypes(List<String> mealTypes) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      _setErrorMessage('User not logged in.');
+      log(
+        'Error: User not logged in when trying to update included meal types.',
+      );
+      return;
+    }
+    if (_currentSettings == null) {
+      _currentSettings = SettingsModel(
+        id: userId,
+        includedMealTypes: mealTypes,
+      );
+    } else {
+      _currentSettings = _currentSettings!.copyWith(
+        includedMealTypes: mealTypes,
+      );
+    }
+
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _settingsRepository.saveSettings(userId, _currentSettings!);
+      log('Included meal types updated successfully.');
+    } catch (e) {
+      _setErrorMessage('Failed to update included meal types: $e');
+      log('Error updating included meal types: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

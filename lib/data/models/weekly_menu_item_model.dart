@@ -4,12 +4,12 @@ part 'weekly_menu_item_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class WeeklyMenuItemModel {
-  final String recipeId;
+  final String? recipeId;
   final String recipeName;
   final String mealType; // e.g., 'breakfast', 'lunch', 'dinner', 'snack'
 
   WeeklyMenuItemModel({
-    required this.recipeId,
+    this.recipeId,
     required this.recipeName,
     required this.mealType,
   });
