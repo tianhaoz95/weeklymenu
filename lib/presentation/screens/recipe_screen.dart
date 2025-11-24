@@ -329,8 +329,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                       Wrap(
                         spacing: 8.0,
                         children: cookbookViewModel.mealTypes.map((mealType) {
-                          final bool isSelected =
-                              _selectedCategories.contains(mealType.name);
+                          final bool isSelected = _selectedCategories.contains(
+                            mealType.name,
+                          );
                           return FilterChip(
                             label: Text(mealType.name),
                             selected: isSelected,
@@ -355,6 +356,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               Row(
                 children: List.generate(5, (index) {
                   return IconButton(
+                    key: Key('star_rating_${index + 1}'),
                     icon: Icon(
                       index < _selectedRating.toInt()
                           ? Icons.star

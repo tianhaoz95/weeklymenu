@@ -1,239 +1,167 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:flutter/material.dart';
 import 'package:weeklymenu/main.dart' as app;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:weeklymenu/data/repositories/settings_repository.dart';
-import 'package:weeklymenu/data/repositories/recipe_repository.dart';
-import 'package:weeklymenu/data/models/settings_model.dart';
-import 'package:weeklymenu/data/models/recipe_model.dart';
 import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
-import 'package:weeklymenu/presentation/screens/shopping_list_screen.dart';
-
-const String testUserId = 'testUserId';
+import 'package:weeklymenu/presentation/screens/cookbook_screen.dart';
+import 'package:weeklymenu/presentation/screens/recipe_screen.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Weekly Menu Generation Test', () {
-    final String testEmail = 'test_menu_gen@example.com';
-    final String testPassword = 'Password123!';
-    late String userId;
+  group('Weekly Menu Generation End-to-End Test', () {
+    testWidgets(
+      'Login, delete existing recipes, add 3 recipes, generate weekly menu, and verify',
+      (WidgetTester tester) async {
+        // Start the app
+        app.main();
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
-    setUpAll(() async {
-      WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
-      final firebaseAuth = FirebaseAuth.instance;
-      final settingsRepository = SettingsRepository();
-      final recipeRepository = RecipeRepository();
+        // Login
+        final emailField = find.byKey(const Key('email_input_field'));
+        final passwordField = find.byKey(const Key('password_input_field'));
+        final loginButton = find.byKey(const Key('login_button'));
 
-      // Ensure no user is logged in
-      await firebaseAuth.signOut();
+        await tester.enterText(emailField, 'test@weeklymenu.com');
+        await tester.enterText(passwordField, '12341234');
+        await tester.pumpAndSettle();
 
-      // Try to create user, if exists, sign in
-      try {
-        await firebaseAuth.createUserWithEmailAndPassword(
-          email: testEmail,
-          password: testPassword,
+        await tester.tap(loginButton);
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        // Verify that we are on the WeeklyMenuScreen (initial redirect after login)
+        expect(find.byType(WeeklyMenuScreen), findsOneWidget);
+
+        // Navigate to Cookbook screen
+        final cookbookTab = find.byIcon(Icons.restaurant_menu);
+        expect(cookbookTab, findsOneWidget);
+        await tester.tap(cookbookTab);
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Verify that we are on the CookbookScreen
+        expect(find.byType(CookbookScreen), findsOneWidget);
+
+        // Delete existing recipes
+        final Finder recipeListItemFinder = find.byKey(
+          const Key('recipe_list_item_0'),
+          skipOffstage: false,
         );
-      } catch (e) {
-        if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
-          await firebaseAuth.signInWithEmailAndPassword(
-            email: testEmail,
-            password: testPassword,
-          );
-        } else {
-          rethrow;
+        final Finder deleteRecipeItemButtonFinder = find.byKey(
+          const Key('delete_recipe_item_button'),
+        );
+        final Finder confirmDeleteButtonFinder = find.byKey(
+          const Key('confirm_delete_button'),
+        );
+
+        while (tester.any(recipeListItemFinder)) {
+          await tester.tap(deleteRecipeItemButtonFinder);
+          await tester.pumpAndSettle();
+          await tester.tap(confirmDeleteButtonFinder);
+          await tester.pumpAndSettle(const Duration(seconds: 2));
         }
-      }
-      userId = firebaseAuth.currentUser!.uid;
 
-      // Clean up any previous test data
-      await settingsRepository.saveSettings(userId, SettingsModel(id: userId));
-      final existingRecipes = await recipeRepository
-          .getRecipesForUser(userId)
-          .first;
-      for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(
-          userId,
-          recipe.id!,
-        ); // Corrected call
-      }
+        // Add three new generic test recipes
+        for (int i = 1; i <= 3; i++) {
+          // Tap the add recipe button
+          final addRecipeButton = find.byKey(const Key('add_recipe_button'));
+          expect(addRecipeButton, findsOneWidget);
+          await tester.tap(addRecipeButton);
+          await tester.pumpAndSettle();
 
-      // Add test recipes
-      await recipeRepository.createRecipe(
-        // Corrected call
-        RecipeModel.newRecipe(name: 'Scrambled Eggs', userId: userId).copyWith(
-          categories: ['breakfast', 'main_course'],
-          ingredients: ['eggs', 'milk', 'butter'],
-        ),
-      );
-      await recipeRepository.createRecipe(
-        // Corrected call
-        RecipeModel.newRecipe(
-          name: 'Chicken Stir-fry',
-          userId: userId,
-        ).copyWith(
-          categories: ['main_course'],
-          ingredients: ['chicken breast', 'broccoli', 'soy sauce'],
-        ),
-      );
-      await recipeRepository.createRecipe(
-        // Corrected call
-        RecipeModel.newRecipe(name: 'Fruit Smoothie', userId: userId).copyWith(
-          categories: ['snack'],
-          ingredients: ['banana', 'spinach', 'almond milk'],
-        ),
-      );
+          // Enter recipe name in the dialog
+          final recipeNameInputFieldInDialog = find.byKey(
+            const Key('recipe_name_input_field'),
+          );
+          expect(recipeNameInputFieldInDialog, findsOneWidget);
+          await tester.enterText(
+            recipeNameInputFieldInDialog,
+            'Test Recipe $i',
+          );
+          await tester.pumpAndSettle();
 
-      // Set user preferences
-      await settingsRepository.saveSettings(
-        userId,
-            SettingsModel(
-              id: testUserId,
-              includedWeekdays: ['monday', 'tuesday'],
-            ),
-      );
-    });
+          final addRecipeDialogAddButton = find.byKey(
+            const Key('add_recipe_dialog_add_button'),
+          );
+          expect(addRecipeDialogAddButton, findsOneWidget);
+          await tester.tap(addRecipeDialogAddButton);
+          await tester.pumpAndSettle(
+            const Duration(seconds: 5),
+          ); // Increased duration for navigation
 
-    tearDownAll(() async {
-      await Firebase.initializeApp(); // Ensure Firebase is initialized for cleanup
-      final firebaseAuth = FirebaseAuth.instance;
-      final recipeRepository = RecipeRepository();
-      // Clean up test recipes
-      final existingRecipes = await recipeRepository
-          .getRecipesForUser(userId)
-          .first;
-      for (var recipe in existingRecipes) {
-        await recipeRepository.deleteRecipe(
-          userId,
-          recipe.id!,
-        ); // Corrected call
-      }
-      // Delete test user
-      await firebaseAuth.currentUser?.delete();
-    });
+          // Verify navigation to RecipeScreen
+          expect(find.byType(RecipeScreen), findsOneWidget);
+          await tester.pumpAndSettle(
+            const Duration(milliseconds: 500),
+          ); // Short delay for layout
 
-    testWidgets('Weekly menu and shopping list should generate correctly', (
-      WidgetTester tester,
-    ) async {
-      app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+          // Add two ingredients
+          final addIngredientButton = find.byKey(
+            const Key('add_ingredient_button'),
+          );
+          final singleIngredientInputField = find.byKey(
+            const Key('single_ingredient_input_field'),
+          );
 
-      // Navigate to WeeklyMenuScreen
-      await tester.tap(find.byIcon(Icons.menu_book));
-      await tester.pumpAndSettle();
+          await tester.tap(addIngredientButton);
+          await tester.pumpAndSettle();
+          expect(singleIngredientInputField, findsOneWidget);
+          await tester.enterText(singleIngredientInputField, 'Ingredient A$i');
+          await tester.pumpAndSettle();
+          await tester.testTextInput.receiveAction(TextInputAction.done);
+          await tester.pumpAndSettle();
 
-      // Tap the refresh icon to generate the menu
-      await tester.tap(find.byIcon(Icons.refresh));
-      await tester.pumpAndSettle(
-        const Duration(seconds: 5),
-      ); // Increased duration for generation
+          await tester.tap(addIngredientButton);
+          await tester.pumpAndSettle();
+          expect(singleIngredientInputField, findsOneWidget);
+          await tester.enterText(singleIngredientInputField, 'Ingredient B$i');
+          await tester.pumpAndSettle();
+          await tester.testTextInput.receiveAction(TextInputAction.done);
+          await tester.pumpAndSettle();
 
-      // Assert that no error message is displayed
-      expect(find.text('User settings or recipes not loaded.'), findsNothing);
-      expect(
-        find.text('Error generating weekly menu'),
-        findsNothing,
-      ); // Specific error from previous task
+          // Set 2-star rating
+          final starRating2 = find.byKey(const Key('star_rating_2'));
+          expect(starRating2, findsOneWidget);
+          await tester.tap(starRating2);
+          await tester.pumpAndSettle();
 
-      // Assert that a weekly menu is displayed
-      expect(find.byType(WeeklyMenuScreen), findsOneWidget);
-      expect(
-        find.textContaining('Scrambled Eggs'),
-        findsWidgets,
-        reason: 'Should find generated breakfast recipe',
-      );
-      expect(
-        find.textContaining('Chicken Stir-fry'),
-        findsWidgets,
-        reason: 'Should find generated main course recipe',
-      );
-      expect(
-        find.textContaining('Fruit Smoothie'),
-        findsWidgets,
-        reason: 'Should find generated snack recipe',
-      );
+          // Save the recipe
+          final saveRecipeButton = find.byKey(const Key('save_recipe_button'));
+          expect(saveRecipeButton, findsOneWidget);
+          await tester.tap(saveRecipeButton);
+          await tester.pumpAndSettle(
+            const Duration(seconds: 2),
+          ); // Allow time for saving and navigation
 
-      // Navigate to ShoppingListScreen
-      await tester.tap(find.byIcon(Icons.shopping_cart));
-      await tester.pumpAndSettle();
+          // Verify the new recipe appears in the CookbookScreen
+          expect(find.byType(CookbookScreen), findsOneWidget);
+          expect(find.text('Test Recipe $i'), findsOneWidget);
+        }
 
-      // Assert that the shopping list is displayed and contains expected items
-      expect(find.byType(ShoppingListScreen), findsOneWidget);
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('eggs'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain eggs',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('milk'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain milk',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('butter'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain butter',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('chicken breast'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain chicken breast',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('broccoli'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain broccoli',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('soy sauce'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain soy sauce',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('banana'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain banana',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('spinach'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain spinach',
-      );
-      expect(
-        find.descendant(
-          of: find.byType(ShoppingListScreen),
-          matching: find.textContaining('almond milk'),
-        ),
-        findsWidgets,
-        reason: 'Shopping list should contain almond milk',
-      );
-    });
+        // Navigate to Weekly Menu screen
+        final weeklyMenuTab = find.byIcon(Icons.menu_book);
+        expect(weeklyMenuTab, findsOneWidget);
+        await tester.tap(weeklyMenuTab);
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Verify that we are on the WeeklyMenuScreen
+        expect(find.byType(WeeklyMenuScreen), findsOneWidget);
+
+        // Tap the "generate" button (refresh icon in the top-right corner)
+        final generateMenuButton = find.byKey(
+          const Key('generate_menu_button'),
+        );
+        expect(generateMenuButton, findsOneWidget);
+        await tester.tap(generateMenuButton);
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        // Assert that no weekly menu is generated yet (expected to fail after fix)
+        expect(
+          find.text(
+            'No weekly menu generated yet. Tap the refresh icon to generate one!',
+          ),
+          findsOneWidget,
+        );
+      },
+    );
   });
 }

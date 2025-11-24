@@ -79,6 +79,7 @@ class CookbookScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              key: const Key('confirm_delete_button'),
               child: Text(appLocalizations.deleteButton),
             ),
           ],
@@ -169,11 +170,13 @@ class CookbookScreen extends StatelessWidget {
                   vertical: 4.0,
                 ),
                 child: ListTile(
+                  key: Key('recipe_list_item_$index'),
                   title: Text(recipe.name),
                   subtitle: Text(
                     '${appLocalizations.ratingLabel}: ${recipe.rating}/5',
                   ),
                   trailing: IconButton(
+                    key: const Key('delete_recipe_item_button'),
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => _confirmDeleteRecipe(
                       context,

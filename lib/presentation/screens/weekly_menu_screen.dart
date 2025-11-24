@@ -15,6 +15,7 @@ class WeeklyMenuScreen extends StatelessWidget {
         title: Text(appLocalizations.weeklyMenuTitle),
         actions: [
           IconButton(
+            key: const Key('generate_menu_button'),
             icon: const Icon(Icons.refresh),
             onPressed: () {
               Provider.of<WeeklyMenuViewModel>(
