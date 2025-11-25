@@ -157,6 +157,7 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -239,7 +240,6 @@ class SettingsScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const LanguageDropdownWidget(),
-              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
