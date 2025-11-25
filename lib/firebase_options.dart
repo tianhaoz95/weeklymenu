@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDHfoPzaEGqaZtG7VhQvaSmBCeEJkEjjsk',
-    appId: '1:1046265042842:web:345dc572862a3eeecbcc23',
+    appId: '1:1046265042842:web:8e80ba4c686a28b3cbcc23',
     messagingSenderId: '1046265042842',
     projectId: 'weeklymenu-app-service',
     authDomain: 'weeklymenu-app-service.firebaseapp.com',
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCe4QjIhJmITL6TP2kK23e5Q0_K2fUZSTM',
-    appId: '1:1046265042842:android:14b32437a3239fd4cbcc23',
+    appId: '1:1046265042842:android:fe2d0686a4f172a0cbcc23',
     messagingSenderId: '1046265042842',
     projectId: 'weeklymenu-app-service',
     storageBucket: 'weeklymenu-app-service.firebasestorage.app',
@@ -59,16 +59,16 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCkSekOkCEf6bxBeQSDdouuYMS2pujefGM',
-    appId: '1:1046265042842:ios:cf6a62d816a3172ccbcc23',
+    appId: '1:1046265042842:ios:ae390d1d03f58c48cbcc23',
     messagingSenderId: '1046265042842',
     projectId: 'weeklymenu-app-service',
     storageBucket: 'weeklymenu-app-service.firebasestorage.app',
-    iosBundleId: 'com.example.weeklymenu',
+    iosBundleId: 'com.hejitech.weeklymenu',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCkSekOkCEf6bxBeQSDdouuYMS2pujefGM',
-    appId: '1:1046265042842:ios:cf6a62d816a3172ccbcc23',
+    appId: '1:1046265042842:ios:2d72ae49d827ff62cbcc23',
     messagingSenderId: '1046265042842',
     projectId: 'weeklymenu-app-service',
     storageBucket: 'weeklymenu-app-service.firebasestorage.app',
@@ -77,10 +77,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyDHfoPzaEGqaZtG7VhQvaSmBCeEJkEjjsk',
-    appId: '1:1046265042842:web:2723984b92c2e77acbcc23',
+    appId: '1:1046265042842:web:6473270a6c145da7cbcc23',
     messagingSenderId: '1046265042842',
     projectId: 'weeklymenu-app-service',
     authDomain: 'weeklymenu-app-service.firebaseapp.com',
     storageBucket: 'weeklymenu-app-service.firebasestorage.app',
   );
+
 }

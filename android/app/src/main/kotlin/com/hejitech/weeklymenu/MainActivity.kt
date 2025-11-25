@@ -1,4 +1,4 @@
-package com.example.weeklymenu
+package com.hejitech.weeklymenu
 
 import io.flutter.embedding.android.FlutterActivity
 

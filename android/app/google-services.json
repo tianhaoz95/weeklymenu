@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1046265042842:android:14b32437a3239fd4cbcc23",
+        "mobilesdk_app_id": "1:1046265042842:android:fe2d0686a4f172a0cbcc23",
         "android_client_info": {
-          "package_name": "com.example.weeklymenu"
+          "package_name": "com.hejitech.weeklymenu"
         }
       },
       "oauth_client": [],
