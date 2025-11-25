@@ -61,3 +61,5 @@ The project adheres to a clean architecture pattern with a clear separation of c
 - Email: test@weeklymenu.com, Password: 12341234 for integration tests.
 - Do not use the outdated `flutter_driver` for integration test, see https://remotedesktop.google.com/access/session/73b9a571-e05a-4699-8a6f-fac60123ac94 for instructions for writting flutter integration tests.
 - When the user asks to debug a issue. First write a integration test to repro the issue and then implement a fix to make the integration test pass.
+- After a successful task implementation, boost the build number in `pubspec.yaml` by 1. For example, if the current version number is `version: 0.1.16+26`, the boosted version should be `version: 0.1.16+27`.
+- After a successful task implementation and version boost, build the aab and move it to the temp directory with a name describing the task completed by first run `flutter build aab` and then `cp build/app/outputs/bundle/release/app-release.aab temp/{feature-description}.aab`.
