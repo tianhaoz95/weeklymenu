@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:weeklymenu/main.dart' as app;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weeklymenu/data/repositories/auth_repository.dart';
+
 import 'package:weeklymenu/data/repositories/settings_repository.dart';
 // Import UserModel
 import 'package:weeklymenu/data/models/settings_model.dart'; // Import SettingsModel
@@ -21,7 +21,6 @@ void main() {
         const Duration(seconds: 5),
       ); // Increased duration
 
-      final authRepository = AuthRepository();
       final settingsRepository = SettingsRepository();
       final firebaseAuth = FirebaseAuth.instance;
 

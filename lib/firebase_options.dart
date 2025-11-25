@@ -83,5 +83,4 @@ class DefaultFirebaseOptions {
     authDomain: 'weeklymenu-app-service.firebaseapp.com',
     storageBucket: 'weeklymenu-app-service.firebasestorage.app',
   );
-
 }

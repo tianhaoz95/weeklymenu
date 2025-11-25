@@ -18,6 +18,7 @@ The Gemini agent has been instrumental in implementing the following core featur
 -   **Phase 7: Weekly Menu Generation Logic:** Developed `MenuGeneratorService` and integrated it with `WeeklyMenuViewModel` to generate dynamic weekly meal plans based on user settings (`SettingsModel`), meal types (`MealTypeRepository`), and recipes.
 -   **Phase 8: Shopping List Generation:** Developed `ShoppingListService` and integrated it with `ShoppingListViewModel` to generate shopping lists from the weekly menu, allowing users to mark items as checked.
 -   **Phase 9: Internationalization:** Configured `flutter_localizations` and `intl`, created ARB files for English and Chinese, and integrated localized strings throughout the application UI.
+-   **Phase 10: Prevent Automatic Weekly Menu Generation:** Modified `WeeklyMenuViewModel` to stop automatic menu regeneration on screen start and enabled dependency injection for `FirebaseAuth` for better testability. Added unit tests to verify the behavior.
 
 ## File Layout and Architecture
 

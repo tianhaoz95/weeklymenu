@@ -14,19 +14,22 @@ class WeeklyMenuViewModel extends ChangeNotifier {
   final SettingsRepository _settingsRepository; // Use SettingsRepository
   final RecipeRepository _recipeRepository;
   final MenuGeneratorService _menuGeneratorService;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
 
   WeeklyMenuViewModel({
     WeeklyMenuRepository? weeklyMenuRepository,
-    SettingsRepository? settingsRepository, // Add SettingsRepository
+    SettingsRepository? settingsRepository,
     RecipeRepository? recipeRepository,
     MenuGeneratorService? menuGeneratorService,
+    FirebaseAuth? firebaseAuth, // Added for dependency injection
   }) : _weeklyMenuRepository = weeklyMenuRepository ?? WeeklyMenuRepository(),
-       _settingsRepository =
-           settingsRepository ??
-           SettingsRepository(), // Initialize SettingsRepository
+       _settingsRepository = settingsRepository ?? SettingsRepository(),
        _recipeRepository = recipeRepository ?? RecipeRepository(),
-       _menuGeneratorService = menuGeneratorService ?? MenuGeneratorService();
+       _menuGeneratorService = menuGeneratorService ?? MenuGeneratorService(),
+       _auth =
+           firebaseAuth ??
+           FirebaseAuth
+               .instance; // Initialize with injected or default instance
 
   WeeklyMenuModel? _weeklyMenu;
   WeeklyMenuModel? get weeklyMenu => _weeklyMenu;

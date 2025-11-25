@@ -1,7 +1,7 @@
 name: weeklymenu
 description: "A Flutter application for managing custom recipes, generating weekly menus, and creating shopping lists."
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.0+1
 
 environment:
   sdk: ^3.10.0
