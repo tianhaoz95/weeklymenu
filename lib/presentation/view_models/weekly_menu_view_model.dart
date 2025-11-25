@@ -91,7 +91,7 @@ class WeeklyMenuViewModel extends ChangeNotifier {
       // Logic to decide if a new menu needs to be generated.
       // For now, we'll generate every time settings or recipes update.
       // In a real app, you might compare timestamps or hashes of settings/recipes.
-      generateWeeklyMenu();
+      // generateWeeklyMenu(); // Removed automatic generation
     }
   }
 
