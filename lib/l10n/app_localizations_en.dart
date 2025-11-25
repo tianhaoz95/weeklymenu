@@ -188,6 +188,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guest => 'Guest';
 
   @override
+  String get all => 'All';
+
+  @override
   String get breakfast => 'Breakfast';
 
   @override

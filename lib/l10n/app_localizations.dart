@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Guest'**
   String get guest;
 
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
   /// No description provided for @breakfast.
   ///
   /// In en, this message translates to:

@@ -184,6 +184,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get guest => '访客';
 
   @override
+  String get all => '所有';
+
+  @override
   String get breakfast => '早餐';
 
   @override

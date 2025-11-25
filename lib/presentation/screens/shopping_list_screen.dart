@@ -32,14 +32,18 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     // Use appropriate colors based on theme
-    final Color currentBackgroundColor =
-        isDarkMode ? backgroundColorDark : backgroundColorLight;
-    final Color currentTextPrimaryColor =
-        isDarkMode ? textPrimaryDark : textPrimaryLight;
-    final Color currentTextSecondaryColor =
-        isDarkMode ? textSecondaryDark : textSecondaryLight;
-    final Color currentBorderColor =
-        isDarkMode ? borderColorDark : borderColorLight;
+    final Color currentBackgroundColor = isDarkMode
+        ? backgroundColorDark
+        : backgroundColorLight;
+    final Color currentTextPrimaryColor = isDarkMode
+        ? textPrimaryDark
+        : textPrimaryLight;
+    final Color currentTextSecondaryColor = isDarkMode
+        ? textSecondaryDark
+        : textSecondaryLight;
+    final Color currentBorderColor = isDarkMode
+        ? borderColorDark
+        : borderColorLight;
 
     return Scaffold(
       backgroundColor: currentBackgroundColor,
@@ -78,13 +82,15 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 int totalCheckedItems = 0;
                 int totalItems = 0;
                 shoppingListViewModel.shoppingList.forEach((day, items) {
-                  totalCheckedItems +=
-                      items.where((item) => item.isChecked).length;
+                  totalCheckedItems += items
+                      .where((item) => item.isChecked)
+                      .length;
                   totalItems += items.length;
                 });
 
-                final double progress =
-                    totalItems == 0 ? 0 : totalCheckedItems / totalItems;
+                final double progress = totalItems == 0
+                    ? 0
+                    : totalCheckedItems / totalItems;
 
                 return Column(
                   children: [
@@ -96,8 +102,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                     ),
                     const SizedBox(height: 8.0),
                     ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(999.0), // full rounded
+                      borderRadius: BorderRadius.circular(
+                        999.0,
+                      ), // full rounded
                       child: LinearProgressIndicator(
                         value: progress,
                         backgroundColor: currentBorderColor,
@@ -149,8 +156,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   itemCount: shoppingListViewModel.shoppingList.keys.length,
                   itemBuilder: (context, index) {
-                    final day =
-                        shoppingListViewModel.shoppingList.keys.elementAt(index);
+                    final day = shoppingListViewModel.shoppingList.keys
+                        .elementAt(index);
                     final itemsForDay =
                         shoppingListViewModel.shoppingList[day]!;
 
@@ -293,4 +300,3 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     );
   }
 }
-
