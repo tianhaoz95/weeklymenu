@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#A3B18A",
+              "background-light": "#F4F3EE",
+              "background-dark": "#1f222a",
+              "text-primary-light": "#3D405B",
+              "text-primary-dark": "#EAE8E1",
+              "text-secondary-light": "#6b6e84",
+              "text-secondary-dark": "#a0a3b8",
+              "accent": "#F2CC8F",
+              "border-light": "#e4e2db",
+              "border-dark": "#4a4d5a",
+            },
+            fontFamily: {
+              "display": ["Work Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .checked-item-text {
+            text-decoration: line-through;
+            color: #6b6e84;
+        }
+        .dark .checked-item-text {
+            color: #a0a3b8;
+        }
+        input:checked + .item-details > * {
+            text-decoration: line-through;
+            color: #6b6e84;
+        }
+        .dark input:checked + .item-details > * {
+            color: #a0a3b8;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden pb-20">
+<div class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="flex size-12 shrink-0 items-center justify-start">
+</div>
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Shopping List</h2>
+<div class="flex w-12 items-center justify-end">
+</div>
+</div>
+<div class="px-4 pt-5 pb-4">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium text-center mb-2">1/5 items completed</p>
+<div class="w-full bg-border-light dark:bg-border-dark rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<div class="flex flex-col p-4">
+<label class="flex gap-x-4 py-3 flex-row items-center cursor-pointer border-b border-border-light dark:border-border-dark">
+<input class="h-6 w-6 rounded-lg border-primary border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary" style="--tw-ring-color: transparent;" type="checkbox"/>
+<div class="flex flex-col item-details">
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Onion</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal">2 large</p>
+<span class="bg-accent/30 text-accent-darkest dark:bg-accent/40 text-xs font-semibold px-2 py-0.5 rounded-full">Tuscan Chicken</span>
+</div>
+</div>
+</label>
+<label class="flex gap-x-4 py-3 flex-row items-center cursor-pointer border-b border-border-light dark:border-border-dark">
+<input class="h-6 w-6 rounded-lg border-primary border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary" style="--tw-ring-color: transparent;" type="checkbox"/>
+<div class="flex flex-col item-details">
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Garlic</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal">3 cloves</p>
+<span class="bg-accent/30 text-accent-darkest dark:bg-accent/40 text-xs font-semibold px-2 py-0.5 rounded-full">Minestrone Soup</span>
+</div>
+</div>
+</label>
+<label class="flex gap-x-4 py-3 flex-row items-center cursor-pointer border-b border-border-light dark:border-border-dark">
+<input checked="" class="h-6 w-6 rounded-lg border-primary border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary" style="--tw-ring-color: transparent;" type="checkbox"/>
+<div class="flex flex-col item-details">
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal checked-item-text">Spinach</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal checked-item-text">1 bag</p>
+<span class="bg-accent/30 text-accent-darkest dark:bg-accent/40 text-xs font-semibold px-2 py-0.5 rounded-full checked-item-text opacity-70">Tuscan Chicken</span>
+</div>
+</div>
+</label>
+<label class="flex gap-x-4 py-3 flex-row items-center cursor-pointer border-b border-border-light dark:border-border-dark">
+<input class="h-6 w-6 rounded-lg border-primary border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary" style="--tw-ring-color: transparent;" type="checkbox"/>
+<div class="flex flex-col item-details">
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Heavy Cream</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal">1 cup</p>
+<span class="bg-accent/30 text-accent-darkest dark:bg-accent/40 text-xs font-semibold px-2 py-0.5 rounded-full">Tuscan Chicken</span>
+</div>
+</div>
+</label>
+<label class="flex gap-x-4 py-3 flex-row items-center cursor-pointer border-b border-border-light dark:border-border-dark">
+<input class="h-6 w-6 rounded-lg border-primary border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-primary" style="--tw-ring-color: transparent;" type="checkbox"/>
+<div class="flex flex-col item-details">
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Chicken Breast</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal">2 lbs</p>
+<span class="bg-accent/30 text-accent-darkest dark:bg-accent/40 text-xs font-semibold px-2 py-0.5 rounded-full">Tuscan Chicken</span>
+</div>
+</div>
+</label>
+</div>
+<div class="fixed bottom-24 right-6">
+<button class="flex items-center justify-center w-14 h-14 bg-primary rounded-full shadow-lg text-white">
+<span class="material-symbols-outlined filled" style="font-size: 28px;">add_shopping_cart</span>
+</button>
+</div>
+<div class="fixed bottom-0 left-0 right-0 z-20 flex h-20 items-center justify-around border-t border-t-border-light bg-background-light dark:border-t-border-dark dark:bg-background-dark">
+<a class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-xs">Weekly Menu</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary dark:text-primary" href="#">
+<span class="material-symbols-outlined filled">receipt_long</span>
+<span class="text-xs font-bold">Shopping List</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-xs">Cookbook</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-xs">Settings</span>
+</a>
+</div>
+</div>
+</body></html>
