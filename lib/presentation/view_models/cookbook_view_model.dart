@@ -14,8 +14,10 @@ class CookbookViewModel extends ChangeNotifier {
   CookbookViewModel({
     RecipeRepository? recipeRepository,
     MealTypeRepository? mealTypeRepository, // Accept MealTypeRepository
-  })  : _recipeRepository = recipeRepository ?? RecipeRepository(),
-        _mealTypeRepository = mealTypeRepository ?? MealTypeRepository(); // Initialize MealTypeRepository
+  }) : _recipeRepository = recipeRepository ?? RecipeRepository(),
+       _mealTypeRepository =
+           mealTypeRepository ??
+           MealTypeRepository(); // Initialize MealTypeRepository
 
   List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;

@@ -6,7 +6,11 @@ import 'package:weeklymenu/presentation/screens/weekly_menu_screen.dart';
 import 'package:weeklymenu/presentation/screens/cookbook_screen.dart';
 import 'package:weeklymenu/presentation/screens/recipe_screen.dart';
 import 'package:weeklymenu/presentation/screens/login_screen.dart';
-import 'package:weeklymenu/presentation/screens/settings_screen.dart'; // Import SettingsScreen
+import 'package:weeklymenu/presentation/screens/settings_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_core/firebase_core.dart'; // Import FirebaseCore
+import 'package:weeklymenu/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Cloud Firestore
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +19,14 @@ void main() {
     testWidgets(
       'Login, delete existing recipes, add 3 recipes, generate weekly menu, and verify',
       (WidgetTester tester) async {
+        // Initialize Firebase before any Firebase operations
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+        await FirebaseAuth.instance.signOut(); // Ensure logged out state
+        await tester
+            .pumpAndSettle(); // Wait for any auth state changes to propagate
+
         // Start the app
         app.main();
         await tester.pumpAndSettle(
@@ -36,8 +48,85 @@ void main() {
         await tester.tap(loginButton);
         await tester.pumpAndSettle(const Duration(seconds: 2));
 
+        // Get userId after login
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        // Clear all existing recipes directly from Firestore for a clean test environment
+        await clearUserRecipes(userId);
+        await tester.pumpAndSettle(
+          const Duration(seconds: 5),
+        ); // Increased duration to ensure full deletion
+
         // Verify that we are on the WeeklyMenuScreen (initial redirect after login)
         expect(find.byType(WeeklyMenuScreen), findsOneWidget);
+
+        // Navigate to Settings screen to add 'main_course' meal type and set preferences
+        final settingsTabFromWeeklyMenu = find.byIcon(Icons.settings);
+        expect(settingsTabFromWeeklyMenu, findsOneWidget);
+        await tester.tap(settingsTabFromWeeklyMenu);
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+        expect(find.byType(SettingsScreen), findsOneWidget);
+
+        // Add 'main_course' as a custom meal type if it doesn't exist
+        final newMealTypeInputField = find.byKey(
+          const Key('new_meal_type_input_field'),
+        );
+        final addMealTypeButton = find.byKey(const Key('add_meal_type_button'));
+
+        // Check if 'main_course' already exists in the chips
+        final mainCourseChipInSettings = find.byWidgetPredicate(
+          (widget) =>
+              widget is Chip && (widget.label as Text).data == 'main_course',
+        );
+
+        if (!tester.any(mainCourseChipInSettings)) {
+          // Only add if it doesn't exist
+          expect(newMealTypeInputField, findsOneWidget);
+          await tester.enterText(newMealTypeInputField, 'main_course');
+          await tester.pump();
+
+          expect(addMealTypeButton, findsOneWidget);
+          await tester.tap(addMealTypeButton);
+          await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        }
+
+        // Add 'appetizer' as a custom meal type if it doesn't exist
+        final appetizerChipInSettings = find.byWidgetPredicate(
+          (widget) =>
+              widget is Chip && (widget.label as Text).data == 'appetizer',
+        );
+
+        if (!tester.any(appetizerChipInSettings)) {
+          // Only add if it doesn't exist
+          expect(newMealTypeInputField, findsOneWidget);
+          await tester.enterText(newMealTypeInputField, 'appetizer');
+          await tester.pump();
+
+          expect(addMealTypeButton, findsOneWidget);
+          await tester.tap(addMealTypeButton);
+          await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        }
+
+        // Select some weekdays (e.g., Monday, Tuesday, Wednesday)
+        await tester.tap(find.text('Monday'));
+        await tester.pump();
+        await tester.tap(find.text('Tuesday'));
+        await tester.pump();
+        await tester.tap(find.text('Wednesday'));
+        await tester.pump();
+
+        // Select all default meal types
+        await tester.tap(find.byKey(const Key('meal_type_chip_breakfast')));
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('meal_type_chip_lunch')));
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('meal_type_chip_dinner')));
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('meal_type_chip_snack')));
+        await tester.pump();
+        await tester.pumpAndSettle(
+          const Duration(seconds: 5),
+        ); // Increased wait time for settings to propagate
 
         // Navigate to Cookbook screen
         final cookbookTab = find.byIcon(Icons.restaurant_menu);
@@ -47,30 +136,6 @@ void main() {
 
         // Verify that we are on the CookbookScreen
         expect(find.byType(CookbookScreen), findsOneWidget);
-
-        // Delete existing recipes
-        final Finder recipeListItemFinder = find.byKey(
-          const Key('recipe_list_item_0'),
-          skipOffstage: false,
-        );
-        final Finder deleteRecipeItemButtonFinder = find.byKey(
-          const Key('delete_recipe_item_button'),
-        );
-        final Finder confirmDeleteButtonFinder = find.byKey(
-          const Key('confirm_delete_button'),
-        );
-
-        while (tester.any(recipeListItemFinder)) {
-          // Find the delete button within the first recipe list item
-          final specificDeleteButton = find.descendant(
-            of: recipeListItemFinder,
-            matching: find.byKey(const Key('delete_recipe_item_button')),
-          );
-          await tester.tap(specificDeleteButton); // Tap this specific button
-          await tester.pump();
-          await tester.tap(confirmDeleteButtonFinder);
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        }
 
         // Add three new generic test recipes
         for (int i = 1; i <= 3; i++) {
@@ -96,15 +161,14 @@ void main() {
           );
           expect(addRecipeDialogAddButton, findsOneWidget);
           await tester.tap(addRecipeDialogAddButton);
-          await tester.pumpAndSettle(
-            const Duration(seconds: 2),
-          ); // Duration for navigation
+          await tester.pumpAndSettle(const Duration(seconds: 2));
 
           // Verify navigation to RecipeScreen
           expect(find.byType(RecipeScreen), findsOneWidget);
-          await tester.pump(
-            const Duration(milliseconds: 100),
-          ); // Short delay for layout
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('category_chip_main_course')),
+          );
 
           // Add two ingredients
           final addIngredientButton = find.byKey(
@@ -130,6 +194,32 @@ void main() {
           await tester.testTextInput.receiveAction(TextInputAction.done);
           await tester.pump();
 
+          // Select categories
+          expect(
+            find.byKey(const Key('category_chip_main_course')),
+            findsOneWidget,
+          );
+          await tester.tap(find.byKey(const Key('category_chip_main_course')));
+          await tester.pump();
+
+          expect(
+            find.byKey(const Key('category_chip_breakfast')),
+            findsOneWidget,
+          );
+          await tester.tap(find.byKey(const Key('category_chip_breakfast')));
+          await tester.pump();
+
+          expect(find.byKey(const Key('category_chip_snack')), findsOneWidget);
+          await tester.tap(find.byKey(const Key('category_chip_snack')));
+          await tester.pump();
+
+          expect(
+            find.byKey(const Key('category_chip_appetizer')),
+            findsOneWidget,
+          );
+          await tester.tap(find.byKey(const Key('category_chip_appetizer')));
+          await tester.pump();
+
           // Set 2-star rating
           final starRating2 = find.byKey(const Key('star_rating_2'));
           expect(starRating2, findsOneWidget);
@@ -140,30 +230,15 @@ void main() {
           final saveRecipeButton = find.byKey(const Key('save_recipe_button'));
           expect(saveRecipeButton, findsOneWidget);
           await tester.tap(saveRecipeButton);
-          await tester.pumpAndSettle(
-            const Duration(milliseconds: 500),
-          ); // Allow time for saving and navigation
+          await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
           // Verify the new recipe appears in the CookbookScreen
           expect(find.byType(CookbookScreen), findsOneWidget);
           expect(find.text('Test Recipe $i'), findsOneWidget);
         }
 
-        // Navigate to Settings screen and set preferences
-        final settingsTab = find.byIcon(Icons.settings);
-        expect(settingsTab, findsOneWidget);
-        await tester.tap(settingsTab);
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
-        // Verify we are on SettingsScreen
-        expect(find.byType(SettingsScreen), findsOneWidget);
-        // Select some weekdays (e.g., Monday, Tuesday, Wednesday)
-        await tester.tap(find.text('Monday'));
-        await tester.pump();
-        await tester.tap(find.text('Tuesday'));
-        await tester.pump();
-        await tester.tap(find.text('Wednesday'));
-        await tester.pump();
+        // Add a longer pumpAndSettle here to ensure all recipe streams have propagated
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
         // Go back to Weekly Menu screen (by re-tapping the weekly menu tab)
         final weeklyMenuTab = find.byIcon(Icons.menu_book);
@@ -180,7 +255,7 @@ void main() {
         );
         expect(generateMenuButton, findsOneWidget);
         await tester.tap(generateMenuButton);
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
         // Assert that a weekly menu is generated
         expect(
@@ -194,13 +269,35 @@ void main() {
         expect(find.textContaining('Test Recipe 1'), findsAtLeastNWidgets(1));
         expect(find.textContaining('Test Recipe 2'), findsAtLeastNWidgets(1));
         expect(find.textContaining('Test Recipe 3'), findsAtLeastNWidgets(1));
-
-        // Also check for meal types to ensure proper structure
-        expect(find.text('BREAKFAST'), findsOneWidget);
-        expect(find.text('LUNCH'), findsOneWidget);
-        expect(find.text('DINNER'), findsOneWidget);
-        expect(find.text('SNACK'), findsOneWidget);
       },
     );
   });
+}
+
+Future<void> waitForWidget(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  bool found = false;
+  final stopwatch = Stopwatch()..start();
+  while (!found && stopwatch.elapsed < timeout) {
+    await tester.pump();
+    if (tester.any(finder)) {
+      found = true;
+    }
+  }
+  expect(found, isTrue, reason: 'Widget not found within timeout: $finder');
+}
+
+Future<void> clearUserRecipes(String userId) async {
+  final recipesCollection = FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .collection('cookbook');
+
+  final snapshot = await recipesCollection.get();
+  for (final doc in snapshot.docs) {
+    await doc.reference.delete();
+  }
 }

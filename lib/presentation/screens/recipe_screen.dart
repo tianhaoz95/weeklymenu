@@ -39,6 +39,19 @@ class _RecipeScreenState extends State<RecipeScreen> {
     'mediterranean',
   ];
 
+  // Define a list of all default categories
+  final List<String> _allDefaultCategories = [
+    'breakfast',
+    'main_course',
+    'side_dish',
+    'dessert',
+    'snack',
+    'appetizer',
+    'soup',
+    'salad',
+    'beverage',
+  ];
+
   RecipeModel? _currentRecipe;
   String? _userId;
 
@@ -328,24 +341,53 @@ class _RecipeScreenState extends State<RecipeScreen> {
                       Text(appLocalizations.categoriesLabel),
                       Wrap(
                         spacing: 8.0,
-                        children: cookbookViewModel.mealTypes.map((mealType) {
-                          final bool isSelected = _selectedCategories.contains(
-                            mealType.name,
-                          );
-                          return FilterChip(
-                            label: Text(mealType.name),
-                            selected: isSelected,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                if (selected) {
-                                  _selectedCategories.add(mealType.name);
-                                } else {
-                                  _selectedCategories.remove(mealType.name);
-                                }
-                              });
-                            },
-                          );
-                        }).toList(),
+                        runSpacing: 4.0, // Added for better layout
+                        children: [
+                          ..._allDefaultCategories.map((category) {
+                            final bool isSelected = _selectedCategories
+                                .contains(category);
+                            return FilterChip(
+                              key: Key('category_chip_$category'),
+                              label: Text(category),
+                              selected: isSelected,
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  if (selected) {
+                                    _selectedCategories.add(category);
+                                  } else {
+                                    _selectedCategories.remove(category);
+                                  }
+                                });
+                              },
+                            );
+                          }),
+                          ...cookbookViewModel.mealTypes
+                              .where(
+                                (mealType) => !_allDefaultCategories.contains(
+                                  mealType.name,
+                                ),
+                              )
+                              .map((mealType) {
+                                final bool isSelected = _selectedCategories
+                                    .contains(mealType.name);
+                                return FilterChip(
+                                  key: Key('category_chip_${mealType.name}'),
+                                  label: Text(mealType.name),
+                                  selected: isSelected,
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      if (selected) {
+                                        _selectedCategories.add(mealType.name);
+                                      } else {
+                                        _selectedCategories.remove(
+                                          mealType.name,
+                                        );
+                                      }
+                                    });
+                                  },
+                                );
+                              }),
+                        ],
                       ),
                     ],
                   );

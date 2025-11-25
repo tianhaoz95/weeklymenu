@@ -177,6 +177,7 @@ class SettingsScreen extends StatelessWidget {
                           .contains(mealType) ??
                       false;
                   return FilterChip(
+                    key: Key('meal_type_chip_$mealType'),
                     label: Text(getLocalizedMealType(mealType)),
                     selected: isSelected,
                     onSelected: (bool selected) {
@@ -313,6 +314,9 @@ class _MealTypeManagerState extends State<_MealTypeManager> {
               spacing: 8.0,
               children: mealTypes.map((mealType) {
                 return Chip(
+                  key: Key(
+                    'custom_meal_type_chip_${mealType.id}',
+                  ), // Add key for custom meal types
                   label: Text(mealType.name),
                   onDeleted: () =>
                       widget.settingsViewModel.deleteMealType(mealType.id),
@@ -326,6 +330,7 @@ class _MealTypeManagerState extends State<_MealTypeManager> {
           children: [
             Expanded(
               child: TextField(
+                key: const Key('new_meal_type_input_field'),
                 controller: _mealTypeNameController,
                 decoration: InputDecoration(
                   labelText:
@@ -342,6 +347,7 @@ class _MealTypeManagerState extends State<_MealTypeManager> {
             ),
             const SizedBox(width: 10),
             ElevatedButton(
+              key: const Key('add_meal_type_button'),
               onPressed: () {
                 if (_mealTypeNameController.text.isNotEmpty) {
                   widget.settingsViewModel.addMealType(
