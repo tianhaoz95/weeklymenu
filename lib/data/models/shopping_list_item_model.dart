@@ -11,6 +11,7 @@ class ShoppingListItemModel {
   final String unit; // e.g., 'kg', 'g', 'ml', 'unit', 'cup'. Default "item".
   final bool isChecked;
   final String dailyMenuId; // ID of the WeeklyMenuItemModel it came from
+  final String? recipeName; // Added for display in shopping list
 
   ShoppingListItemModel({
     String? id,
@@ -19,6 +20,7 @@ class ShoppingListItemModel {
     this.unit = 'item', // Default unit to 'item'
     this.isChecked = false,
     required this.dailyMenuId,
+    this.recipeName,
   }) : id = id ?? const Uuid().v4();
 
   factory ShoppingListItemModel.fromJson(Map<String, dynamic> json) =>

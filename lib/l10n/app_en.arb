@@ -57,6 +57,7 @@
   "shoppingListScreenTitle": "Shopping List",
   "noItemsInShoppingList": "No items in the shopping list.",
   "totalItems": "Total Items:",
+  "itemsCompleted": "items completed",
   "saveButton": "Save",
   "cancelButton": "Cancel",
   "addButton": "Add",

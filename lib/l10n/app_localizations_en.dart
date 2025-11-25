@@ -144,6 +144,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalItems => 'Total Items:';
 
   @override
+  String get itemsCompleted => 'items completed';
+
+  @override
   String get saveButton => 'Save';
 
   @override

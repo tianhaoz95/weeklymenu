@@ -356,6 +356,12 @@ abstract class AppLocalizations {
   /// **'Total Items:'**
   String get totalItems;
 
+  /// No description provided for @itemsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'items completed'**
+  String get itemsCompleted;
+
   /// No description provided for @saveButton.
   ///
   /// In en, this message translates to:

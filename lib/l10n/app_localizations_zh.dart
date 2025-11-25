@@ -142,6 +142,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get totalItems => '总数量：';
 
   @override
+  String get itemsCompleted => '项目已完成';
+
+  @override
   String get saveButton => '保存';
 
   @override
