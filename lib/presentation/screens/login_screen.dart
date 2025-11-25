@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 64,
                   width: 64,
                   decoration: BoxDecoration(
-                    color: appColors.primary!.withOpacity(0.2),
+                    color: appColors.primary!.withAlpha((255 * 0.2).round()),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -115,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintStyle: textTheme.bodyMedium?.copyWith(
                             color: appColors.subtleLight,
                           ),
+
                           border: InputBorder.none, // Remove default border
                           contentPadding: const EdgeInsets.symmetric(
                             vertical: 16.0,

@@ -45,6 +45,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noAccountYet => '还没有账号?';
 
   @override
+  String get alreadyHaveAccount => '已经有账号?';
+
+  @override
+  String get nameHint => '姓名';
+
+  @override
   String passwordResetEmailSent(String email) {
     return '密码重置邮件已发送至$email';
   }

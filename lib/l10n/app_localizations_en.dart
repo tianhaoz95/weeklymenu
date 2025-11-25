@@ -45,6 +45,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAccountYet => 'Don\'t have an account?';
 
   @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get nameHint => 'Name';
+
+  @override
   String passwordResetEmailSent(String email) {
     return 'Password reset email sent to $email';
   }

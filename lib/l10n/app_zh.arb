@@ -12,6 +12,8 @@
   "cookbookTitle": "食谱",
   "settingsTitle": "设置",
   "noAccountYet": "还没有账号?",
+  "alreadyHaveAccount": "已经有账号?",
+  "nameHint": "姓名",
   "passwordResetEmailSent": "密码重置邮件已发送至{email}",
   "@passwordResetEmailSent": {
     "placeholders": {

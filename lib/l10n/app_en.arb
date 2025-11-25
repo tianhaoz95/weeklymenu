@@ -12,6 +12,8 @@
   "cookbookTitle": "Cookbook",
   "settingsTitle": "Settings",
   "noAccountYet": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "nameHint": "Name",
   "passwordResetEmailSent": "Password reset email sent to {email}",
   "@passwordResetEmailSent": {
     "placeholders": {
