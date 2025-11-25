@@ -11,6 +11,7 @@ WeeklyMenuItemModel _$WeeklyMenuItemModelFromJson(Map<String, dynamic> json) =>
       recipeId: json['recipe_id'] as String?,
       recipeName: json['recipe_name'] as String,
       mealType: json['meal_type'] as String,
+      recipeImageUrl: json['recipe_image_url'] as String?,
     );
 
 Map<String, dynamic> _$WeeklyMenuItemModelToJson(
@@ -19,4 +20,5 @@ Map<String, dynamic> _$WeeklyMenuItemModelToJson(
   'recipe_id': instance.recipeId,
   'recipe_name': instance.recipeName,
   'meal_type': instance.mealType,
+  'recipe_image_url': instance.recipeImageUrl,
 };

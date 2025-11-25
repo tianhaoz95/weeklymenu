@@ -12,6 +12,8 @@
   "cookbookTitle": "Cookbook",
   "settingsTitle": "Settings",
   "noAccountYet": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "nameHint": "Name",
   "passwordResetEmailSent": "Password reset email sent to {email}",
   "@passwordResetEmailSent": {
     "placeholders": {
@@ -55,6 +57,7 @@
   "shoppingListScreenTitle": "Shopping List",
   "noItemsInShoppingList": "No items in the shopping list.",
   "totalItems": "Total Items:",
+  "itemsCompleted": "items completed",
   "saveButton": "Save",
   "cancelButton": "Cancel",
   "addButton": "Add",
@@ -68,6 +71,7 @@
   "editRecipeTitle": "Edit Recipe",
   "error": "Error",
   "guest": "Guest",
+  "all": "All",
   "breakfast": "Breakfast",
   "lunch": "Lunch",
   "dinner": "Dinner",
@@ -94,5 +98,13 @@
   "languagePreference": "Language Preference",
   "english": "English",
   "chinese": "Chinese",
-  "systemDefault": "System Default"
+  "systemDefault": "System Default",
+  "welcomeBack": "Welcome Back!",
+  "loginToYourCookbook": "Log in to your cookbook.",
+  "emailAddress": "Email Address",
+  "emailRequired": "Email is required.",
+  "invalidEmail": "Please enter a valid email address.",
+  "passwordRequired": "Password is required.",
+  "passwordTooShort": "Password must be at least 6 characters long.",
+  "password": "Password"
 }

@@ -15,6 +15,7 @@ ShoppingListItemModel _$ShoppingListItemModelFromJson(
   unit: json['unit'] as String? ?? 'item',
   isChecked: json['is_checked'] as bool? ?? false,
   dailyMenuId: json['daily_menu_id'] as String,
+  recipeName: json['recipe_name'] as String?,
 );
 
 Map<String, dynamic> _$ShoppingListItemModelToJson(
@@ -26,4 +27,5 @@ Map<String, dynamic> _$ShoppingListItemModelToJson(
   'unit': instance.unit,
   'is_checked': instance.isChecked,
   'daily_menu_id': instance.dailyMenuId,
+  'recipe_name': instance.recipeName,
 };

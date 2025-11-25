@@ -7,11 +7,13 @@ class WeeklyMenuItemModel {
   final String? recipeId;
   final String recipeName;
   final String mealType; // e.g., 'breakfast', 'lunch', 'dinner', 'snack'
+  final String? recipeImageUrl; // Added for display in weekly menu
 
   WeeklyMenuItemModel({
     this.recipeId,
     required this.recipeName,
     required this.mealType,
+    this.recipeImageUrl,
   });
 
   factory WeeklyMenuItemModel.fromJson(Map<String, dynamic> json) =>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up - Culinary Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#E2725B",
+              "background-light": "#FCF9F4",
+              "background-dark": "#1f1a18",
+              "text-light": "#333333",
+              "text-dark": "#f0e9e4",
+              "field-light": "#FFFFFF",
+              "field-dark": "#2a2421",
+              "border-light": "#d1ccc5",
+              "border-dark": "#4d433e",
+              "placeholder-light": "#888888",
+              "placeholder-dark": "#999999"
+            },
+            fontFamily: {
+              "display": ["Work Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col items-center bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="flex justify-center items-center p-6 text-primary">
+<span class="material-symbols-outlined text-4xl">
+              menu_book
+          </span>
+<span class="ml-2 text-2xl font-bold text-text-light dark:text-text-dark">CulinaryHub</span>
+</div>
+<h1 class="text-text-light dark:text-text-dark tracking-light text-3xl font-bold leading-tight text-center pb-4 px-4">Create Your Culinary Hub</h1>
+<div class="w-full max-w-md px-4">
+<div class="py-2">
+<label class="flex flex-col w-full">
+<div class="relative flex w-full flex-1 items-stretch">
+<div class="text-placeholder-light dark:text-placeholder-dark absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">person</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-field-light dark:bg-field-dark h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark py-3 pr-4 pl-12 text-base font-normal leading-normal" placeholder="e.g., Jamie Oliver" value=""/>
+</div>
+</label>
+</div>
+<div class="py-2">
+<label class="flex flex-col w-full">
+<div class="relative flex w-full flex-1 items-stretch">
+<div class="text-placeholder-light dark:text-placeholder-dark absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-field-light dark:bg-field-dark h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark py-3 pr-4 pl-12 text-base font-normal leading-normal" placeholder="you@email.com" type="email" value=""/>
+</div>
+</label>
+</div>
+<div class="py-2">
+<label class="flex flex-col w-full">
+<div class="relative flex w-full flex-1 items-stretch">
+<div class="text-placeholder-light dark:text-placeholder-dark absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-field-light dark:bg-field-dark h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark py-3 pr-12 pl-12 text-base font-normal leading-normal" placeholder="Create a password" type="password" value=""/>
+<button aria-label="Toggle password visibility" class="text-placeholder-light dark:text-placeholder-dark absolute inset-y-0 right-0 flex items-center justify-center pr-4">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+</label>
+</div>
+<div class="flex items-center space-x-2 pt-1 pb-3 px-1">
+<div class="h-1 flex-1 rounded-full bg-gray-300 dark:bg-border-dark"></div>
+<div class="h-1 flex-1 rounded-full bg-gray-300 dark:bg-border-dark"></div>
+<div class="h-1 flex-1 rounded-full bg-gray-300 dark:bg-border-dark"></div>
+<div class="h-1 flex-1 rounded-full bg-gray-300 dark:bg-border-dark"></div>
+</div>
+<div class="py-2">
+<button class="flex h-14 w-full items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-sm transition-transform hover:scale-105 active:scale-100">Sign Up</button>
+</div>
+<div class="py-6 text-center">
+<p class="text-base text-text-light dark:text-text-dark">
+                Already have an account?
+                <a class="font-bold text-primary hover:underline" href="#">Log In</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>

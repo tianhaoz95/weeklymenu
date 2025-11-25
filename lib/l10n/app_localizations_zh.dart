@@ -45,6 +45,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noAccountYet => '还没有账号?';
 
   @override
+  String get alreadyHaveAccount => '已经有账号?';
+
+  @override
+  String get nameHint => '姓名';
+
+  @override
   String passwordResetEmailSent(String email) {
     return '密码重置邮件已发送至$email';
   }
@@ -136,6 +142,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get totalItems => '总数量：';
 
   @override
+  String get itemsCompleted => '项目已完成';
+
+  @override
   String get saveButton => '保存';
 
   @override
@@ -173,6 +182,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get guest => '访客';
+
+  @override
+  String get all => '所有';
 
   @override
   String get breakfast => '早餐';
@@ -251,4 +263,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get systemDefault => '系统默认';
+
+  @override
+  String get welcomeBack => '欢迎回来！';
+
+  @override
+  String get loginToYourCookbook => '登录您的食谱。';
+
+  @override
+  String get emailAddress => '电子邮件地址';
+
+  @override
+  String get emailRequired => '电子邮件是必需的。';
+
+  @override
+  String get invalidEmail => '请输入有效的电子邮件地址。';
+
+  @override
+  String get passwordRequired => '密码是必需的。';
+
+  @override
+  String get passwordTooShort => '密码至少需要6个字符。';
+
+  @override
+  String get password => '密码';
 }

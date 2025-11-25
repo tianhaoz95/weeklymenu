@@ -12,6 +12,8 @@
   "cookbookTitle": "食谱",
   "settingsTitle": "设置",
   "noAccountYet": "还没有账号?",
+  "alreadyHaveAccount": "已经有账号?",
+  "nameHint": "姓名",
   "passwordResetEmailSent": "密码重置邮件已发送至{email}",
   "@passwordResetEmailSent": {
     "placeholders": {
@@ -55,6 +57,7 @@
   "shoppingListScreenTitle": "购物清单",
   "noItemsInShoppingList": "购物清单中没有商品。",
   "totalItems": "总数量：",
+  "itemsCompleted": "项目已完成",
   "saveButton": "保存",
   "cancelButton": "取消",
   "addButton": "添加",
@@ -68,6 +71,7 @@
   "editRecipeTitle": "编辑食谱",
   "error": "错误",
   "guest": "访客",
+  "all": "所有",
   "breakfast": "早餐",
   "lunch": "午餐",
   "dinner": "晚餐",
@@ -94,5 +98,13 @@
   "languagePreference": "语言偏好",
   "english": "英语",
   "chinese": "中文",
-  "systemDefault": "系统默认"
+  "systemDefault": "系统默认",
+  "welcomeBack": "欢迎回来！",
+  "loginToYourCookbook": "登录您的食谱。",
+  "emailAddress": "电子邮件地址",
+  "emailRequired": "电子邮件是必需的。",
+  "invalidEmail": "请输入有效的电子邮件地址。",
+  "passwordRequired": "密码是必需的。",
+  "passwordTooShort": "密码至少需要6个字符。",
+  "password": "密码"
 }

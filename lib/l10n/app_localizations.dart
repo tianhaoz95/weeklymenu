@@ -170,6 +170,18 @@ abstract class AppLocalizations {
   /// **'Don\'t have an account?'**
   String get noAccountYet;
 
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get nameHint;
+
   /// No description provided for @passwordResetEmailSent.
   ///
   /// In en, this message translates to:
@@ -344,6 +356,12 @@ abstract class AppLocalizations {
   /// **'Total Items:'**
   String get totalItems;
 
+  /// No description provided for @itemsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'items completed'**
+  String get itemsCompleted;
+
   /// No description provided for @saveButton.
   ///
   /// In en, this message translates to:
@@ -421,6 +439,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Guest'**
   String get guest;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
 
   /// No description provided for @breakfast.
   ///
@@ -577,6 +601,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System Default'**
   String get systemDefault;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back!'**
+  String get welcomeBack;
+
+  /// No description provided for @loginToYourCookbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to your cookbook.'**
+  String get loginToYourCookbook;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddress;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required.'**
+  String get emailRequired;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get invalidEmail;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required.'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters long.'**
+  String get passwordTooShort;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
 }
 
 class _AppLocalizationsDelegate

@@ -45,6 +45,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAccountYet => 'Don\'t have an account?';
 
   @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get nameHint => 'Name';
+
+  @override
   String passwordResetEmailSent(String email) {
     return 'Password reset email sent to $email';
   }
@@ -138,6 +144,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalItems => 'Total Items:';
 
   @override
+  String get itemsCompleted => 'items completed';
+
+  @override
   String get saveButton => 'Save';
 
   @override
@@ -177,6 +186,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get guest => 'Guest';
+
+  @override
+  String get all => 'All';
 
   @override
   String get breakfast => 'Breakfast';
@@ -255,4 +267,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemDefault => 'System Default';
+
+  @override
+  String get welcomeBack => 'Welcome Back!';
+
+  @override
+  String get loginToYourCookbook => 'Log in to your cookbook.';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get emailRequired => 'Email is required.';
+
+  @override
+  String get invalidEmail => 'Please enter a valid email address.';
+
+  @override
+  String get passwordRequired => 'Password is required.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters long.';
+
+  @override
+  String get password => 'Password';
 }
