@@ -92,11 +92,11 @@ final TextTheme appTextTheme = TextTheme(
   ), // For buttons
   labelMedium: GoogleFonts.workSans(
     fontSize: 14,
-    fontWeight: FontWeight.medium,
+    fontWeight: FontWeight.w500,
   ), // For labels
   labelSmall: GoogleFonts.workSans(
     fontSize: 12,
-    fontWeight: FontWeight.medium,
+    fontWeight: FontWeight.w500,
   ), // For small text
 );
 
