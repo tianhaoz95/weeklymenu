@@ -19,11 +19,15 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
   static const Color textColorLight = Color(0xFF1F2421);
   static const Color textColorDark = Color(0xFFf6f8f6);
   static const Color cardColorLight = Colors.white;
-  static const Color cardColorDark = Color(0xFF1f221e); // Approximation of zinc-900/50 for dark mode
+  static const Color cardColorDark = Color(
+    0xFF1f221e,
+  ); // Approximation of zinc-900/50 for dark mode
 
   // Helper to format the date range
   String _formatDateRange(DateTime startDate) {
-    final endDate = startDate.add(const Duration(days: 6)); // Assuming a 7-day week starting from startDate
+    final endDate = startDate.add(
+      const Duration(days: 6),
+    ); // Assuming a 7-day week starting from startDate
     final DateFormat formatter = DateFormat('MMMM dd');
     return '${formatter.format(startDate)} - ${formatter.format(endDate)}';
   }
@@ -34,7 +38,9 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final Color currentBackgroundColor = isDarkMode ? backgroundColorDark : backgroundColorLight;
+    final Color currentBackgroundColor = isDarkMode
+        ? backgroundColorDark
+        : backgroundColorLight;
     final Color currentTextColor = isDarkMode ? textColorDark : textColorLight;
     final Color currentCardColor = isDarkMode ? cardColorDark : cardColorLight;
 
@@ -66,13 +72,18 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
             );
           }
 
-          if (weeklyMenuViewModel.weeklyMenu == null || weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
+          if (weeklyMenuViewModel.weeklyMenu == null ||
+              weeklyMenuViewModel.weeklyMenu!.menuItems.isEmpty) {
             return Center(child: Text(appLocalizations.noWeeklyMenuGenerated));
           }
 
           // Assuming the weekly menu starts from the first day in the menuItems map
-          final DateTime startDate = weeklyMenuViewModel.weeklyMenu!.menuItems.keys.first.toDateTime();
-
+          final DateTime startDate = weeklyMenuViewModel
+              .weeklyMenu!
+              .menuItems
+              .keys
+              .first
+              .toDateTime();
 
           return CustomScrollView(
             slivers: [
@@ -84,7 +95,12 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                 backgroundColor: currentBackgroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    padding: const EdgeInsets.only(top: 48.0, bottom: 8.0, left: 16.0, right: 16.0),
+                    padding: const EdgeInsets.only(
+                      top: 48.0,
+                      bottom: 8.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -101,7 +117,8 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                               color: currentTextColor,
                               fontWeight: FontWeight.bold,
                             ),
-                            textAlign: TextAlign.center, // Center the text within the expanded space
+                            textAlign: TextAlign
+                                .center, // Center the text within the expanded space
                           ),
                         ),
                         const SizedBox(width: 48), // Placeholder for symmetry
@@ -113,8 +130,10 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final day = weeklyMenuViewModel.weeklyMenu!.menuItems.keys.elementAt(index);
-                    final mealsForDay = weeklyMenuViewModel.weeklyMenu!.menuItems[day]!;
+                    final day = weeklyMenuViewModel.weeklyMenu!.menuItems.keys
+                        .elementAt(index);
+                    final mealsForDay =
+                        weeklyMenuViewModel.weeklyMenu!.menuItems[day]!;
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
@@ -122,7 +141,10 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8.0,
+                            ),
                             child: Text(
                               day.toUpperCase(), // e.g., MONDAY
                               style: textTheme.headlineSmall?.copyWith(
@@ -146,7 +168,8 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                       ),
                     );
                   },
-                  childCount: weeklyMenuViewModel.weeklyMenu!.menuItems.keys.length,
+                  childCount:
+                      weeklyMenuViewModel.weeklyMenu!.menuItems.keys.length,
                 ),
               ),
             ],
@@ -212,9 +235,7 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                   const SizedBox(height: 4),
                   Text(
                     mealType,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: primaryColor,
-                    ),
+                    style: textTheme.bodySmall?.copyWith(color: primaryColor),
                   ),
                 ],
               ),
@@ -246,7 +267,11 @@ class _WeeklyMenuScreenState extends State<WeeklyMenuScreen> {
                             color: Colors.black.withAlpha((255 * 0.4).round()),
                             borderRadius: BorderRadius.circular(999.0),
                           ),
-                          child: const Icon(Icons.more_vert, color: Colors.white, size: 18),
+                          child: const Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                            size: 18,
+                          ),
                         ),
                       ),
                     ],
