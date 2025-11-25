@@ -59,3 +59,4 @@ The project adheres to a clean architecture pattern with a clear separation of c
 
 ## Gemini Added Memories
 - Email: test@weeklymenu.com, Password: 12341234 for integration tests.
+- Do not use the outdated `flutter_driver` for integration test, see https://remotedesktop.google.com/access/session/73b9a571-e05a-4699-8a6f-fac60123ac94 for instructions for writting flutter integration tests.
