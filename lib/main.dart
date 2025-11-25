@@ -33,18 +33,12 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider<AuthRepository>(
-          create: (_) => _authRepositoryInstance,
-        ),
-        Provider<RecipeRepository>(
-          create: (_) => RecipeRepository(),
-        ),
+        Provider<AuthRepository>(create: (_) => _authRepositoryInstance),
+        Provider<RecipeRepository>(create: (_) => RecipeRepository()),
         Provider<ShoppingListRepository>(
           create: (_) => ShoppingListRepository(),
         ),
-        Provider<ShoppingListService>(
-          create: (_) => ShoppingListService(),
-        ),
+        Provider<ShoppingListService>(create: (_) => ShoppingListService()),
         ChangeNotifierProvider<AuthViewModel>(
           create: (context) => _authViewModelInstance..initialize(),
         ),
@@ -89,9 +83,7 @@ Future<void> main() async {
             )..initialize();
           },
         ),
-        ChangeNotifierProvider(
-          create: (context) => LocaleProvider(),
-        ),
+        ChangeNotifierProvider(create: (context) => LocaleProvider()),
       ],
       child: const MainApp(),
     ),
@@ -198,9 +190,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localeProvider = Provider.of<LocaleProvider>(
-      context,
-    );
+    final localeProvider = Provider.of<LocaleProvider>(context);
 
     return MaterialApp.router(
       routerConfig: _router,

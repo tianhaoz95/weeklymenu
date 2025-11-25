@@ -120,6 +120,11 @@ final ThemeData lightTheme = ThemeData(
       primaryHover: Color(0xFF36584F),
     ),
   ],
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: const Color(0xFFF8F6F4), // Use backgroundLight
+    selectedItemColor: const Color(0xFF3E665C), // Use primary
+    unselectedItemColor: const Color(0xFF687974), // Use subtleLight
+  ),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -142,4 +147,11 @@ final ThemeData darkTheme = ThemeData(
       primaryHover: Color(0xFF36584F),
     ),
   ],
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: const Color(0xFF1A1C1A), // Use backgroundDark
+    selectedItemColor: const Color(0xFFAEBEB9), // Use subtleDark
+    unselectedItemColor: const Color(
+      0xFF687974,
+    ), // Use subtleLight or another appropriate color
+  ),
 );
