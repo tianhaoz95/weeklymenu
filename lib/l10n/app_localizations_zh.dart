@@ -251,4 +251,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get systemDefault => '系统默认';
+
+  @override
+  String get welcomeBack => '欢迎回来！';
+
+  @override
+  String get loginToYourCookbook => '登录您的食谱。';
+
+  @override
+  String get emailAddress => '电子邮件地址';
+
+  @override
+  String get emailRequired => '电子邮件是必需的。';
+
+  @override
+  String get invalidEmail => '请输入有效的电子邮件地址。';
+
+  @override
+  String get passwordRequired => '密码是必需的。';
+
+  @override
+  String get passwordTooShort => '密码至少需要6个字符。';
+
+  @override
+  String get password => '密码';
 }

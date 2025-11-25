@@ -94,5 +94,13 @@
   "languagePreference": "Language Preference",
   "english": "English",
   "chinese": "Chinese",
-  "systemDefault": "System Default"
+  "systemDefault": "System Default",
+  "welcomeBack": "Welcome Back!",
+  "loginToYourCookbook": "Log in to your cookbook.",
+  "emailAddress": "Email Address",
+  "emailRequired": "Email is required.",
+  "invalidEmail": "Please enter a valid email address.",
+  "passwordRequired": "Password is required.",
+  "passwordTooShort": "Password must be at least 6 characters long.",
+  "password": "Password"
 }

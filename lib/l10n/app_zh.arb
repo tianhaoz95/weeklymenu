@@ -94,5 +94,13 @@
   "languagePreference": "语言偏好",
   "english": "英语",
   "chinese": "中文",
-  "systemDefault": "系统默认"
+  "systemDefault": "系统默认",
+  "welcomeBack": "欢迎回来！",
+  "loginToYourCookbook": "登录您的食谱。",
+  "emailAddress": "电子邮件地址",
+  "emailRequired": "电子邮件是必需的。",
+  "invalidEmail": "请输入有效的电子邮件地址。",
+  "passwordRequired": "密码是必需的。",
+  "passwordTooShort": "密码至少需要6个字符。",
+  "password": "密码"
 }

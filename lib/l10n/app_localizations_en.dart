@@ -255,4 +255,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemDefault => 'System Default';
+
+  @override
+  String get welcomeBack => 'Welcome Back!';
+
+  @override
+  String get loginToYourCookbook => 'Log in to your cookbook.';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get emailRequired => 'Email is required.';
+
+  @override
+  String get invalidEmail => 'Please enter a valid email address.';
+
+  @override
+  String get passwordRequired => 'Password is required.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters long.';
+
+  @override
+  String get password => 'Password';
 }
