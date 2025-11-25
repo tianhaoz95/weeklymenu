@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046265042842",
+    "project_id": "weeklymenu-app-service",
+    "storage_bucket": "weeklymenu-app-service.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046265042842:android:14b32437a3239fd4cbcc23",
+        "android_client_info": {
+          "package_name": "com.example.weeklymenu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe4QjIhJmITL6TP2kK23e5Q0_K2fUZSTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

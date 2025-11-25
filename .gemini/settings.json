@@ -4,7 +4,7 @@
     "name": "gemini-2.5-flash"
   },
   "ide": {
-    "enabled": true
+    "enabled": false
   },
   "mcpServers": {
     "dart": {
@@ -13,5 +13,10 @@
         "mcp-server"
       ]
     }
+  },
+  "tools": {
+    "exclude": [
+      "run_shell_command(flutter run)"
+    ]
   }
 }

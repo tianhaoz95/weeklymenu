@@ -1,0 +1,126 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter
+import '../../data/repositories/auth_repository.dart';
+import 'dart:async'; // Import for StreamSubscription
+
+class AuthViewModel extends ChangeNotifier {
+  final AuthRepository _authRepository;
+  GoRouter? _router; // Make it non-final
+
+  AuthViewModel({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? AuthRepository();
+
+  // Add a setter for the router
+  set router(GoRouter router) {
+    _router = router;
+  }
+
+  User? _currentUser;
+  User? get currentUser => _currentUser;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  String? _errorMessage;
+
+  String? get errorMessage => _errorMessage;
+
+  // Stream to listen to authentication state changes
+  Stream<User?> get authStateChanges => _authRepository.userChanges;
+
+  StreamSubscription<User?>? _authStateSubscription; // Declare subscription
+
+  // Initialize and listen to auth state
+  void initialize() {
+    _authStateSubscription = authStateChanges.listen((User? user) {
+      // Assign to subscription
+      _currentUser = user;
+      notifyListeners();
+    });
+  }
+
+  Future<void> signIn({required String email, required String password}) async {
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _authRepository.signIn(email: email, password: password);
+      _router?.refresh(); // Refresh GoRouter on successful sign-in
+    } on AuthException catch (e) {
+      _setErrorMessage(e.message);
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> signUp({required String email, required String password}) async {
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _authRepository.signUp(email: email, password: password);
+      _router?.refresh(); // Refresh GoRouter on successful sign-up
+    } on AuthException catch (e) {
+      _setErrorMessage(e.message);
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> signOut() async {
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _authRepository.signOut();
+      _router?.refresh(); // Refresh GoRouter on successful sign-out
+    } on AuthException catch (e) {
+      _setErrorMessage(e.message);
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _authRepository.resetPassword(email: email);
+    } on AuthException catch (e) {
+      _setErrorMessage(e.message);
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> deleteAccount({required String password}) async {
+    _setLoading(true);
+    clearErrorMessage();
+    try {
+      await _authRepository.deleteAccount(password: password);
+    } on AuthException catch (e) {
+      _setErrorMessage(e.message);
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setErrorMessage(String message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  void clearErrorMessage() {
+    _errorMessage = null;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel(); // Cancel subscription
+    super.dispose();
+  }
+}
